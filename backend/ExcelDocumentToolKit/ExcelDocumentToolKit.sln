@@ -1,0 +1,55 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "0 - Application", "0 - Application", "{FAE86C91-FB55-4017-9E89-EA1524FDA4CE}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1 - Domain", "1 - Domain", "{F7FD265A-327B-4D41-9D19-635D5D8A9535}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2 - CrossCutting", "2 - CrossCutting", "{8DBA6798-F5BD-4662-B876-B221707DCB6B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2.1 - Infra", "2.1 - Infra", "{4421781C-AAA0-4C23-80EB-BBE71E2E342F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExcelDocumentToolKit.Domain", "ExcelDocumentToolKit.Domain\ExcelDocumentToolKit.Domain.csproj", "{F595E42F-E1CF-4E3E-9FFD-4F4D00DD8DE6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExcelDocumentToolKit.CrossCutting.Infra.OpenXml", "ExcelDocumentToolKit.CrossCutting.Infra.OpenXml\ExcelDocumentToolKit.CrossCutting.Infra.OpenXml.csproj", "{32FAEABD-509E-41D5-8FBC-0043D25A77DA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExcelDocumentToolKit.Application.Test", "ExcelDocumentToolKit.Application.Test\ExcelDocumentToolKit.Application.Test.csproj", "{8BADD522-027B-4634-BEB1-683CD9AA603A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExcelDocumentToolKit.CrossCutting.Infra.Parser", "ExcelDocumentToolKit.CrossCutting.Infra.Parser\ExcelDocumentToolKit.CrossCutting.Infra.Parser.csproj", "{208B7C5B-2060-49B7-BE8D-7E95873AD3BD}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F595E42F-E1CF-4E3E-9FFD-4F4D00DD8DE6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F595E42F-E1CF-4E3E-9FFD-4F4D00DD8DE6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F595E42F-E1CF-4E3E-9FFD-4F4D00DD8DE6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F595E42F-E1CF-4E3E-9FFD-4F4D00DD8DE6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{32FAEABD-509E-41D5-8FBC-0043D25A77DA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{32FAEABD-509E-41D5-8FBC-0043D25A77DA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{32FAEABD-509E-41D5-8FBC-0043D25A77DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{32FAEABD-509E-41D5-8FBC-0043D25A77DA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8BADD522-027B-4634-BEB1-683CD9AA603A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8BADD522-027B-4634-BEB1-683CD9AA603A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8BADD522-027B-4634-BEB1-683CD9AA603A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8BADD522-027B-4634-BEB1-683CD9AA603A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{208B7C5B-2060-49B7-BE8D-7E95873AD3BD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{208B7C5B-2060-49B7-BE8D-7E95873AD3BD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{208B7C5B-2060-49B7-BE8D-7E95873AD3BD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{208B7C5B-2060-49B7-BE8D-7E95873AD3BD}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{4421781C-AAA0-4C23-80EB-BBE71E2E342F} = {8DBA6798-F5BD-4662-B876-B221707DCB6B}
+		{F595E42F-E1CF-4E3E-9FFD-4F4D00DD8DE6} = {F7FD265A-327B-4D41-9D19-635D5D8A9535}
+		{32FAEABD-509E-41D5-8FBC-0043D25A77DA} = {4421781C-AAA0-4C23-80EB-BBE71E2E342F}
+		{8BADD522-027B-4634-BEB1-683CD9AA603A} = {FAE86C91-FB55-4017-9E89-EA1524FDA4CE}
+		{208B7C5B-2060-49B7-BE8D-7E95873AD3BD} = {4421781C-AAA0-4C23-80EB-BBE71E2E342F}
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,135 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27130.2027
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FinancasPessoais.Test", "FinancasPessoais.Test\FinancasPessoais.Test.csproj", "{E71E88C6-0B55-4CB7-8332-E7EDA66DFAB3}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "App", "App", "{611EE2EC-5F79-4A23-9493-E757A1AC5897}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WebUI", "WebUI", "{F37117D1-427E-41B0-A2F0-079C1F6108D4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FinancasPessoais.Console", "FinancasPessoais.Console\FinancasPessoais.Console.csproj", "{A02B4C41-E727-45B5-8D8F-3C83635B0919}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommonHelpers", "CommonHelpers\CommonHelpers.csproj", "{61368ECD-F3FD-4C90-8D89-56E003C718B5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FinancasPessoais.Domain", "FinancasPessoais.Domain\FinancasPessoais.Domain.csproj", "{08B69367-1D24-4F0D-951B-A78889ADAF85}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FinancasPessoais.Services", "FinancasPessoais.Services\FinancasPessoais.Services.csproj", "{82BB46CF-8049-4E5B-ACA7-219FFC571DE3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FinancasPessoais.Data", "FinancasPessoais.Data\FinancasPessoais.Data.csproj", "{29F54796-A616-4BCC-9833-9F1A053337A4}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ExcelDocumentToolKit", "ExcelDocumentToolKit", "{4065AEC5-28CA-4D7D-93A6-205A8F750FAA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExcelDocumentToolKit.CrossCutting.Infra.OpenXml", "..\ExcelDocumentToolKit\ExcelDocumentToolKit.CrossCutting.Infra.OpenXml\ExcelDocumentToolKit.CrossCutting.Infra.OpenXml.csproj", "{32FAEABD-509E-41D5-8FBC-0043D25A77DA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExcelDocumentToolKit.CrossCutting.Infra.Parser", "..\ExcelDocumentToolKit\ExcelDocumentToolKit.CrossCutting.Infra.Parser\ExcelDocumentToolKit.CrossCutting.Infra.Parser.csproj", "{208B7C5B-2060-49B7-BE8D-7E95873AD3BD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExcelDocumentToolKit.Domain", "..\ExcelDocumentToolKit\ExcelDocumentToolKit.Domain\ExcelDocumentToolKit.Domain.csproj", "{F595E42F-E1CF-4E3E-9FFD-4F4D00DD8DE6}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WebAPI", "WebAPI", "{F5F2FC6E-54C5-4366-BDB1-2D42F07E5DE4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FinancasPessoais.WebAPI", "FinancasPessoais.WebAPI\FinancasPessoais.WebAPI.csproj", "{EB53CFB0-72AB-4A88-863C-87F8D4ABF2CE}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E71E88C6-0B55-4CB7-8332-E7EDA66DFAB3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E71E88C6-0B55-4CB7-8332-E7EDA66DFAB3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E71E88C6-0B55-4CB7-8332-E7EDA66DFAB3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E71E88C6-0B55-4CB7-8332-E7EDA66DFAB3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A02B4C41-E727-45B5-8D8F-3C83635B0919}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A02B4C41-E727-45B5-8D8F-3C83635B0919}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A02B4C41-E727-45B5-8D8F-3C83635B0919}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A02B4C41-E727-45B5-8D8F-3C83635B0919}.Release|Any CPU.Build.0 = Release|Any CPU
+		{61368ECD-F3FD-4C90-8D89-56E003C718B5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{61368ECD-F3FD-4C90-8D89-56E003C718B5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{61368ECD-F3FD-4C90-8D89-56E003C718B5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{61368ECD-F3FD-4C90-8D89-56E003C718B5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{08B69367-1D24-4F0D-951B-A78889ADAF85}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{08B69367-1D24-4F0D-951B-A78889ADAF85}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{08B69367-1D24-4F0D-951B-A78889ADAF85}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{08B69367-1D24-4F0D-951B-A78889ADAF85}.Release|Any CPU.Build.0 = Release|Any CPU
+		{82BB46CF-8049-4E5B-ACA7-219FFC571DE3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{82BB46CF-8049-4E5B-ACA7-219FFC571DE3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{82BB46CF-8049-4E5B-ACA7-219FFC571DE3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{82BB46CF-8049-4E5B-ACA7-219FFC571DE3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{29F54796-A616-4BCC-9833-9F1A053337A4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{29F54796-A616-4BCC-9833-9F1A053337A4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{29F54796-A616-4BCC-9833-9F1A053337A4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{29F54796-A616-4BCC-9833-9F1A053337A4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{32FAEABD-509E-41D5-8FBC-0043D25A77DA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{32FAEABD-509E-41D5-8FBC-0043D25A77DA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{32FAEABD-509E-41D5-8FBC-0043D25A77DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{32FAEABD-509E-41D5-8FBC-0043D25A77DA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{208B7C5B-2060-49B7-BE8D-7E95873AD3BD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{208B7C5B-2060-49B7-BE8D-7E95873AD3BD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{208B7C5B-2060-49B7-BE8D-7E95873AD3BD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{208B7C5B-2060-49B7-BE8D-7E95873AD3BD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F595E42F-E1CF-4E3E-9FFD-4F4D00DD8DE6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F595E42F-E1CF-4E3E-9FFD-4F4D00DD8DE6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F595E42F-E1CF-4E3E-9FFD-4F4D00DD8DE6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F595E42F-E1CF-4E3E-9FFD-4F4D00DD8DE6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EB53CFB0-72AB-4A88-863C-87F8D4ABF2CE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EB53CFB0-72AB-4A88-863C-87F8D4ABF2CE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EB53CFB0-72AB-4A88-863C-87F8D4ABF2CE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EB53CFB0-72AB-4A88-863C-87F8D4ABF2CE}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{A02B4C41-E727-45B5-8D8F-3C83635B0919} = {611EE2EC-5F79-4A23-9493-E757A1AC5897}
+		{32FAEABD-509E-41D5-8FBC-0043D25A77DA} = {4065AEC5-28CA-4D7D-93A6-205A8F750FAA}
+		{208B7C5B-2060-49B7-BE8D-7E95873AD3BD} = {4065AEC5-28CA-4D7D-93A6-205A8F750FAA}
+		{F595E42F-E1CF-4E3E-9FFD-4F4D00DD8DE6} = {4065AEC5-28CA-4D7D-93A6-205A8F750FAA}
+		{EB53CFB0-72AB-4A88-863C-87F8D4ABF2CE} = {F5F2FC6E-54C5-4366-BDB1-2D42F07E5DE4}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {8AC425A7-9465-459A-9CFD-1820DA6CB9D0}
+	EndGlobalSection
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 11
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = https://williamfelix.visualstudio.com/
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = CommonHelpers\\CommonHelpers.csproj
+		SccProjectName1 = CommonHelpers
+		SccLocalPath1 = CommonHelpers
+		SccProjectUniqueName2 = FinancasPessoais.Console\\FinancasPessoais.Console.csproj
+		SccProjectTopLevelParentUniqueName2 = FinancasPessoais.sln
+		SccProjectName2 = FinancasPessoais.Console
+		SccLocalPath2 = FinancasPessoais.Console
+		SccProjectUniqueName3 = FinancasPessoais.Data\\FinancasPessoais.Data.csproj
+		SccProjectName3 = FinancasPessoais.Data
+		SccLocalPath3 = FinancasPessoais.Data
+		SccProjectUniqueName4 = FinancasPessoais.Domain\\FinancasPessoais.Domain.csproj
+		SccProjectName4 = FinancasPessoais.Domain
+		SccLocalPath4 = FinancasPessoais.Domain
+		SccProjectUniqueName5 = FinancasPessoais.Services\\FinancasPessoais.Services.csproj
+		SccProjectName5 = FinancasPessoais.Services
+		SccLocalPath5 = FinancasPessoais.Services
+		SccProjectUniqueName6 = FinancasPessoais.Test\\FinancasPessoais.Test.csproj
+		SccProjectName6 = FinancasPessoais.Test
+		SccLocalPath6 = FinancasPessoais.Test
+		SccProjectUniqueName7 = ..\\ExcelDocumentToolKit\\ExcelDocumentToolKit.CrossCutting.Infra.OpenXml\\ExcelDocumentToolKit.CrossCutting.Infra.OpenXml.csproj
+		SccProjectTopLevelParentUniqueName7 = FinancasPessoais.sln
+		SccProjectName7 = ../ExcelDocumentToolKit/ExcelDocumentToolKit.CrossCutting.Infra.OpenXml
+		SccLocalPath7 = ..\\ExcelDocumentToolKit\\ExcelDocumentToolKit.CrossCutting.Infra.OpenXml
+		SccProjectUniqueName8 = ..\\ExcelDocumentToolKit\\ExcelDocumentToolKit.CrossCutting.Infra.Parser\\ExcelDocumentToolKit.CrossCutting.Infra.Parser.csproj
+		SccProjectTopLevelParentUniqueName8 = FinancasPessoais.sln
+		SccProjectName8 = ../ExcelDocumentToolKit/ExcelDocumentToolKit.CrossCutting.Infra.Parser
+		SccLocalPath8 = ..\\ExcelDocumentToolKit\\ExcelDocumentToolKit.CrossCutting.Infra.Parser
+		SccProjectUniqueName9 = ..\\ExcelDocumentToolKit\\ExcelDocumentToolKit.Domain\\ExcelDocumentToolKit.Domain.csproj
+		SccProjectTopLevelParentUniqueName9 = FinancasPessoais.sln
+		SccProjectName9 = ../ExcelDocumentToolKit/ExcelDocumentToolKit.Domain
+		SccLocalPath9 = ..\\ExcelDocumentToolKit\\ExcelDocumentToolKit.Domain
+		SccProjectUniqueName10 = FinancasPessoais.WebAPI\\FinancasPessoais.WebAPI.csproj
+		SccProjectTopLevelParentUniqueName10 = FinancasPessoais.sln
+		SccProjectName10 = FinancasPessoais.WebAPI
+		SccLocalPath10 = FinancasPessoais.WebAPI
+	EndGlobalSection
+EndGlobal
