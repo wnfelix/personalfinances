@@ -1,0 +1,21 @@
+.editarestabelecimento-content {
+    display: grid;
+    grid-template-columns: 5vw 95vw;
+    grid-template-rows: auto auto;
+    width: 100vw;
+    height: 100vh;
+}
+
+.editarestabelecimento-header {
+    height: 10vh;
+    width: 95vw;
+    border: 1px solid green;
+}
+
+.editarestabelecimento-body {
+    grid-column-start: 2;
+    height: 89vh;
+    width: 95vw;
+    border: 1px solid orange;
+    overflow: auto;
+}
