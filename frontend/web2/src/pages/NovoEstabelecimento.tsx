@@ -16,7 +16,7 @@ export default function NovoEstabelecimento() {
     const [tipo, setTipo] = useState<IValueLabelPair | null>();
 
     const history = useHistory();
-    
+
     useEffect(() => {
         api.get<IEntidadeGenerica[]>('tipodominio?iddominio=1')
             .then(response => {
@@ -33,7 +33,7 @@ export default function NovoEstabelecimento() {
         setTipo(e);
     }
 
-    function handleBackButton(e: React.MouseEvent<HTMLButtonElement, MouseEvent>){
+    function handleBackButton(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
         e.preventDefault();
         history.goBack();
     }
@@ -64,7 +64,7 @@ export default function NovoEstabelecimento() {
         <div className="novoestabelecimento-content">
             <LeftSideToolBar />
             <div className="novoestabelecimento-header">
-                cabeçalho
+                cabeçalho                
             </div>
             <div className="novoestabelecimento-body">
                 <section>
@@ -85,7 +85,7 @@ export default function NovoEstabelecimento() {
                         onChange={e => handleOnChangeDomainType(e)}
                         className="select-control"
                     />
-                    <button type="button" onClick={e=>handleBackButton(e)}>Voltar</button>
+                    <button type="button" onClick={e => handleBackButton(e)}>Voltar</button>
                     <button className="button" type="submit">Cadastrar</button>
                 </form>
             </div>

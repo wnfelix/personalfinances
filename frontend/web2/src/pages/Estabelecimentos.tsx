@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { Table } from 'react-bootstrap';
-import { BsFileEarmarkPlus, BsPencilSquare } from 'react-icons/bs';
+import { Nav, Navbar, Table } from 'react-bootstrap';
+import { BsPencilSquare } from 'react-icons/bs';
 import { Link } from 'react-router-dom';
 import LeftSideToolBar from '../components/LeftSideToolBar';
 import IEstabelecimento from '../interfaces/IEstabelecimento';
@@ -22,9 +22,12 @@ export default function Estabelecimentos() {
         <div className="estabelecimentos-content">
             <LeftSideToolBar />
             <div className="estabelecimentos-header">
-            <Link to={"/novoestabelecimento"}>
-                <BsFileEarmarkPlus size={26}>Novo</BsFileEarmarkPlus>
-            </Link>
+                <Navbar bg="primary" variant="dark">
+                    <Navbar.Brand as={Link} to="/estabelecimentos">Estabelecimentos</Navbar.Brand>
+                    <Nav className="mr-auto">
+                        <Nav.Link as={Link} to="/novoestabelecimento" >Novo</Nav.Link>
+                    </Nav>
+                </Navbar>
             </div>
             <div className="estabelecimentos-body">
                 <Table size="sm">
