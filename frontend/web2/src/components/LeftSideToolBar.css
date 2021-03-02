@@ -1,6 +1,10 @@
 .leftsidetoolbar-content {
     display: flex;
-    border: 1px solid red;
     flex-direction: column;
     grid-row: 1 / span 2;
+    background-color: #007bff;
+}
+
+.leftsidetoolbar-content a {
+    margin: 4px 4px 0 4px;
 }

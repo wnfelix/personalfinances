@@ -1,26 +1,4 @@
-.estabelecimentos-content {
-    display: grid;
-    grid-template-columns: 5vw 95vw;
-    grid-template-rows: auto auto;
-    width: 100vw;
-    height: 100vh;
-}
-
-.estabelecimentos-header {
-    height: 10vh;
-    width: 95vw;
-    border: 1px solid green;
-}
-
-.estabelecimentos-body {
-    grid-column-start: 2;
-    height: 89vh;
-    width: 95vw;
-    border: 1px solid orange;
-    overflow: auto;
-}
-
-.estabelecimentos-body th {
+.application-body th {
     position: sticky;
     top: 0;
     background-color: white;

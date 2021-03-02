@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { Nav, Navbar, Table } from 'react-bootstrap';
+import { Table } from 'react-bootstrap';
 import { BsPencilSquare } from 'react-icons/bs';
 import { Link } from 'react-router-dom';
+import HeaderToolBar from '../components/HeaderToolBar';
 import LeftSideToolBar from '../components/LeftSideToolBar';
 import IEstabelecimento from '../interfaces/IEstabelecimento';
 import api from '../services/api';
@@ -19,17 +20,15 @@ export default function Estabelecimentos() {
     }, []);
 
     return (
-        <div className="estabelecimentos-content">
+        <div className="application-content">
             <LeftSideToolBar />
-            <div className="estabelecimentos-header">
-                <Navbar bg="primary" variant="dark">
-                    <Navbar.Brand as={Link} to="/estabelecimentos">Estabelecimentos</Navbar.Brand>
-                    <Nav className="mr-auto">
-                        <Nav.Link as={Link} to="/novoestabelecimento" >Novo</Nav.Link>
-                    </Nav>
-                </Navbar>
+            <div className="application-header">
+                <HeaderToolBar
+                    title={{ text: "Estabelecimentos", url: "/estabelecimentos" }}
+                    links={[{ text: "Novo", url: "/novoestabelecimento" }]}
+                />
             </div>
-            <div className="estabelecimentos-body">
+            <div className="application-body">
                 <Table size="sm">
                     <thead>
                         <tr>

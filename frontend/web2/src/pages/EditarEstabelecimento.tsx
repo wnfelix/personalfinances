@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
 import Select from 'react-select';
+import HeaderToolBar from '../components/HeaderToolBar';
 
 import LeftSideToolBar from '../components/LeftSideToolBar';
 import IEntidadeGenerica from '../interfaces/IEntidadeGenerica';
@@ -68,18 +69,27 @@ export default function EditarEstabelecimento() {
         setTipo(e);
     }
 
-    function handleBackButton(e: React.MouseEvent<HTMLButtonElement, MouseEvent>){
+    function handleBackButton(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
         e.preventDefault();
         history.goBack();
     }
 
     return (
-        <div className="editarestabelecimento-content">
+        <div className="application-content">
             <LeftSideToolBar />
-            <div className="editarestabelecimento-header">
-                cabeçalho
+            <div className="application-header">
+                <HeaderToolBar
+                    title={{ text: "Estabelecimentos", url: "/estabelecimentos" }}
+                    links={
+                        [
+                            {
+                                text: "Novo",
+                                url: "/novoestabelecimento"
+                            }
+                        ]}
+                />
             </div>
-            <div className="editarestabelecimento-body">
+            <div className="application-body">
                 <section>
                     <p>Editar Dados do Estabelecimento</p>
                 </section>
@@ -100,7 +110,7 @@ export default function EditarEstabelecimento() {
                         onChange={e => handleOnChangeDomainType(e)}
                         className="select-control"
                     />
-                    <button type="button" onClick={e=>handleBackButton(e)}>Voltar</button>
+                    <button type="button" onClick={e => handleBackButton(e)}>Voltar</button>
                     <button className="button" type="submit">Editar</button>
                 </form>
             </div>

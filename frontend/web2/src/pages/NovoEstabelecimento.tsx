@@ -8,6 +8,7 @@ import api from '../services/api'
 import IEntidadeGenerica from '../interfaces/IEntidadeGenerica';
 import IValueLabelPair from '../interfaces/IValueLabelPair';
 import LeftSideToolBar from '../components/LeftSideToolBar';
+import HeaderToolBar from '../components/HeaderToolBar';
 
 export default function NovoEstabelecimento() {
     const [description, setDescription] = useState('');
@@ -61,12 +62,21 @@ export default function NovoEstabelecimento() {
     }
 
     return (
-        <div className="novoestabelecimento-content">
+        <div className="application-content">
             <LeftSideToolBar />
-            <div className="novoestabelecimento-header">
-                cabeçalho                
+            <div className="application-header">
+                <HeaderToolBar
+                    title={{ text: "Estabelecimentos", url: "/estabelecimentos" }}
+                    links={
+                        [
+                            {
+                                text: "Novo",
+                                url: "/novoestabelecimento"
+                            }
+                        ]}
+                />
             </div>
-            <div className="novoestabelecimento-body">
+            <div className="application-body">
                 <section>
                     <p>Informe os dados do novo estabelecimento</p>
                 </section>

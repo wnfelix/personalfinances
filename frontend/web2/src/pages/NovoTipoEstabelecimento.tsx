@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import Select from 'react-select';
+import HeaderToolBar from '../components/HeaderToolBar';
 import LeftSideToolBar from '../components/LeftSideToolBar';
 import IEntidadeGenerica from '../interfaces/IEntidadeGenerica';
 import IValueLabelPair from '../interfaces/IValueLabelPair';
@@ -57,12 +58,15 @@ export default function NovoTipoEstabelecimento() {
     }
 
     return (
-        <div className="novotipoestabelecimento-content">
+        <div className="application-content">
             <LeftSideToolBar />
-            <div className="novoestabelecimento-header">
-                cabeçalho                
+            <div className="application-header">
+                <HeaderToolBar
+                    title={{ text: "Tipos de Estabelecimento", url: "/estabelecimentos" }}
+                    links={[{ text: "Novo", url: "/novotipoestabelecimento" }]}
+                />
             </div>
-            <div className="novotipoestabelecimento-body">
+            <div className="application-body">
                 <section>
                     <p>Incluir Novo Tipo</p>
                 </section>
