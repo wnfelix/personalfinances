@@ -9,6 +9,7 @@ import IEntidadeGenerica from '../interfaces/IEntidadeGenerica';
 import IValueLabelPair from '../interfaces/IValueLabelPair';
 import LeftSideToolBar from '../components/LeftSideToolBar';
 import HeaderToolBar from '../components/HeaderToolBar';
+import { Button } from 'react-bootstrap';
 
 export default function NovoEstabelecimento() {
     const [description, setDescription] = useState('');
@@ -34,7 +35,7 @@ export default function NovoEstabelecimento() {
         setTipo(e);
     }
 
-    function handleBackButton(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
+    function handleBackButton(e: React.MouseEvent<HTMLElement, MouseEvent>) {
         e.preventDefault();
         history.goBack();
     }
@@ -84,19 +85,22 @@ export default function NovoEstabelecimento() {
                     <input placeholder="Informe a descrição"
                         value={description}
                         onChange={e => setDescription(e.target.value)}
+                        className="form-control"
                     />
                     <input placeholder="Informe a palavra chave"
                         value={chave}
                         onChange={e => setChave(e.target.value)}
+                        className="form-control"
                     />
                     <Select
+                        defaultValue={{ value: "0", label: "Selecione..." }}
                         value={tipo}
                         options={tipoDominio}
                         onChange={e => handleOnChangeDomainType(e)}
                         className="select-control"
                     />
-                    <button type="button" onClick={e => handleBackButton(e)}>Voltar</button>
-                    <button className="button" type="submit">Cadastrar</button>
+                    <Button variant="secondary" onClick={e => handleBackButton(e)}>Voltar</Button>
+                    <button className="btn btn-primary" type="submit">Cadastrar</button>
                 </form>
             </div>
         </div>

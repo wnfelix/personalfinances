@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import {Button} from 'react-bootstrap';
 import { useParams, useHistory } from 'react-router-dom';
 import Select from 'react-select';
 import HeaderToolBar from '../components/HeaderToolBar';
@@ -69,7 +70,7 @@ export default function EditarEstabelecimento() {
         setTipo(e);
     }
 
-    function handleBackButton(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
+    function handleBackButton(e: React.MouseEvent<HTMLElement, MouseEvent>) {
         e.preventDefault();
         history.goBack();
     }
@@ -97,10 +98,12 @@ export default function EditarEstabelecimento() {
                     <input placeholder="Informe a descrição"
                         value={description}
                         onChange={e => setDescription(e.target.value)}
+                        className="form-control"
                     />
                     <input placeholder="Informe a palavra chave"
                         value={chave}
                         onChange={e => setChave(e.target.value)}
+                        className="form-control"
                     />
                     <label className="filter-label" htmlFor="drpTipoDominio">Classificação</label>
                     <Select
@@ -108,10 +111,10 @@ export default function EditarEstabelecimento() {
                         value={tipo}
                         options={tipoDominio}
                         onChange={e => handleOnChangeDomainType(e)}
-                        className="select-control"
+                        defaultValue={{ value: "0", label: "Selecione..." }}
                     />
-                    <button type="button" onClick={e => handleBackButton(e)}>Voltar</button>
-                    <button className="button" type="submit">Editar</button>
+                        <Button variant="secondary" onClick={e => handleBackButton(e)}>Voltar</Button>
+                        <button className="btn btn-primary" type="submit">Salvar</button>
                 </form>
             </div>
         </div>

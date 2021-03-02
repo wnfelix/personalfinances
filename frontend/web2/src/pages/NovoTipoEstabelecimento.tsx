@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import Button from 'react-bootstrap/esm/Button';
 import { useHistory } from 'react-router-dom';
 import Select from 'react-select';
 import HeaderToolBar from '../components/HeaderToolBar';
@@ -52,7 +53,7 @@ export default function NovoTipoEstabelecimento() {
         }
     }
 
-    function handleBackButton(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
+    function handleBackButton(e: React.MouseEvent<HTMLElement, MouseEvent>) {
         e.preventDefault();
         history.goBack();
     }
@@ -74,15 +75,16 @@ export default function NovoTipoEstabelecimento() {
                     <form onSubmit={handleCadastrar}>
                         <input placeholder="Informe a descrição"
                             onChange={e => setDescription(e.target.value)}
+                            className="form-control"
                         />
                         <Select
-                            defaultValue={{ value: "0", label: "Selecione o Domínio" }}
+                            defaultValue={{ value: "0", label: "Selecione..." }}
                             options={typeList}
                             onChange={e => handleOnChangeDomainType(e)}
                             className="select-control"
                         />
-                        <button type="button" onClick={e => handleBackButton(e)}>Voltar</button>
-                        <button className="button" type="submit">Cadastrar</button>
+                        <Button variant="secondary" onClick={e => handleBackButton(e)}>Voltar</Button>
+                        <button className="btn btn-primary" type="submit">Cadastrar</button>
                     </form>
                 </section>
             </div>
