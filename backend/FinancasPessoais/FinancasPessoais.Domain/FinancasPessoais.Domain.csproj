@@ -49,6 +49,7 @@
     <Compile Include="DescricaoExtra.cs" />
     <Compile Include="Estabelecimento.cs" />
     <Compile Include="Dominio.cs" />
+    <Compile Include="Lancamento.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TipoDominio.cs" />
     <Compile Include="Usuario.cs" />

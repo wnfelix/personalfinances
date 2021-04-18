@@ -8,7 +8,7 @@ namespace FinancasPessoais.Data.Repositories
 {
     public class DominioRepository : BaseRepository<Dominio, int>, IDominioRepository
     {
-        public DominioRepository(IFinancasPessoaisSession session) : base(session.GetSession())
+        public DominioRepository(IFinancasPessoaisSession session) : base(session.GetSession(), session.GetStatelessSession())
         {
 
         }

@@ -10,11 +10,11 @@ namespace CommonHelpers.Base.Transformer
         where TSource : class, new()
         where TTarget : class, new()
     {
-        public virtual TSource Reverse(TTarget source)
+        public virtual TSource Reverse(TTarget target)
         {
             TSource returnValue = null;
-            if (source != null)
-                returnValue = TransformPrimitiveValues<TTarget, TSource>(source);
+            if (target != null)
+                returnValue = TransformPrimitiveValues<TTarget, TSource>(target);
 
             return returnValue;
         }
@@ -50,6 +50,23 @@ namespace CommonHelpers.Base.Transformer
         }
 
         public virtual TTarget Transform(TSource source, params object[] additionalInfo)
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual TSource Reverse(TTarget target, params object[] additionalInfo)
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual TReturn Transform<TReturn>(TSource source, params object[] additionalInfo)
+            where TReturn : class, new()
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual TReturn Transform<TEntity, TReturn>(TEntity source, params object[] additionalInfo)
+            where TReturn : class, new()
         {
             throw new NotImplementedException();
         }

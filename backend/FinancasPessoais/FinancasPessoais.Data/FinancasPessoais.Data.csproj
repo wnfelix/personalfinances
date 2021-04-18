@@ -70,6 +70,7 @@
     <Compile Include="Maps\DescricaoExtraMap.cs" />
     <Compile Include="Maps\DominioMap.cs" />
     <Compile Include="Maps\EstabelecimentoMap.cs" />
+    <Compile Include="Maps\LancamentoMap.cs" />
     <Compile Include="Maps\TipoDominioMap.cs" />
     <Compile Include="Maps\UsuarioMap.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
