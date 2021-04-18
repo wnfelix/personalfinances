@@ -18,8 +18,10 @@ namespace FinancasPessoais.Data
         {
             var cfg = new NHibernate.Cfg.Configuration();
             cfg.SetProperty(NHibernate.Cfg.Environment.ShowSql, "true");
+            cfg.SetProperty(NHibernate.Cfg.Environment.BatchSize, "1000");
 
-            var cns = FluentNHibernate.Cfg.Db.MsSqlConfiguration.MsSql2012.ConnectionString(x => x.FromConnectionStringWithKey(connectionStringKey));
+            //var cns = FluentNHibernate.Cfg.Db.MsSqlConfiguration.MsSql2012.ConnectionString(x => x.FromConnectionStringWithKey(connectionStringKey));
+            var cns = FluentNHibernate.Cfg.Db.MySQLConfiguration.Standard.ConnectionString(x => x.FromConnectionStringWithKey(connectionStringKey));
 
             return Fluently.Configure(cfg)
                 .Database(cns)

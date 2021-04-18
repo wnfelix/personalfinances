@@ -20,20 +20,17 @@ namespace FinancasPessoais.Services
     {
         private IDominioRepository _dominioRepository;
         private IExcelDocumentService _excelDocumentService;
-        //private ITransformer<Lancamento, DebitoData> _lancamentoTransformer;
 
         public ExportToExcelCommandService(IDominioRepository dominioRepository,
             IExcelDocumentService excelDocumentService)
         {
             _dominioRepository = dominioRepository;
             _excelDocumentService = excelDocumentService;
-            //_lancamentoTransformer = lancamentoTransformer;
         }
 
-        public void ExportExcel(string filePathSource, string filePathTarget)
+        public void ExportExcel(string filePathSource, string filePathTarget, DateTime dtRef)
         {
-            var dtRef = new DateTime(2021, 1, 1);
-            const int idDesconhecido = 16;
+            const int idDesconhecido = 204;
             var getDescription = new Func<TipoDominio, string>(e => string.Concat(e.Id, "-", e.Descricao));
             var dados = _excelDocumentService.OpenExcelDocument(filePathSource).ReadExcelDocument<DebitoData>(0, true);
             var minDate = dados.Select(d => d.Data).Min();
@@ -92,7 +89,7 @@ namespace FinancasPessoais.Services
                 lanc.Valor = item.Valor;
                 lanc.Descricao = item.Local;
                 lanc.DtCompra = item.Data;
-                lanc.DtReferencia = dtRef;
+                lanc.DtReferencia = new DateTime(dtRef.Year, dtRef.Month, 1);
                 lanc.DescricaoExtra = descricaoExtra;
                 lanc.ClassificacaoExtra = prefixoExtra;
                 lanc.CriadoEm = DateTime.Now;
@@ -102,6 +99,7 @@ namespace FinancasPessoais.Services
             _excelDocumentService.WriteExcelDocument(filePathTarget, arquivos);
             _excelDocumentService.CloseExcelDocument();
 
+            _dominioRepository.ApagarLancamentosPorDtRef(dtRef);
             _dominioRepository.Save(lancamentos.AsEnumerable());
             //excelApp.CloseExcelDocument();
         }

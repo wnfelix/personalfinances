@@ -255,5 +255,11 @@ namespace FinancasPessoais.Data.Repositories
         {
             Save(list, 100);
         }
+
+        public virtual int ExecuteSql(string query)
+        {
+            var cmd = _session.CreateSQLQuery(query);
+            return cmd.ExecuteUpdate();
+        }
     }
 }
