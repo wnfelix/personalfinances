@@ -12,7 +12,8 @@ namespace FinancasPessoais.Domain
         public virtual TipoDominio Classificacao { get; set; }
         public virtual string Descricao { get; set; }
         public virtual DateTime DataCompra { get; set; }
-        public virtual byte IndiceCompra { get; set; }
+        public virtual byte IndiceCompraDe { get; set; }
+        public virtual byte IndiceCompraAte { get; set; }
         public virtual bool Ativo { get; set; }
     }
 }

@@ -7,5 +7,6 @@ export default interface IDescricaoExtra{
     classificacao: IEntidadeGenerica,
     descricao: string,
     dataCompra: Date,
-    indiceCompra: number
+    indiceCompraDe: number,
+    indiceCompraAte: number,
 }

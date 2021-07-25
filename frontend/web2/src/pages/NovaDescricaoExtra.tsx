@@ -21,8 +21,8 @@ export default function NovaDescricaoExtra() {
     const [tipo, setClassificacao] = useState<IValueLabelPair | null>();
     const [estab, setEstab] = useState<IValueLabelPair | null>();
     const [dataCompra, setDataCompra] = useState(new Date());
-    const [indice, setIndice] = useState(1);
-
+    const [indiceDe, setIndiceDe] = useState(1);
+    const [indiceAte, setIndiceAte] = useState(2);
 
     useEffect(() => {
         api.get<IEntidadeGenerica[]>('tipodominio?iddominio=1')
@@ -52,17 +52,18 @@ export default function NovaDescricaoExtra() {
                 id: tipo?.value
             },
             dataCompra: dataCompra,
-            indiceCompra: indice,
+            indiceCompraDe: indiceDe,
+            indiceCompraAte: indiceAte,
             descricao: descricao
         };
 
         api.post('descricaoextra', data)
             .then(result => {
-                alert("cadastrou");
+                alert("Cadastrado com sucesso");
                 setEstab(null);
                 setClassificacao(null);
                 setDescricao("");
-                setIndice(1);
+                setIndiceDe(1);
             });
     }
 
@@ -71,7 +72,7 @@ export default function NovaDescricaoExtra() {
     }
 
     return (
-        <div className="application-content">
+        <div className="application-content novadescricaoextra">
             <LeftSideToolBar />
             <div className="application-header">
                 <HeaderToolBar
@@ -110,7 +111,11 @@ export default function NovaDescricaoExtra() {
                         locale={ptBr}
                         dateFormat="dd/MM/yyyy"
                     />
-                    <input value={indice} type="number" min="1" max="10" onChange={e => setIndice(Number(e.target.value))} />
+                    <fieldset className="indice">
+                        <legend>Índice da compra no dia</legend>
+                        <label>De</label><input value={indiceDe} type="number" min="1" max="10" onChange={e => setIndiceDe(Number(e.target.value))} />
+                        <label>Até</label><input value={indiceAte} type="number" min="1" max="10" onChange={e => setIndiceAte(Number(e.target.value))} />
+                    </fieldset>
                     <button type="submit" className="btn btn-primary">Salvar</button>
                 </form>
             </div>

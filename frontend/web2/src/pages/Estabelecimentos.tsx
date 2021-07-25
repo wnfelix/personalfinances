@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Table } from 'react-bootstrap';
+import { Button, Spinner, Table } from 'react-bootstrap';
 import { BsPencilSquare } from 'react-icons/bs';
 import { Link } from 'react-router-dom';
 
@@ -15,11 +15,13 @@ import { Modal } from 'react-bootstrap';
 export default function Estabelecimentos() {
     const [data, setData] = useState<IEstabelecimento[]>();
     const [showDeleteDialog, setShowDeleteDialog] = useState({ show: false, id: 0 });
+    const [loadingState, setLoadingState] = useState(true);
 
     useEffect(() => {
         api.get('estabelecimento')
             .then(response => {
                 setData(response.data);
+                setLoadingState(false);
             });
     }, []);
 
@@ -53,7 +55,7 @@ export default function Estabelecimentos() {
     }
 
     return (
-        <div className="application-content">
+        <div className="application-content estabelecimentos">
             {modalDelete()}
             <LeftSideToolBar />
             <div className="application-header">
@@ -62,39 +64,43 @@ export default function Estabelecimentos() {
                     links={[{ text: "Novo", url: "/novoestabelecimento" }]}
                 />
             </div>
-            <div className="application-body">
-                <Table size="sm">
-                    <thead>
-                        <tr>
-                            <th>Id</th>
-                            <th>Descrição</th>
-                            <th>Palavra Chave</th>
-                            <th>Classificação</th>
-                            <th></th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {data?.map(e => {
-                            return (
-                                <tr key={e.id}>
-                                    <td>{e.id}</td>
-                                    <td>{e.descricao}</td>
-                                    <td>{e.palavraChave}</td>
-                                    <td>{e.classificacao.descricao}</td>
-                                    <td>
-                                        <Link to={`/editarestabelecimento/${e.id}`}>
-                                            <BsPencilSquare size={20} color="rgb(54, 96, 146)" />
-                                        </Link>
-                                    </td>
-                                    <td>
-                                        <TiTrash size={25} onClick={() => setShowDeleteDialog({ show: true, id: Number(e.id) })} color="rgb(130, 11, 17)" />
-                                    </td>
-                                </tr>
-                            )
-                        })}
-                    </tbody>
-                </Table>
-            </div>
+            {loadingState ?
+                <div className="loadingState"><Spinner animation="grow" variant="dark" /></div>
+                :
+                <div className="application-body">
+                    <Table size="sm">
+                        <thead>
+                            <tr>
+                                <th>Id</th>
+                                <th>Descrição</th>
+                                <th>Palavra Chave</th>
+                                <th>Classificação</th>
+                                <th></th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {data?.map(e => {
+                                return (
+                                    <tr key={e.id}>
+                                        <td>{e.id}</td>
+                                        <td>{e.descricao}</td>
+                                        <td>{e.palavraChave}</td>
+                                        <td>{e.classificacao.descricao}</td>
+                                        <td>
+                                            <Link to={`/editarestabelecimento/${e.id}`}>
+                                                <BsPencilSquare size={20} color="rgb(54, 96, 146)" />
+                                            </Link>
+                                        </td>
+                                        <td>
+                                            <TiTrash size={25} onClick={() => setShowDeleteDialog({ show: true, id: Number(e.id) })} color="rgb(130, 11, 17)" />
+                                        </td>
+                                    </tr>
+                                )
+                            })}
+                        </tbody>
+                    </Table>
+                </div>
+            }
         </div>)
 }

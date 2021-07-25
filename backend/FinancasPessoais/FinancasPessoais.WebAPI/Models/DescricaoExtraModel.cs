@@ -10,6 +10,7 @@ namespace FinancasPessoais.WebAPI.Models
         public EntidadeGenericaModel<int> Estabelecimento { get; set; }
         public EntidadeGenericaModel<int> Classificacao { get; set; }
         public DateTime DataCompra { get; set; }
-        public byte IndiceCompra { get; set; }
+        public byte IndiceCompraDe { get; set; }
+        public byte IndiceCompraAte { get; set; }
     }
 }

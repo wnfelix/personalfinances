@@ -1,5 +1,9 @@
-.application-body th {
+.application-content .application-body th {
     position: sticky;
     top: 0;
     background-color: white;
+}
+
+.estabelecimentos .application-body {
+    padding-top: 0px;
 }

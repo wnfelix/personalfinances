@@ -58,8 +58,11 @@ namespace FinancasPessoais.Services
                     qtdEstab[estabKey] += 1;
 
                     //item.Valor = Convert.ToDecimal(item.Valor, new CultureInfo("en-US")).ToString();
-                    descricaoExtra = _dominioRepository.FindBy<DescricaoExtra>(x => x.DataCompra == item.Data && x.Estabelecimento.Id == estab.Id && qtdEstab[estabKey] == x.IndiceCompra)
-                                                            .FirstOrDefault();
+                    descricaoExtra = _dominioRepository.FindBy<DescricaoExtra>(x => x.Ativo
+                                                                                    && x.DataCompra == item.Data
+                                                                                    && x.Estabelecimento.Id == estab.Id
+                                                                                    && qtdEstab[estabKey] >= x.IndiceCompraDe && qtdEstab[estabKey] <= x.IndiceCompraAte)
+                                                                                .FirstOrDefault();
 
                     if (descricaoExtra != null)
                     {

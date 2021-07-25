@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Table } from 'react-bootstrap';
+import { Spinner, Table } from 'react-bootstrap';
 import HeaderToolBar from '../components/HeaderToolBar';
 import LeftSideToolBar from '../components/LeftSideToolBar';
 import IDescricaoExtra from '../interfaces/IDescricaoExtra';
@@ -10,11 +10,13 @@ import './DescricaoExtra.css';
 
 export default function DescricaoExtra() {
     const [descricaoExtra, setDescricaoExtra] = useState<IDescricaoExtra[]>([]);
+    const [loadingState, setLoadingState] = useState(true);
 
     useEffect(() => {
         api.get<IDescricaoExtra[]>('descricaoextra')
             .then(response => {
                 setDescricaoExtra(response.data);
+                setLoadingState(false);
             })
     }, []);
 
@@ -27,31 +29,37 @@ export default function DescricaoExtra() {
                     links={[{ text: "Nova", url: "/novadescricaoextra" }]}
                 />
             </div>
-            <div className="application-body">
-                <Table>
-                    <thead>
-                        <tr>
-                            <th>Estabelecimento</th>
-                            <th>Classificação</th>
-                            <th>Descrição</th>
-                            <th>Data da Compra</th>
-                            <th>Índice</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {descricaoExtra.map(d => {
-                            return <tr>
-                                <td>{d.estabelecimento.palavraChave}</td>
-                                <td>{d.classificacao.descricao}</td>
-                                <td>{d.descricao}</td>
-                                <td>{d.dataCompra}</td>
-                                <td>{d.indiceCompra}</td>
+            {loadingState ?
+                <div className="loadingState"><Spinner animation="grow" variant="dark" /></div>
+                :
+                <div className="application-body">
+                    <Table>
+                        <thead>
+                            <tr>
+                                <th>Estabelecimento</th>
+                                <th>Classificação</th>
+                                <th>Descrição</th>
+                                <th>Data da Compra</th>
+                                <th>Índice De</th>
+                                <th>Índice Até</th>
+                                <th></th>
                             </tr>
-                        })}
-                    </tbody>
-                </Table>
-            </div>
+                        </thead>
+                        <tbody>
+                            {descricaoExtra.map(d => {
+                                return <tr>
+                                    <td>{d.estabelecimento.palavraChave}</td>
+                                    <td>{d.classificacao.descricao}</td>
+                                    <td>{d.descricao}</td>
+                                    <td>{d.dataCompra}</td>
+                                    <td>{d.indiceCompraDe}</td>
+                                    <td>{d.indiceCompraAte}</td>
+                                </tr>
+                            })}
+                        </tbody>
+                    </Table>
+                </div>
+            }
         </div>
     )
 }

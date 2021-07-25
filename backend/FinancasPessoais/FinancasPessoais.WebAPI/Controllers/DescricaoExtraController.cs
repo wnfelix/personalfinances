@@ -25,19 +25,20 @@ namespace FinancasPessoais.WebAPI.Controllers
         [HttpGet]
         public IHttpActionResult Listar()
         {
-            return Ok(_dominioRepository.List<DescricaoExtra>().Select(x => new
+            return Ok(_dominioRepository.FindBy<DescricaoExtra>(d => d.Ativo).Select(x => new
             {
                 x.Id,
                 estabelecimento = _estabelecimentoTransformer.Transform(x.Estabelecimento),
                 classificacao = new { x.Classificacao.Id, x.Classificacao.Descricao },
                 x.Descricao,
                 x.DataCompra,
-                x.IndiceCompra
+                x.IndiceCompraDe,
+                x.IndiceCompraAte
             })); ;
         }
 
         [HttpPost]
-        public IHttpActionResult Incluir([FromBody]DescricaoExtraModel body)
+        public IHttpActionResult Incluir([FromBody] DescricaoExtraModel body)
         {
             var descricaoExtra = new DescricaoExtra
             {
@@ -45,7 +46,8 @@ namespace FinancasPessoais.WebAPI.Controllers
                 Classificacao = _dominioRepository.Get<TipoDominio>(body.Classificacao.Id),
                 DataCompra = body.DataCompra,
                 Ativo = true,
-                IndiceCompra = body.IndiceCompra,
+                IndiceCompraDe = body.IndiceCompraDe,
+                IndiceCompraAte = body.IndiceCompraAte,
                 Descricao = body.Descricao
             };
 

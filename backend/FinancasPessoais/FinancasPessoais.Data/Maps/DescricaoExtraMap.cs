@@ -17,7 +17,8 @@ namespace FinancasPessoais.Data.Maps
             References(x => x.Classificacao, "IdClassificacao");
             Map(x => x.Descricao);
             Map(x => x.DataCompra);
-            Map(x => x.IndiceCompra);
+            Map(x => x.IndiceCompraDe);
+            Map(x => x.IndiceCompraAte);
             Map(x => x.Ativo);
         }
     }
