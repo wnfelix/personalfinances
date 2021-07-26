@@ -20,12 +20,22 @@ namespace FinancasPessoais.WebAPI.Transformers
             return target;
         }
 
+        public override EstabelecimentoModel Transform(Estabelecimento source, params object[] additionalInfo)
+        {
+            var target = this.Transform(source);
+            
+            target.LancamentosTotal = (int)additionalInfo[0];
+            target.DescricoesExtrasTotal = (int)additionalInfo[1];
+
+            return target;
+        }
+
         public override EstabelecimentoModel Transform(Estabelecimento source)
         {
             var target = base.Transform(source);
-
+            
             target.Classificacao = new EntidadeGenericaModel<int> { Id = source.Classificacao.Id, Descricao = source.Classificacao.Descricao };
-
+            
             return target;
         }
     }

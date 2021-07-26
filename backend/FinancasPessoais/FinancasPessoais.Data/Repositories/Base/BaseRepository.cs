@@ -261,5 +261,10 @@ namespace FinancasPessoais.Data.Repositories
             var cmd = _session.CreateSQLQuery(query);
             return cmd.ExecuteUpdate();
         }
+
+        public virtual IQueryable<TEntitySource> GetQueryable<TEntitySource>()
+        {
+            return _session.Query<TEntitySource>();
+        }
     }
 }

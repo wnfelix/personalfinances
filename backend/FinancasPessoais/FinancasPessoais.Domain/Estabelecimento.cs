@@ -14,5 +14,6 @@ namespace FinancasPessoais.Domain
         public virtual string Descricao { get; set; }
         public virtual TipoDominio Classificacao { get; set; }
         public virtual bool Ativo { get; set; }
+        public virtual IList<Lancamento> Lancamentos { get; set; }
     }
 }

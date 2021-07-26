@@ -45,3 +45,8 @@ fieldset legend {
 fieldset label {
     font-size: 0.7rem;
 }
+
+.card {
+    margin: 4px;
+    height: fit-content;
+}

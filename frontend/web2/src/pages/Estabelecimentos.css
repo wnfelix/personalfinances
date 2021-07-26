@@ -4,6 +4,31 @@
     background-color: white;
 }
 
+.estabelecimentos .application-body fieldset {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+
 .estabelecimentos .application-body {
-    padding-top: 0px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+
+.estabelecimentos .application-body .total {
+    font-size: 0.8rem;
+    text-align: right; 
+    color: gray;
+}
+
+.estabelecimentos .card-footer {
+    display: flex;
+    justify-content: space-around;
+}
+
+.estabelecimentos .card-footer svg {
+    cursor: pointer;
 }

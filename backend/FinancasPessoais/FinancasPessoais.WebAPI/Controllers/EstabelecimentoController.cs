@@ -33,7 +33,16 @@ namespace FinancasPessoais.WebAPI.Controllers
         {
             var estabelecimentos = new List<EstabelecimentoModel>();
 
-            Array.ForEach(_dominioRepository.FindBy<Estabelecimento>(e => e.Ativo).ToArray(), e => estabelecimentos.Add(_estabelecimentoTransformer.Transform(e)));
+            var lst = from estab in _dominioRepository.GetQueryable<Estabelecimento>()
+                      where estab.Ativo
+                      select new
+                      {
+                          Estabecimento = estab,
+                          Lancamentos = estab.Lancamentos.Count,
+                          DescricoesExtras = estab.Lancamentos.Count(x => x.DescricaoExtra != null)
+                      };
+
+            Array.ForEach(lst.ToArray(), e => estabelecimentos.Add(_estabelecimentoTransformer.Transform(e.Estabecimento, e.Lancamentos, e.DescricoesExtras)));
 
             return Ok(estabelecimentos.ToArray());
         }

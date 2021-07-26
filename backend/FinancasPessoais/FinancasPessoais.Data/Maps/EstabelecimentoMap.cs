@@ -17,6 +17,7 @@ namespace FinancasPessoais.Data.Maps
             Map(x => x.Descricao);
             Map(x => x.Ativo);
             References(x => x.Classificacao, "IdClassificacao");
+            HasMany(x => x.Lancamentos).KeyColumn("IdEstabelecimento");
         }
     }
 }

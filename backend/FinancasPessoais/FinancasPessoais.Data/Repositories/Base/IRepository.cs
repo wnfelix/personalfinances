@@ -1,6 +1,7 @@
 ﻿using NHibernate;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 
@@ -45,5 +46,7 @@ namespace FinancasPessoais.Data.Repositories
         bool Exists(object id);
 
         bool Exists<TEntitySource>(Expression<Func<TEntitySource, bool>> expression);
+
+        IQueryable<TEntitySource> GetQueryable<TEntitySource>();
     }
 }

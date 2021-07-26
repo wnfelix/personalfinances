@@ -54,5 +54,6 @@ namespace FinancasPessoais.Services
             estab.Ativo = false;
             _dominioRepository.Save(estab);
         }
+
     }
 }

@@ -4,5 +4,7 @@ export default interface IEstabelecimento {
     id: string,
     descricao: string,
     palavraChave: string,
-    classificacao: IEntidadeGenerica
+    classificacao: IEntidadeGenerica,
+    lancamentosTotal: number,
+    descricoesExtrasTotal: number,
 }

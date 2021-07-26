@@ -11,5 +11,7 @@ namespace FinancasPessoais.WebAPI.Models
         public string PalavraChave { get; set; }
         public string Descricao { get; set; }
         public EntidadeGenericaModel<int> Classificacao { get; set; }
+        public int LancamentosTotal { get; internal set; }
+        public int DescricoesExtrasTotal { get; internal set; }
     }
 }
