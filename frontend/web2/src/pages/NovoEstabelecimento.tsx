@@ -63,7 +63,7 @@ export default function NovoEstabelecimento() {
     }
 
     return (
-        <div className="application-content">
+        <div className="application-content novoestabelecimento">
             <LeftSideToolBar />
             <div className="application-header">
                 <HeaderToolBar
@@ -85,22 +85,24 @@ export default function NovoEstabelecimento() {
                     <input placeholder="Informe a descrição"
                         value={description}
                         onChange={e => setDescription(e.target.value)}
-                        className="form-control"
+                        className='form-control'
                     />
                     <input placeholder="Informe a palavra chave"
                         value={chave}
                         onChange={e => setChave(e.target.value)}
-                        className="form-control"
+                        className='form-control'
                     />
                     <Select
                         defaultValue={{ value: "0", label: "Selecione..." }}
                         value={tipo}
                         options={tipoDominio}
                         onChange={e => handleOnChangeDomainType(e)}
-                        className="select-control"
+                        className='select-control'
                     />
-                    <Button variant="secondary" onClick={e => handleBackButton(e)}>Voltar</Button>
-                    <button className="btn btn-primary" type="submit">Cadastrar</button>
+                    <div>
+                        <Button variant="secondary" onClick={handleBackButton}>Voltar</Button>
+                        <button className="btn btn-primary" type="submit">Cadastrar</button>
+                    </div>
                 </form>
             </div>
         </div>

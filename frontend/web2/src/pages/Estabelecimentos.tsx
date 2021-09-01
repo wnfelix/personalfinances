@@ -1,5 +1,6 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from 'react';
-import { Button, Card, Spinner } from 'react-bootstrap';
+import { Button, Card, Form, Spinner } from 'react-bootstrap';
 import { BsPencilSquare } from 'react-icons/bs';
 import { Link } from 'react-router-dom';
 
@@ -19,37 +20,41 @@ interface IGrupoClassificacao extends IEntidadeGenerica {
 }
 
 export default function Estabelecimentos() {
-    const [data, setData] = useState<IGrupoClassificacao[]>([]);
+    const [estabs, setEstabs] = useState<IGrupoClassificacao[]>([]);
     const [showDeleteDialog, setShowDeleteDialog] = useState({ show: false, item: { id: 0, idGr: 0 } });
+    const [exibicao, setExibicao] = useState(1);
     const [loadingState, setLoadingState] = useState(true);
 
     useEffect(() => {
-        api.get<IEstabelecimento[]>('estabelecimento')
-            .then(response => {
+        setLoadingState(true);
 
-                const groups = Distinct(response.data.map(x => x.classificacao));
+        api.get<IEstabelecimento[]>(`estabelecimento?exibicao=${exibicao}`)
+            .then(({ data }) => {
 
+                const groups = Distinct(data.map(x => x.classificacao));
+                const estabs: IGrupoClassificacao[] = [];
+                
                 groups.forEach(gr => {
-                    data.push({ id: gr.id, descricao: gr.descricao, estabelecimentos: response.data.filter(x => x.classificacao.id === gr.id).sort((a, b) => a.lancamentosTotal > b.lancamentosTotal ? -1 : 1) });
+                    estabs.push({ id: gr.id, descricao: gr.descricao, estabelecimentos: data.filter(({ classificacao }) => classificacao.id === gr.id).sort((a, b) => a.lancamentosTotal > b.lancamentosTotal ? -1 : 1) });
                 });
 
-                setData(data);
+                setEstabs(estabs);
                 setLoadingState(false);
             });
-    }, []);
+    }, [exibicao]);
 
     function handleDelete() {
         const { id, idGr } = showDeleteDialog.item;
 
         api.delete(`estabelecimento/${id}`)
             .then(result => {
-                alert('deu certo');
+                //alert('deu certo');
             });
 
-        const indexGr = data.findIndex(x => Number(x.id) === idGr);
-        data[indexGr].estabelecimentos = data[indexGr].estabelecimentos.filter(x => Number(x.id) !== id);
-        setData([...data]);
-        
+        const indexGr = estabs.findIndex(x => Number(x.id) === idGr);
+        estabs[indexGr].estabelecimentos = estabs[indexGr].estabelecimentos.filter(x => Number(x.id) !== id);
+        setEstabs([...estabs]);
+
         setShowDeleteDialog({ show: false, item: { id: 0, idGr: 0 } });
     }
 
@@ -84,16 +89,33 @@ export default function Estabelecimentos() {
                 <div className="loadingState"><Spinner animation="grow" variant="dark" /></div>
                 :
                 <div className="application-body">
-                    {data?.map(gr => {
+                    <div>
+                        <label>Exibir:</label>
+                        <Form.Check
+                            inline
+                            label="Todos"
+                            name="exibir"
+                            type="radio"
+                            checked={exibicao === 0}
+                            onChange={() => setExibicao(0)}
+                        />
+                        <Form.Check
+                            inline
+                            label="Com lançamentos"
+                            name="exibir"
+                            type="radio"
+                            checked={exibicao === 1}
+                            onChange={() => setExibicao(1)}
+                        />
+                    </div>
+                    {estabs?.map(gr => {
                         return (
                             <fieldset>
                                 <legend>{gr.descricao}</legend>
                                 {gr.estabelecimentos.map(e =>
                                     <Card key={e.id}>
-                                        <Card.Header>
-                                            <Card.Text>{e.palavraChave}</Card.Text>
-                                        </Card.Header>
                                         <Card.Body>
+                                            <Card.Title as='h6'>{e.palavraChave}</Card.Title>
                                             {e.descricao?.length > 0 &&
                                                 <Card.Text>{e.descricao}</Card.Text>
                                             }

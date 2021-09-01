@@ -1,3 +1,5 @@
-.novadescricaoextra form{
-    width: 40vw;
-} 
+
+
+.novadescricaoextra form fieldset.indice {
+    display: flex;
+}

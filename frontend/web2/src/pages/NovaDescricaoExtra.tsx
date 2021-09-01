@@ -12,7 +12,7 @@ import IValueLabelPair from '../interfaces/IValueLabelPair';
 import api from '../services/api';
 
 import "react-datepicker/dist/react-datepicker.css";
-import { Form } from 'react-bootstrap';
+import { Form, Spinner } from 'react-bootstrap';
 
 export default function NovaDescricaoExtra() {
     const [tipoDominio, setTipoDominio] = useState<IValueLabelPair[]>([]);
@@ -23,21 +23,23 @@ export default function NovaDescricaoExtra() {
     const [dataCompra, setDataCompra] = useState(new Date());
     const [indiceDe, setIndiceDe] = useState(1);
     const [indiceAte, setIndiceAte] = useState(2);
+    const [loadingDominio, setLoadingDominio] = useState(true);
+    const [loadingEstab, setLoadingEstab] = useState(true);
 
     useEffect(() => {
         api.get<IEntidadeGenerica[]>('tipodominio?iddominio=1')
             .then(response => {
-                let options = response.data.map(t => {
-                    return { value: t.id, label: t.descricao };
-                }).sort((a, b) => {
-                    return ('' + a.label).localeCompare(b.label);
-                });
+                const options = response.data.map(t => ({ value: t.id, label: t.descricao }))
+                    .sort((a, b) => ('' + a.label).localeCompare(b.label));
+
                 setTipoDominio(options);
+                setLoadingDominio(false);
             });
 
         api.get<IEstabelecimento[]>('estabelecimento')
             .then(response => {
                 setEstabelecimentos(response.data.map(e => ({ value: e.id, label: e.palavraChave })));
+                setLoadingEstab(false);
             });
     }, []);
 
@@ -88,35 +90,49 @@ export default function NovaDescricaoExtra() {
                     <Form.Control
                         value={descricao}
                         onChange={e => setDescricao(e.target.value)}
-                        type="text"
-                        placeholder="Informe a descrição"
+                        type='text'
+                        placeholder='Informe a descrição'
+                        className='form-control'
                         maxLength={200} />
-                    <Select
-                        id="drpEstabelecimentos"
-                        value={estab}
-                        options={estabelecimentos}
-                        onChange={e => setEstab(e)}
-                        defaultValue={{ value: "0", label: "Selecione..." }}
-                    />
-                    <Select
-                        id="drpTipoDominio"
-                        value={tipo}
-                        options={tipoDominio}
-                        onChange={e => setClassificacao(e)}
-                        defaultValue={{ value: "0", label: "Selecione..." }}
-                    />
+                    {loadingEstab ?
+                        <Spinner animation="grow" variant="dark" />
+                        :
+                        <Select
+                            id='drpEstabelecimentos'
+                            value={estab}
+                            options={estabelecimentos}
+                            onChange={e => setEstab(e)}
+                            defaultValue={{ value: "0", label: "Selecione..." }}
+                            className='select-control'
+                        />
+                    }
+                    {loadingDominio ?
+                        <Spinner animation="grow" variant="dark" />
+                        :
+                        <Select
+                            id='drpTipoDominio'
+                            value={tipo}
+                            options={tipoDominio}
+                            onChange={e => setClassificacao(e)}
+                            defaultValue={{ value: "0", label: "Selecione..." }}
+                            className='select-control'
+                        />
+                    }
                     <DatePicker
                         selected={dataCompra}
                         onChange={handleDataCompra}
                         locale={ptBr}
                         dateFormat="dd/MM/yyyy"
+                        className='form-control'
                     />
                     <fieldset className="indice">
                         <legend>Índice da compra no dia</legend>
-                        <label>De</label><input value={indiceDe} type="number" min="1" max="10" onChange={e => setIndiceDe(Number(e.target.value))} />
-                        <label>Até</label><input value={indiceAte} type="number" min="1" max="10" onChange={e => setIndiceAte(Number(e.target.value))} />
+                        <label>De</label><input value={indiceDe} className='form-control' type="number" min="1" max="10" onChange={e => setIndiceDe(Number(e.target.value))} />
+                        <label>Até</label><input value={indiceAte} className='form-control' type="number" min="1" max="10" onChange={e => setIndiceAte(Number(e.target.value))} />
                     </fieldset>
-                    <button type="submit" className="btn btn-primary">Salvar</button>
+                    <div>
+                        <button type="submit" className="btn btn-primary">Salvar</button>
+                    </div>
                 </form>
             </div>
         </div>

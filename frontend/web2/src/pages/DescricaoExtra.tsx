@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Spinner, Table } from 'react-bootstrap';
+import { format } from 'date-fns';
 import HeaderToolBar from '../components/HeaderToolBar';
 import LeftSideToolBar from '../components/LeftSideToolBar';
 import IDescricaoExtra from '../interfaces/IDescricaoExtra';
@@ -46,16 +47,18 @@ export default function DescricaoExtra() {
                             </tr>
                         </thead>
                         <tbody>
-                            {descricaoExtra.map(d => {
-                                return <tr>
-                                    <td>{d.estabelecimento.palavraChave}</td>
-                                    <td>{d.classificacao.descricao}</td>
-                                    <td>{d.descricao}</td>
-                                    <td>{d.dataCompra}</td>
-                                    <td>{d.indiceCompraDe}</td>
-                                    <td>{d.indiceCompraAte}</td>
-                                </tr>
-                            })}
+                            {descricaoExtra
+                                .sort((a, b) => a.dataCompra > b.dataCompra ? -1 : 1)
+                                .map(d => {
+                                    return <tr>
+                                        <td>{d.estabelecimento.palavraChave}</td>
+                                        <td>{d.classificacao.descricao}</td>
+                                        <td>{d.descricao}</td>
+                                        <td>{format(new Date(d.dataCompra), 'dd/MM/yyyy')}</td>
+                                        <td>{d.indiceCompraDe}</td>
+                                        <td>{d.indiceCompraAte}</td>
+                                    </tr>
+                                })}
                         </tbody>
                     </Table>
                 </div>

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import {Button} from 'react-bootstrap';
+import { Button } from 'react-bootstrap';
 import { useParams, useHistory } from 'react-router-dom';
 import Select from 'react-select';
 import HeaderToolBar from '../components/HeaderToolBar';
@@ -112,9 +112,12 @@ export default function EditarEstabelecimento() {
                         options={tipoDominio}
                         onChange={e => handleOnChangeDomainType(e)}
                         defaultValue={{ value: "0", label: "Selecione..." }}
+                        className='select-control'
                     />
+                    <div>
                         <Button variant="secondary" onClick={e => handleBackButton(e)}>Voltar</Button>
                         <button className="btn btn-primary" type="submit">Salvar</button>
+                    </div>
                 </form>
             </div>
         </div>

@@ -1,0 +1,9 @@
+.lancamentoupload .application-body {
+    flex-direction: row;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.lancamentoupload input[type='file'] {
+    width: 30vw;
+}

@@ -83,8 +83,10 @@ export default function NovoTipoEstabelecimento() {
                             onChange={e => handleOnChangeDomainType(e)}
                             className="select-control"
                         />
-                        <Button variant="secondary" onClick={e => handleBackButton(e)}>Voltar</Button>
-                        <button className="btn btn-primary" type="submit">Cadastrar</button>
+                        <div>
+                            <Button variant="secondary" onClick={e => handleBackButton(e)}>Voltar</Button>
+                            <button className="btn btn-primary" type="submit">Cadastrar</button>
+                        </div>
                     </form>
                 </section>
             </div>

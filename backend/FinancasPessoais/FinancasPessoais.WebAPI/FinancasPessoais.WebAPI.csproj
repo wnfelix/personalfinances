@@ -217,6 +217,7 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\DescricaoExtraController.cs" />
     <Compile Include="Controllers\EstabelecimentoController.cs" />
+    <Compile Include="Controllers\LancamentoController.cs" />
     <Compile Include="Controllers\TipoDominioController.cs" />
     <Compile Include="Controllers\DominioController.cs" />
     <Compile Include="Filters\BasicAuthenticationAttribute.cs" />

@@ -29,20 +29,27 @@ namespace FinancasPessoais.WebAPI.Controllers
 
         // GET: Estabelecimento
         [HttpGet]
-        public IHttpActionResult Listar()
+        public IHttpActionResult Listar(int exibicao = 0)
         {
             var estabelecimentos = new List<EstabelecimentoModel>();
 
-            var lst = from estab in _dominioRepository.GetQueryable<Estabelecimento>()
-                      where estab.Ativo
-                      select new
-                      {
-                          Estabecimento = estab,
-                          Lancamentos = estab.Lancamentos.Count,
-                          DescricoesExtras = estab.Lancamentos.Count(x => x.DescricaoExtra != null)
-                      };
+            var lst = _dominioRepository.GetQueryable<Estabelecimento>();
 
-            Array.ForEach(lst.ToArray(), e => estabelecimentos.Add(_estabelecimentoTransformer.Transform(e.Estabecimento, e.Lancamentos, e.DescricoesExtras)));
+            if (exibicao == 1)
+                lst = from estab in lst
+                      where estab.Lancamentos.Count > 0
+                      select estab;
+
+            var result = from estab in lst
+                         where estab.Ativo
+                         select new
+                         {
+                             Estabecimento = estab,
+                             Lancamentos = estab.Lancamentos.Count,
+                             DescricoesExtras = estab.Lancamentos.Count(x => x.DescricaoExtra != null)
+                         };
+
+            Array.ForEach(result.ToArray(), e => estabelecimentos.Add(_estabelecimentoTransformer.Transform(e.Estabecimento, e.Lancamentos, e.DescricoesExtras)));
 
             return Ok(estabelecimentos.ToArray());
         }
