@@ -18,7 +18,7 @@ namespace FinancasPessoais.Data.Maps
             Map(x => x.DtReferencia);
             Map(x => x.Valor);
             Map(x => x.CriadoEm);
-            References(x => x.Estabelecimento, "IdEstabelecimento").Nullable();
+            References(x => x.Estabelecimento, "IdEstabelecimento");
             References(x => x.DescricaoExtra, "IdDescricaoExtra").Nullable();
             References(x => x.ClassificacaoExtra, "IdClassificacaoExtra").Nullable();
         }

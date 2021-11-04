@@ -60,6 +60,10 @@ namespace FinancasPessoais.WebAPI.App_Start
 
             container.Register<ITransformer<Estabelecimento, EstabelecimentoModel>, EstabelecimentoTransformer>();
             container.Register<ITransformer<TipoDominio, TipoDominioModel>, TipoDominioTransformer>();
+            container.Register<ITransformer<Lancamento, LancamentoModel>, LancamentoTransformer>();
+            container.Register<ITransformer<ClassificacaoExtra, ClassificacaoExtraModel>, ClassificacaoExtraTransformer>();
+            container.Register<ITransformer<dynamic, EntidadeGenericaModel<int>>, EntidadeGenericaTransformer>();
+            container.Register<ITransformer<DescricaoExtra, DescricaoExtraModel>, DescricaoExtraTransformer>();
 
             #endregion
 

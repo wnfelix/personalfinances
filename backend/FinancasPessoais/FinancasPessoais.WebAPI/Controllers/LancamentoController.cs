@@ -1,4 +1,7 @@
-﻿using FinancasPessoais.Services;
+﻿using CommonHelpers.Base.Transformer;
+using FinancasPessoais.Domain;
+using FinancasPessoais.Services;
+using FinancasPessoais.WebAPI.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -14,10 +17,13 @@ namespace FinancasPessoais.WebAPI.Controllers
     public class LancamentoController : ApiController
     {
         private ILancamentoCommandService _lancamentoCommandService;
+        private ITransformer<Lancamento, LancamentoModel> _lancamentoTransformer;
 
-        public LancamentoController(ILancamentoCommandService lancamentoCommandService)
+        public LancamentoController(ILancamentoCommandService lancamentoCommandService,
+            ITransformer<Lancamento, LancamentoModel> lancamentoTransformer)
         {
             _lancamentoCommandService = lancamentoCommandService;
+            _lancamentoTransformer = lancamentoTransformer;
         }
 
         [HttpPost]
@@ -74,6 +80,15 @@ namespace FinancasPessoais.WebAPI.Controllers
             }
 
             return new HttpResponseMessage(HttpStatusCode.NoContent);
+        }
+
+        [HttpGet]
+        public IHttpActionResult Lancamento(DateTime mesref)
+        {
+            var lst = new List<LancamentoModel>();
+            Array.ForEach(_lancamentoCommandService.Lancamentos(mesref).ToArray(), i => lst.Add(_lancamentoTransformer.Transform(i)));
+
+            return Ok(lst);
         }
     }
 }

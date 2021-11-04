@@ -225,13 +225,19 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helpers\OauthTokenProvider.cs" />
+    <Compile Include="Models\ClassificacaoExtraModel.cs" />
     <Compile Include="Models\DescricaoExtraModel.cs" />
     <Compile Include="Models\EntidadeGenericaModel.cs" />
     <Compile Include="Models\EstabelecimentoModel.cs" />
+    <Compile Include="Models\LancamentoModel.cs" />
     <Compile Include="Models\TipoDominioModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Sessions\FinancasPessoaisSession.cs" />
+    <Compile Include="Transformers\ClassificacaoExtraTransformer.cs" />
+    <Compile Include="Transformers\DescricaoExtraTransformer.cs" />
+    <Compile Include="Transformers\EntidadeGenericaTransformer.cs" />
     <Compile Include="Transformers\EstabelecimentoTransformer.cs" />
+    <Compile Include="Transformers\LancamentoTransformer.cs" />
     <Compile Include="Transformers\TipoDominioTransformer.cs" />
   </ItemGroup>
   <ItemGroup>

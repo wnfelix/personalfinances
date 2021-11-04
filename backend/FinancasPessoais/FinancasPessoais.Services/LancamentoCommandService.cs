@@ -15,7 +15,7 @@ using System.Xml;
 
 namespace FinancasPessoais.Services
 {
-    public class LancamentoCommandService: ILancamentoCommandService
+    public class LancamentoCommandService : ILancamentoCommandService
     {
         private IDominioRepository _dominioRepository;
         private IExcelDocumentService _excelDocumentService;
@@ -108,6 +108,23 @@ namespace FinancasPessoais.Services
             //excelApp.CloseExcelDocument();
 
             return filePathTarget;
+        }
+
+        public List<Lancamento> Lancamentos(DateTime mesref)
+        {
+            return (from l in _dominioRepository.GetQueryable<Lancamento>()
+                    where l.DtReferencia.Year == mesref.Year && l.DtReferencia.Month == mesref.Month
+                    select new Lancamento
+                    {
+                        Id = l.Id,
+                        Valor = l.Valor,
+                        Estabelecimento = l.Estabelecimento,
+                        DescricaoExtra = l.DescricaoExtra,
+                        ClassificacaoExtra = l.ClassificacaoExtra,
+                        DtCompra = l.DtCompra,
+                        DtReferencia = l.DtReferencia,
+                        Descricao = l.Descricao
+                    }).ToList();
         }
     }
 }

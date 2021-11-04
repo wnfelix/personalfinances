@@ -44,11 +44,6 @@ namespace CommonHelpers.Base.Transformer
             return target;
         }
 
-        public virtual TTarget Transform(object entity)
-        {
-            throw new NotImplementedException();
-        }
-
         public virtual TTarget Transform(TSource source, params object[] additionalInfo)
         {
             throw new NotImplementedException();

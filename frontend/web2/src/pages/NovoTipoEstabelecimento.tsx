@@ -47,7 +47,7 @@ export default function NovoTipoEstabelecimento() {
         try {
             await api.post('tipodominio', data);
 
-            history.push('/');
+            history.push('/tiposestabelecimento');
         } catch (error) {
             alert('Ocorreu um eror ao tentar cadastrar');
         }
