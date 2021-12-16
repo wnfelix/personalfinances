@@ -3,6 +3,7 @@ import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import DescricaoExtra from './pages/DescricaoExtra';
 import EditarEstabelecimento from './pages/EditarEstabelecimento';
 import Estabelecimentos from './pages/Estabelecimentos';
+import Lancamentos from './pages/Lancamentos/Lancamentos';
 import LancamentoUpload from './pages/LancamentoUpload/LancamentoUpload';
 import NovaDescricaoExtra from './pages/NovaDescricaoExtra';
 import NovoEstabelecimento from './pages/NovoEstabelecimento';
@@ -22,6 +23,7 @@ export default function Routes() {
                 <Route path='/descricaoextra' component={DescricaoExtra} />
                 <Route path='/novadescricaoextra' component={NovaDescricaoExtra} />
                 <Route path='/lancamentoupload' component={LancamentoUpload} />
+                <Route path='/lancamentos' component={Lancamentos} />
             </Switch>
         </BrowserRouter>
     )

@@ -27,7 +27,7 @@ namespace FinancasPessoais.WebAPI.Controllers
         }
 
         [HttpPost]
-        public HttpResponseMessage Post(DateTime mesref)
+        public HttpResponseMessage Upload(DateTime mesref)
         {
             try
             {
@@ -80,6 +80,15 @@ namespace FinancasPessoais.WebAPI.Controllers
             }
 
             return new HttpResponseMessage(HttpStatusCode.NoContent);
+        }
+
+        [HttpPost]
+        public IHttpActionResult Incluir([FromBody] LancamentoModel model)
+        {
+            var lanc = _lancamentoTransformer.Reverse(model);
+            lanc = _lancamentoCommandService.Incluir(lanc);
+
+            return Created("lancamento", _lancamentoTransformer.Transform(lanc));
         }
 
         [HttpGet]

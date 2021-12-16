@@ -11,5 +11,6 @@ namespace FinancasPessoais.Services
     {
         string ExportExcel(string[] filePathSource, DateTime dtRef);
         List<Lancamento> Lancamentos(DateTime mesref);
+        Lancamento Incluir(Lancamento lancamento);
     }
 }

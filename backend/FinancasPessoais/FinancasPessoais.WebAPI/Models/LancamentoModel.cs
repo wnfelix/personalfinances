@@ -13,7 +13,12 @@ namespace FinancasPessoais.WebAPI.Models
         public dynamic Estabelecimento { get; set; }
         public dynamic DescricaoExtra { get; set; }
         public dynamic ClassificacaoExtra { get; set; }
+        public dynamic Classificacao { get; set; }
+        public dynamic ClassificacaoFinal { get; set; }
         public DateTime DtReferencia { get; set; }
         public DateTime DtCompra { get; set; }
+        public bool Parcelado { get; set; }
+        public bool Reclassificado { get; set; }
+        public bool Manual { get; set; }
     }
 }

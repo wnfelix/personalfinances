@@ -15,7 +15,7 @@ namespace FinancasPessoais.Data.Repositories
 
         public void ApagarLancamentosPorDtRef(DateTime dtRef)
         {
-            base.ExecuteSql($"delete from lancamento where EXTRACT(YEAR_MONTH FROM dtreferencia)='{dtRef.ToString("yyyyMM")}'");
+            base.ExecuteSql($"delete from lancamento where EXTRACT(YEAR_MONTH FROM dtreferencia)='{dtRef.ToString("yyyyMM")}' and manual=0");
         }
     }
 }

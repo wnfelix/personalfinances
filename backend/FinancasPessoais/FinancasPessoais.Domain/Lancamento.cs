@@ -15,6 +15,8 @@ namespace FinancasPessoais.Domain
         public virtual Estabelecimento Estabelecimento { get; set; }
         public virtual DescricaoExtra DescricaoExtra { get; set; }
         public virtual ClassificacaoExtra ClassificacaoExtra { get; set; }
+        public virtual TipoDominio Classificacao { get; set; }
         public virtual DateTime CriadoEm { get; set; }
+        public virtual bool Manual { get; set; }
     }
 }

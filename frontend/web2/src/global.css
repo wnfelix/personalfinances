@@ -59,7 +59,7 @@ fieldset label {
 form {
     display: flex;
     flex-direction: column;
-    width: 25vw;
+    /* width: 25vw; */
 }
 
 form>div:last-child {
@@ -69,4 +69,8 @@ form>div:last-child {
 
 .form-control, .select-control {
     margin-top: 5px;
+}
+
+.modal-title {
+    font-size: 1.1rem;
 }

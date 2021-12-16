@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useLocation, useParams } from 'react-router-dom';
 import Select from 'react-select';
 
 import './NovoEstabelecimento.css';
@@ -12,12 +12,14 @@ import HeaderToolBar from '../components/HeaderToolBar';
 import { Button } from 'react-bootstrap';
 
 export default function NovoEstabelecimento() {
+    const history = useHistory();
+    const params = new URLSearchParams(useLocation().search);
+
     const [description, setDescription] = useState('');
-    const [chave, setChave] = useState('');
+    const [chave, setChave] = useState(params.get('description') ?? '');
     const [tipoDominio, setTipoDominio] = useState<IValueLabelPair[]>([]);
     const [tipo, setTipo] = useState<IValueLabelPair | null>();
 
-    const history = useHistory();
 
     useEffect(() => {
         api.get<IEntidadeGenerica[]>('tipodominio?iddominio=1')

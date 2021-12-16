@@ -64,6 +64,7 @@ namespace FinancasPessoais.WebAPI.App_Start
             container.Register<ITransformer<ClassificacaoExtra, ClassificacaoExtraModel>, ClassificacaoExtraTransformer>();
             container.Register<ITransformer<dynamic, EntidadeGenericaModel<int>>, EntidadeGenericaTransformer>();
             container.Register<ITransformer<DescricaoExtra, DescricaoExtraModel>, DescricaoExtraTransformer>();
+            container.Register<ITransformer<DespesaFixa, DespesaFixaModel>, DespesaFixaTransformer>();
 
             #endregion
 

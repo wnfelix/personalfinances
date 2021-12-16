@@ -123,8 +123,20 @@ namespace FinancasPessoais.Services
                         ClassificacaoExtra = l.ClassificacaoExtra,
                         DtCompra = l.DtCompra,
                         DtReferencia = l.DtReferencia,
-                        Descricao = l.Descricao
+                        Descricao = l.Descricao,
                     }).ToList();
+        }
+
+        public Lancamento Incluir(Lancamento lancamento)
+        {
+            lancamento.Estabelecimento = lancamento.Estabelecimento?.Id > 0 ? _dominioRepository.Get<Estabelecimento>(lancamento.Estabelecimento.Id) : null;
+            lancamento.Classificacao = lancamento.Classificacao?.Id > 0 ? _dominioRepository.Get<TipoDominio>(lancamento.Classificacao?.Id) : null;
+            lancamento.DtReferencia = new DateTime(lancamento.DtCompra.Year, lancamento.DtCompra.Month, 1);
+            lancamento.CriadoEm = DateTime.Now;
+
+            _dominioRepository.Save(lancamento);
+
+            return lancamento;
         }
     }
 }

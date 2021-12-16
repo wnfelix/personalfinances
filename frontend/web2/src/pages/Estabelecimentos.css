@@ -1,9 +1,3 @@
-.application-content .application-body th {
-    position: sticky;
-    top: 0;
-    background-color: white;
-}
-
 .estabelecimentos .application-body fieldset {
     display: flex;
     flex-direction: row;
