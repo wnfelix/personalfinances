@@ -14,130 +14,163 @@ import { TiTrash } from 'react-icons/ti';
 import { Modal } from 'react-bootstrap';
 import { Distinct } from '../Helper/helper';
 import IEntidadeGenerica from '../interfaces/IEntidadeGenerica';
+import NovoEstabelecimento from '../components/NovoEstabelecimento/NovoEstabelecimento';
 
 interface IGrupoClassificacao extends IEntidadeGenerica {
-    estabelecimentos: IEstabelecimento[]
+	estabelecimentos: IEstabelecimento[];
 }
 
 export default function Estabelecimentos() {
-    const [estabs, setEstabs] = useState<IGrupoClassificacao[]>([]);
-    const [showDeleteDialog, setShowDeleteDialog] = useState({ show: false, item: { id: 0, idGr: 0 } });
-    const [exibicao, setExibicao] = useState(1);
-    const [loadingState, setLoadingState] = useState(true);
+	const [estabs, setEstabs] = useState<IGrupoClassificacao[]>([]);
+	const [showDeleteDialog, setShowDeleteDialog] = useState({
+		show: false,
+		item: { id: 0, idGr: 0 },
+	});
+	const [exibicao, setExibicao] = useState(1);
+	const [loadingState, setLoadingState] = useState(true);
+	const [showNewDialog, setShowNewDialog] = useState(false);
 
-    useEffect(() => {
-        setLoadingState(true);
+	useEffect(() => {
+		setLoadingState(true);
 
-        api.get<IEstabelecimento[]>(`estabelecimento?exibicao=${exibicao}`)
-            .then(({ data }) => {
+		api.get<IEstabelecimento[]>(`estabelecimento?exibicao=${exibicao}`).then(({ data }) => {
+			const groups = Distinct(data.map(x => x.classificacao));
+			const estabs: IGrupoClassificacao[] = [];
 
-                const groups = Distinct(data.map(x => x.classificacao));
-                const estabs: IGrupoClassificacao[] = [];
-                
-                groups.forEach(gr => {
-                    estabs.push({ id: gr.id, descricao: gr.descricao, estabelecimentos: data.filter(({ classificacao }) => classificacao.id === gr.id).sort((a, b) => a.lancamentosTotal > b.lancamentosTotal ? -1 : 1) });
-                });
+			groups.forEach(gr => {
+				estabs.push({
+					id: gr.id,
+					descricao: gr.descricao,
+					estabelecimentos: data.filter(({ classificacao }) => classificacao.id === gr.id).sort((a, b) => (a.lancamentosTotal > b.lancamentosTotal ? -1 : 1)),
+				});
+			});
 
-                setEstabs(estabs);
-                setLoadingState(false);
-            });
-    }, [exibicao]);
+			setEstabs(estabs);
+			setLoadingState(false);
+		});
+	}, [exibicao]);
 
-    function handleDelete() {
-        const { id, idGr } = showDeleteDialog.item;
+	function handleDelete() {
+		const { id, idGr } = showDeleteDialog.item;
 
-        api.delete(`estabelecimento/${id}`)
-            .then(result => {
-                //alert('deu certo');
-            });
+		api.delete(`estabelecimento/${id}`).then(result => {
+			//alert('deu certo');
+		});
 
-        const indexGr = estabs.findIndex(x => Number(x.id) === idGr);
-        estabs[indexGr].estabelecimentos = estabs[indexGr].estabelecimentos.filter(x => Number(x.id) !== id);
-        setEstabs([...estabs]);
+		const indexGr = estabs.findIndex(x => Number(x.id) === idGr);
+		estabs[indexGr].estabelecimentos = estabs[indexGr].estabelecimentos.filter(x => Number(x.id) !== id);
+		setEstabs([...estabs]);
 
-        setShowDeleteDialog({ show: false, item: { id: 0, idGr: 0 } });
-    }
+		setShowDeleteDialog({ show: false, item: { id: 0, idGr: 0 } });
+	}
 
-    function modalDelete() {
-        return (
-            <Modal show={showDeleteDialog.show} onHide={() => setShowDeleteDialog({ show: false, item: { id: 0, idGr: 0 } })} >
-                <Modal.Header closeButton>
-                    <Modal.Title>Excluir Estabelecimento</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                    <p>Confirma exclusão do registro {showDeleteDialog.item.id}?</p>
-                </Modal.Body>
-                <Modal.Footer>
-                    <Button variant="secondary" onClick={() => setShowDeleteDialog({ show: false, item: { id: 0, idGr: 0 } })}>Cancelar</Button>
-                    <Button variant="primary" onClick={() => handleDelete()}>Excluir</Button>
-                </Modal.Footer>
-            </Modal>
-        )
-    }
+	function modalDelete() {
+		return (
+			<Modal
+				show={showDeleteDialog.show}
+				onHide={() =>
+					setShowDeleteDialog({
+						show: false,
+						item: { id: 0, idGr: 0 },
+					})
+				}
+			>
+				<Modal.Header closeButton>
+					<Modal.Title>Excluir Estabelecimento</Modal.Title>
+				</Modal.Header>
+				<Modal.Body>
+					<p>Confirma exclusão do registro {showDeleteDialog.item.id}?</p>
+				</Modal.Body>
+				<Modal.Footer>
+					<Button
+						variant="secondary"
+						onClick={() =>
+							setShowDeleteDialog({
+								show: false,
+								item: { id: 0, idGr: 0 },
+							})
+						}
+					>
+						Cancelar
+					</Button>
+					<Button variant="primary" onClick={() => handleDelete()}>
+						Excluir
+					</Button>
+				</Modal.Footer>
+			</Modal>
+		);
+	}
 
-    return (
-        <div className="application-content estabelecimentos">
-            {modalDelete()}
-            <LeftSideToolBar />
-            <div className="application-header">
-                <HeaderToolBar
-                    title={{ text: "Estabelecimentos", url: "/estabelecimentos" }}
-                    links={[{ text: "Novo", url: "/novoestabelecimento" }]}
-                />
-            </div>
-            {loadingState ?
-                <div className="loadingState"><Spinner animation="grow" variant="dark" /></div>
-                :
-                <div className="application-body">
-                    <div>
-                        <label>Exibir:</label>
-                        <Form.Check
-                            inline
-                            label="Todos"
-                            name="exibir"
-                            type="radio"
-                            checked={exibicao === 0}
-                            onChange={() => setExibicao(0)}
-                        />
-                        <Form.Check
-                            inline
-                            label="Com lançamentos"
-                            name="exibir"
-                            type="radio"
-                            checked={exibicao === 1}
-                            onChange={() => setExibicao(1)}
-                        />
-                    </div>
-                    {estabs?.map(gr => {
-                        return (
-                            <fieldset>
-                                <legend>{gr.descricao}</legend>
-                                {gr.estabelecimentos.map(e =>
-                                    <Card key={e.id}>
-                                        <Card.Body>
-                                            <Card.Title as='h6'>{e.palavraChave}</Card.Title>
-                                            {e.descricao?.length > 0 &&
-                                                <Card.Text>{e.descricao}</Card.Text>
-                                            }
-                                            {e.lancamentosTotal > 0 &&
-                                                <div className="total" title="Total de Lançamentos">{e.lancamentosTotal} lançamento(s)</div>
-                                            }
-                                            {e.descricoesExtrasTotal > 0 &&
-                                                <div className="total" title="Descrição Extra">{e.descricoesExtrasTotal} reclassificado(s)</div>
-                                            }
-                                        </Card.Body>
-                                        <Card.Footer>
-                                            <Link to={`/editarestabelecimento/${e.id}`}>
-                                                <BsPencilSquare size={20} color="rgb(54, 96, 146)" />
-                                            </Link>
-                                            <TiTrash size={25} onClick={() => setShowDeleteDialog({ show: true, item: { id: Number(e.id), idGr: Number(gr.id) } })} color="rgb(130, 11, 17)" />
-                                        </Card.Footer>
-                                    </Card>
-                                )}
-                            </fieldset>
-                        )
-                    })}
-                </div>
-            }
-        </div>)
+	return (
+		<div className="application-content estabelecimentos">
+			{modalDelete()}
+			<NovoEstabelecimento show={showNewDialog} onClose={() => setShowNewDialog(false)} />
+			<LeftSideToolBar />
+			<div className="application-header">
+				<HeaderToolBar
+					title={{
+						text: 'Estabelecimentos',
+						url: '/estabelecimentos',
+					}}
+					links={[{ text: 'Novo', url: '', onClick: () => setShowNewDialog(true) }]}
+				/>
+			</div>
+			{loadingState ? (
+				<div className="loadingState">
+					<Spinner animation="grow" variant="dark" />
+				</div>
+			) : (
+				<div className="application-body">
+					<div>
+						<label>Exibir:</label>
+						<Form.Check inline label="Todos" name="exibir" type="radio" checked={exibicao === 0} onChange={() => setExibicao(0)} />
+						<Form.Check inline label="Com lançamentos" name="exibir" type="radio" checked={exibicao === 1} onChange={() => setExibicao(1)} />
+					</div>
+					{estabs?.map(gr => {
+						return (
+							<fieldset>
+								<legend>{gr.descricao}</legend>
+								{gr.estabelecimentos.map(e => (
+									<Card key={e.id}>
+										<Card.Body>
+											<Card.Title as="h6">{e.palavraChave}</Card.Title>
+											{e.descricao?.length > 0 && <Card.Text>{e.descricao}</Card.Text>}
+											{e.lancamentosTotal > 0 && (
+												<div className="total" title="Total de Lançamentos">
+													{e.lancamentosTotal} lançamento(s)
+												</div>
+											)}
+											{e.descricoesExtrasTotal > 0 && (
+												<div className="total" title="Descrição Extra">
+													{e.descricoesExtrasTotal} reclassificado(s)
+												</div>
+											)}
+										</Card.Body>
+										<Card.Footer>
+											<Link to={`/editarestabelecimento/${e.id}`}>
+												<BsPencilSquare size={20} color="rgb(54, 96, 146)" />
+											</Link>
+											<TiTrash
+												size={25}
+												onClick={() =>
+													setShowDeleteDialog({
+														show: true,
+														item: {
+															id: Number(e.id),
+															idGr: Number(gr.id),
+														},
+													})
+												}
+												color="rgb(130, 11, 17)"
+											/>
+										</Card.Footer>
+									</Card>
+								))}
+							</fieldset>
+						);
+					})}
+				</div>
+			)}
+		</div>
+	);
 }

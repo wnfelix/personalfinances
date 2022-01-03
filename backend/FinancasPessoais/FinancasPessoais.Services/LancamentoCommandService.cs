@@ -114,17 +114,7 @@ namespace FinancasPessoais.Services
         {
             return (from l in _dominioRepository.GetQueryable<Lancamento>()
                     where l.DtReferencia.Year == mesref.Year && l.DtReferencia.Month == mesref.Month
-                    select new Lancamento
-                    {
-                        Id = l.Id,
-                        Valor = l.Valor,
-                        Estabelecimento = l.Estabelecimento,
-                        DescricaoExtra = l.DescricaoExtra,
-                        ClassificacaoExtra = l.ClassificacaoExtra,
-                        DtCompra = l.DtCompra,
-                        DtReferencia = l.DtReferencia,
-                        Descricao = l.Descricao,
-                    }).ToList();
+                    select l).ToList();
         }
 
         public Lancamento Incluir(Lancamento lancamento)

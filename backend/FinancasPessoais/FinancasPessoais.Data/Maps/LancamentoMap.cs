@@ -19,10 +19,10 @@ namespace FinancasPessoais.Data.Maps
             Map(x => x.Valor);
             Map(x => x.CriadoEm);
             Map(x => x.Manual);
-            References(x => x.Estabelecimento, "IdEstabelecimento");
-            References(x => x.DescricaoExtra, "IdDescricaoExtra").Nullable();
-            References(x => x.ClassificacaoExtra, "IdClassificacaoExtra").Nullable();
-            References(x => x.Classificacao, "IdClassificacao").Nullable();
+            References(x => x.Estabelecimento, "IdEstabelecimento").Fetch.Join();
+            References(x => x.DescricaoExtra, "IdDescricaoExtra").Fetch.Join();
+            References(x => x.ClassificacaoExtra, "IdClassificacaoExtra").Fetch.Join();
+            References(x => x.Classificacao, "IdClassificacao").Fetch.Join();
         }
     }
 }

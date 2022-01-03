@@ -13,12 +13,15 @@ namespace FinancasPessoais.WebAPI.Transformers
     {
         private ITransformer<ClassificacaoExtra, ClassificacaoExtraModel> _classificacaoExtraTransformer;
         private ITransformer<DescricaoExtra, DescricaoExtraModel> _descricaoExtraTransformer;
+        private ITransformer<TipoDominio, TipoDominioModel> _tipoDominioTransformer;
 
         public LancamentoTransformer(ITransformer<ClassificacaoExtra, ClassificacaoExtraModel> classificacaoExtraTransformer,
-            ITransformer<DescricaoExtra, DescricaoExtraModel> descricaoExtraTransformer)
+            ITransformer<DescricaoExtra, DescricaoExtraModel> descricaoExtraTransformer,
+            ITransformer<TipoDominio, TipoDominioModel> tipoDominioTransformer)
         {
             _classificacaoExtraTransformer = classificacaoExtraTransformer;
             _descricaoExtraTransformer = descricaoExtraTransformer;
+            _tipoDominioTransformer = tipoDominioTransformer;
         }
 
         public override LancamentoModel Transform(Lancamento source)
@@ -28,6 +31,7 @@ namespace FinancasPessoais.WebAPI.Transformers
 
             target.ClassificacaoExtra = _classificacaoExtraTransformer.Transform(source.ClassificacaoExtra);
             target.DescricaoExtra = _descricaoExtraTransformer.Transform(source.DescricaoExtra);
+            target.Classificacao = _tipoDominioTransformer.Transform(source.Classificacao);
             target.Reclassificado = source.DescricaoExtra != null && source.DescricaoExtra.Classificacao.Id != source.Estabelecimento.Id;
             target.Parcelado = Regex.IsMatch(source.Descricao, @"\d{1,2}/\d{1,2}");
 
@@ -45,7 +49,7 @@ namespace FinancasPessoais.WebAPI.Transformers
                     }
                 };
             }
-            else
+            else if (source.Classificacao == null)
             {
                 target.Estabelecimento = new { Id = 0, Descricao = defaultLabel, Classificacao = new { Id = 0, Descricao = defaultLabel } };
             }
@@ -61,6 +65,10 @@ namespace FinancasPessoais.WebAPI.Transformers
             else if (target.ClassificacaoExtra != null)
             {
                 target.ClassificacaoFinal = target.ClassificacaoExtra.Classificacao;
+            }
+            else if (target.Manual && target.Classificacao != null)
+            {
+                target.ClassificacaoFinal = target.Classificacao;
             }
             else
             {
