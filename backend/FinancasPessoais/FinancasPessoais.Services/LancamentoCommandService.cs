@@ -26,6 +26,22 @@ namespace FinancasPessoais.Services
             _excelDocumentService = new CreditCardOpenXmlApplication();
         }
 
+        public string ExportExcel(DateTime dtRef)
+        {
+            var getDescription = new Func<TipoDominio, string>(e => string.Concat(e.Id, "-", e.Descricao));
+            var arquivos = new Dictionary<string, List<DebitoData>>();    
+            var filePathTarget = Path.GetTempFileName();
+            
+            var lancs = _dominioRepository.FindBy<Lancamento>(l => l.DtReferencia == dtRef)
+                .GroupBy(l => string.Concat(getDescription(l.GetClassificacaoFinal())));
+            Array.ForEach(lancs.ToArray(), l => arquivos.Add(l.Key, l.Select(d => new DebitoData { Data = d.DtCompra, Local = d.Descricao, Valor = d.Valor }).ToList()));
+
+            _excelDocumentService.WriteExcelDocument(filePathTarget, arquivos);
+            _excelDocumentService.CloseExcelDocument();
+
+            return filePathTarget;
+        }
+
         public string ExportExcel(string[] filePathSource, DateTime dtRef)
         {
             const int idDesconhecido = 204;
@@ -50,7 +66,7 @@ namespace FinancasPessoais.Services
                     DescricaoExtra descricaoExtra = null;
                     var lanc = new Lancamento { Estabelecimento = estab };
 
-                    if (estab != null)
+                    if (estab != null && prefixoExtra == null)
                     {
                         #region Mudando a classificação de uma compra específica na data
 

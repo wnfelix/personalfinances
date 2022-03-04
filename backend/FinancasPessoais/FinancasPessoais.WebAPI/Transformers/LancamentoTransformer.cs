@@ -48,32 +48,14 @@ namespace FinancasPessoais.WebAPI.Transformers
                         source.Estabelecimento.Classificacao.Descricao
                     }
                 };
+                target.Detalhe = source.Estabelecimento.Descricao;
             }
             else if (source.Classificacao == null)
             {
                 target.Estabelecimento = new { Id = 0, Descricao = defaultLabel, Classificacao = new { Id = 0, Descricao = defaultLabel } };
             }
 
-            if (target.DescricaoExtra != null)
-            {
-                target.ClassificacaoFinal = target.DescricaoExtra.Classificacao;
-            }
-            else if (target.Estabelecimento?.Id > 0)
-            {
-                target.ClassificacaoFinal = target.Estabelecimento.Classificacao;
-            }
-            else if (target.ClassificacaoExtra != null)
-            {
-                target.ClassificacaoFinal = target.ClassificacaoExtra.Classificacao;
-            }
-            else if (target.Manual && target.Classificacao != null)
-            {
-                target.ClassificacaoFinal = target.Classificacao;
-            }
-            else
-            {
-                target.ClassificacaoFinal = target.Estabelecimento.Classificacao;
-            }
+            target.ClassificacaoFinal = new { source.GetClassificacaoFinal().Id, source.GetClassificacaoFinal().Descricao };
 
 
             return target;

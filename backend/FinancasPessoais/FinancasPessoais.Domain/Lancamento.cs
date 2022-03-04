@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CommonHelpers.Constants;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -18,5 +19,33 @@ namespace FinancasPessoais.Domain
         public virtual TipoDominio Classificacao { get; set; }
         public virtual DateTime CriadoEm { get; set; }
         public virtual bool Manual { get; set; }
+
+        public virtual TipoDominio GetClassificacaoFinal()
+        {
+            if (DescricaoExtra != null)
+            {
+                return DescricaoExtra.Classificacao;
+            }
+            else if (ClassificacaoExtra != null)
+            {
+                return ClassificacaoExtra.Classificacao;
+            }
+            else if (Estabelecimento?.Id > 0)
+            {
+                return Estabelecimento.Classificacao;
+            }
+            else if (Manual && Classificacao != null)
+            {
+                return Classificacao;
+            }
+            else if (Estabelecimento == null)
+            {
+                return new TipoDominio { Id = 0, Descricao = GeneralConstants.DEFAULT_UNKNOWITEM_LABEL };
+            }
+            else
+            {
+                return Estabelecimento.Classificacao;
+            }
+        }
     }
 }

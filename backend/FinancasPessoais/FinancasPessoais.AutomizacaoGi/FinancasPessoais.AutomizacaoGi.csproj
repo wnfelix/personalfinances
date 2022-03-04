@@ -4,19 +4,17 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{08B69367-1D24-4F0D-951B-A78889ADAF85}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>FinancasPessoais.Domain</RootNamespace>
-    <AssemblyName>FinancasPessoais.Domain</AssemblyName>
+    <ProjectGuid>{A40E4CAE-436B-4393-8E5C-404ADF2AE603}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>FinancasPessoais.AutomizacaoGi</RootNamespace>
+    <AssemblyName>FinancasPessoais.AutomizacaoGi</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <SccProjectName>SAK</SccProjectName>
-    <SccLocalPath>SAK</SccLocalPath>
-    <SccAuxPath>SAK</SccAuxPath>
-    <SccProvider>SAK</SccProvider>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <Deterministic>true</Deterministic>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -26,6 +24,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -34,6 +33,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="SimpleInjector, Version=4.6.1.0, Culture=neutral, PublicKeyToken=984cb50dea722e99, processorArchitecture=MSIL">
+      <HintPath>..\packages\SimpleInjector.4.6.1\lib\net45\SimpleInjector.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -44,21 +46,29 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BaseDomain.cs" />
-    <Compile Include="ClassificacaoExtra.cs" />
-    <Compile Include="DescricaoExtra.cs" />
-    <Compile Include="DespesaFixa.cs" />
-    <Compile Include="Estabelecimento.cs" />
-    <Compile Include="Dominio.cs" />
-    <Compile Include="Lancamento.cs" />
+    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TipoDominio.cs" />
-    <Compile Include="Usuario.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\CommonHelpers\CommonHelpers.csproj">
-      <Project>{61368ECD-F3FD-4C90-8D89-56E003C718B5}</Project>
-      <Name>CommonHelpers</Name>
+    <None Include="App.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\ExcelDocumentToolKit\ExcelDocumentToolKit.CrossCutting.Infra.OpenXml\ExcelDocumentToolKit.CrossCutting.Infra.OpenXml.csproj">
+      <Project>{32FAEABD-509E-41D5-8FBC-0043D25A77DA}</Project>
+      <Name>ExcelDocumentToolKit.CrossCutting.Infra.OpenXml</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\ExcelDocumentToolKit\ExcelDocumentToolKit.Domain\ExcelDocumentToolKit.Domain.csproj">
+      <Project>{F595E42F-E1CF-4E3E-9FFD-4F4D00DD8DE6}</Project>
+      <Name>ExcelDocumentToolKit.Domain</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FinancasPessoais.Data\FinancasPessoais.Data.csproj">
+      <Project>{29F54796-A616-4BCC-9833-9F1A053337A4}</Project>
+      <Name>FinancasPessoais.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FinancasPessoais.Services\FinancasPessoais.Services.csproj">
+      <Project>{82BB46CF-8049-4E5B-ACA7-219FFC571DE3}</Project>
+      <Name>FinancasPessoais.Services</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

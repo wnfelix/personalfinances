@@ -92,12 +92,32 @@ namespace FinancasPessoais.WebAPI.Controllers
         }
 
         [HttpGet]
-        public IHttpActionResult Lancamento(DateTime mesref)
+        public dynamic Lancamento(DateTime mesref, bool download = false)
         {
-            var lst = new List<LancamentoModel>();
-            Array.ForEach(_lancamentoCommandService.Lancamentos(mesref).ToArray(), i => lst.Add(_lancamentoTransformer.Transform(i)));
+            if (!download)
+            {
+                var lst = new List<LancamentoModel>();
+                Array.ForEach(_lancamentoCommandService.Lancamentos(mesref).ToArray(), i => lst.Add(_lancamentoTransformer.Transform(i)));
 
-            return Ok(lst);
+                return Ok(lst);
+            }
+            else
+            {
+                var targetPath = _lancamentoCommandService.ExportExcel(mesref);
+
+                var fileName = $"caixa-{mesref.Month:00}{mesref.Year}.xlsx";
+                var result = new HttpResponseMessage(HttpStatusCode.OK)
+                {
+                    Content = new StreamContent(new MemoryStream(File.ReadAllBytes(targetPath)))
+                };
+                result.Content.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
+                result.Content.Headers.Add("FileName", string.Format("{0}{1}", fileName, "xlsx"));
+                result.Content.Headers.Add("Access-Control-Expose-Headers", "FileName");
+                result.Content.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment");
+                result.Content.Headers.ContentDisposition.FileName = fileName;
+
+                return result;
+            }
         }
     }
 }

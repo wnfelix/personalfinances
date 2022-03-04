@@ -104,7 +104,47 @@ namespace FinancasPessoais.Services
 
             _dominioRepository.ApagarLancamentosPorDtRef(dtRef);
             _dominioRepository.Save(lancamentos.AsEnumerable());
-            //excelApp.CloseExcelDocument();
+        }
+
+        public void ExportExcel(string filePathSource, string filePathTarget, string fileFromToPath)
+        {
+            const string unknowDescription = "DESCONHECIDO";
+            var tmp = new List<string>(File.ReadAllLines(fileFromToPath));
+            tmp.Add(string.Concat(unknowDescription, ';', unknowDescription));
+
+            var cfgLines = tmp
+                .Select(cfg => new { key = cfg.Split(';')[0], value = cfg.Split(';')[1] })
+                .OrderByDescending(cfg => cfg.key.Length);
+
+            var lstEstabelecimentos = new System.Collections.Specialized.StringDictionary();
+            Array.ForEach(cfgLines.ToArray(), cfg => lstEstabelecimentos.Add(cfg.key, cfg.value));
+
+            var dados = _excelDocumentService.OpenExcelDocument(filePathSource).ReadExcelDocument<DebitoData>(0, true);
+            var arquivos = new Dictionary<string, List<DebitoData>>();
+
+            foreach (var item in dados)
+            {
+                var estab = lstEstabelecimentos.Keys.Cast<string>().FirstOrDefault(e => Regex.IsMatch(item.Local.Replace("*", string.Empty).ToUpper(), e.ToUpper().LikeToRegular()));
+
+                if (string.IsNullOrEmpty(estab))
+                    estab = unknowDescription;
+
+                if (!arquivos.ContainsKey(lstEstabelecimentos[estab]))
+                    arquivos.Add(lstEstabelecimentos[estab], new List<DebitoData> { new DebitoData { Local = item.Local, Data = item.Data, Valor = item.Valor } });
+                else
+                    arquivos[lstEstabelecimentos[estab]].Add(new DebitoData { Local = item.Local, Data = item.Data, Valor = item.Valor });
+            }
+
+            var totals = new List<DebitoData>();
+            foreach (var item in arquivos)
+            {
+                totals.Add(new DebitoData { Local = item.Key, Data = DateTime.Today, Valor = item.Value.Sum(x => x.Valor) });
+            }
+
+            arquivos.Add("TOTAIS", totals);
+
+            _excelDocumentService.WriteExcelDocument(filePathTarget, arquivos);
+            _excelDocumentService.CloseExcelDocument();
         }
     }
 }

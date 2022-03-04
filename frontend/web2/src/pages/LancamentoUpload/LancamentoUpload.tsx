@@ -103,6 +103,22 @@ export default function LancamentoUpload() {
 		}
 	}
 
+	function downloadExcelFile() {
+		setLoadingState(true);
+		api.get(`lancamento?mesref=${selectedMonth}-01&download=true`, { responseType: 'blob' })
+			.then(result => {
+				const blob = new Blob([result.data], {
+					type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+				});
+
+				const url = URL.createObjectURL(blob);
+				window.open(url);
+			})
+			.finally(() => {
+				setLoadingState(false);
+			});
+	}
+
 	function handlerNovaClassificacao(description: string) {
 		setDescriptionNew(description);
 		setShowModalNovoEstabelecimento(true);
@@ -227,6 +243,9 @@ export default function LancamentoUpload() {
 							</table>
 						</fieldset>
 					))}
+					<div>
+						<Button onClick={downloadExcelFile}>Download</Button>
+					</div>
 				</form>
 			)}
 		</div>

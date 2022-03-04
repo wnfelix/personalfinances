@@ -10,6 +10,7 @@ namespace FinancasPessoais.Services
     public interface ILancamentoCommandService
     {
         string ExportExcel(string[] filePathSource, DateTime dtRef);
+        string ExportExcel(DateTime dtRef);
         List<Lancamento> Lancamentos(DateTime mesref);
         Lancamento Incluir(Lancamento lancamento);
     }

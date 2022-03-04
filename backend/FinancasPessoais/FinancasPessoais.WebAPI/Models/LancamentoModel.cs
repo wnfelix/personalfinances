@@ -10,6 +10,7 @@ namespace FinancasPessoais.WebAPI.Models
         public int Id { get; set; }
         public decimal Valor { get; set; }
         public string Descricao { get; set; }
+        public string Detalhe { get; set; }
         public dynamic Estabelecimento { get; set; }
         public dynamic DescricaoExtra { get; set; }
         public dynamic ClassificacaoExtra { get; set; }
