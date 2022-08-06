@@ -27,7 +27,7 @@ namespace FinancasPessoais.WebAPI.Controllers
         }
 
         [HttpPost]
-        public HttpResponseMessage Upload(DateTime mesref)
+        public void Upload(DateTime mesref)
         {
             try
             {
@@ -58,19 +58,6 @@ namespace FinancasPessoais.WebAPI.Controllers
                     if (filePaths.Any())
                     {
                         var targetPath = _lancamentoCommandService.ExportExcel(filePaths.ToArray(), mesref);
-
-                        var fileName = $"caixa-{mesref.Month:00}{mesref.Year}.xlsx";
-                        var result = new HttpResponseMessage(HttpStatusCode.OK)
-                        {
-                            Content = new StreamContent(new MemoryStream(File.ReadAllBytes(targetPath)))
-                        };
-                        result.Content.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
-                        result.Content.Headers.Add("FileName", string.Format("{0}{1}", fileName, "xlsx"));
-                        result.Content.Headers.Add("Access-Control-Expose-Headers", "FileName");
-                        result.Content.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment");
-                        result.Content.Headers.ContentDisposition.FileName = fileName;
-
-                        return result;
                     }
                 }
             }
@@ -78,8 +65,6 @@ namespace FinancasPessoais.WebAPI.Controllers
             {
                 throw ex;
             }
-
-            return new HttpResponseMessage(HttpStatusCode.NoContent);
         }
 
         [HttpPost]

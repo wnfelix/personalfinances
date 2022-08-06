@@ -73,9 +73,8 @@ export default function NovoLancamento(props: INovoLancamentoIni) {
 
         if (data.descricao.length > 0
             && data.classificacao?.id !== undefined
-            && data.valor > 0) {
+            && data.valor !== 0) {
 
-            console.log(data);
             api.post('lancamento', data)
                 .then(() => {
                     alert('Cadastrado com sucesso');

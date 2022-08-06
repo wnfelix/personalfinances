@@ -5,6 +5,7 @@ import api from '../../services/api';
 import { format, addMonths } from 'date-fns';
 import { useState } from 'react';
 import { VscNewFile } from 'react-icons/vsc';
+import { IoReload } from 'react-icons/io5';
 
 import './LancamentoUpload.css';
 import HeaderToolBar from '../../components/HeaderToolBar';
@@ -70,15 +71,6 @@ export default function LancamentoUpload() {
 			});
 	}, [selectedMonth, reload]);
 
-	/**
-	 * Define qual a classificacao final do item de lançamento
-	 * @param item
-	 * @returns
-	 */
-	function pegarClassificacao(item: IPurchase): IEntidadeGenerica {
-		return item.classificacaoFinal;
-	}
-
 	function uploadFiles(e: React.FormEvent<HTMLFormElement>) {
 		e.preventDefault();
 
@@ -87,19 +79,9 @@ export default function LancamentoUpload() {
 			const data = new FormData();
 			data.append('Plan', sheetFiles[0]);
 
-			api.post(`lancamento?mesref=${selectedMonth}-01`, data, { responseType: 'blob' })
-				.then(result => {
-					const blob = new Blob([result.data], {
-						type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-					});
-
-					const url = URL.createObjectURL(blob);
-					window.open(url);
-					setReload(true);
-				})
-				.finally(() => {
-					setLoadingState(false);
-				});
+			api.post(`lancamento?mesref=${selectedMonth}-01`, data, { responseType: 'blob' }).finally(() => {
+				setReload(true);
+			});
 		}
 	}
 
@@ -182,7 +164,7 @@ export default function LancamentoUpload() {
 					</div>
 					{Distinct(
 						purchases?.map(p => {
-							const key = pegarClassificacao(p);
+							const key = p.classificacaoFinal;
 							return {
 								id: key.id,
 								descricao: key.descricao,
@@ -203,7 +185,7 @@ export default function LancamentoUpload() {
 								</thead>
 								<tbody>
 									{purchases
-										?.filter(i => pegarClassificacao(i).id === grupo.id)
+										?.filter(i => i.classificacaoFinal.id === grupo.id)
 										.sort((a, b) => (new Date(a.dtCompra) > new Date(b.dtCompra) ? 1 : -1))
 										.map(p => (
 											<tr
@@ -218,9 +200,10 @@ export default function LancamentoUpload() {
 												}`}
 											>
 												<td>
-													{Number(pegarClassificacao(p).id) === 0 && (
-														<VscNewFile size={26} onClick={() => handlerNovaClassificacao(p.descricao)} />
+													{Number(p.classificacaoFinal.id) === 0 && (
+														<VscNewFile size={20} onClick={() => handlerNovaClassificacao(p.descricao)} />
 													)}
+													<IoReload size={20} />
 												</td>
 												<td>{format(new Date(p.dtReferencia), 'MM/yy')}</td>
 												<td>{format(new Date(p.dtCompra), 'dd/MM/yy')}</td>
@@ -234,7 +217,7 @@ export default function LancamentoUpload() {
 										<td colSpan={5} className='total'>
 											{new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(
 												purchases
-													?.filter(i => pegarClassificacao(i).id === grupo.id)
+													?.filter(i => i.classificacaoFinal.id === grupo.id)
 													.reduce((add, item) => add + item.valor, 0)
 											)}
 										</td>
@@ -245,6 +228,7 @@ export default function LancamentoUpload() {
 					))}
 					<div>
 						<Button onClick={downloadExcelFile}>Download</Button>
+						<Button>Reprocessar Dados</Button>
 					</div>
 				</form>
 			)}
