@@ -13,9 +13,6 @@ interface IHeaderToolBarProps {
 export default function HeaderToolBar(props: IHeaderToolBarProps) {
 	return (
 		<Navbar bg='primary' variant='dark'>
-			<Navbar.Brand as={Link} to={props.title.url}>
-				{props.title.text}
-			</Navbar.Brand>
 			<Nav className='mr-auto'>
 				{props.links.map(l =>
 					l.onClick ? (

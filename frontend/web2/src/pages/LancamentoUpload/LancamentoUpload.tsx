@@ -14,6 +14,7 @@ import IEntidadeGenerica from '../../interfaces/IEntidadeGenerica';
 import NovoEstabelecimento from '../../components/NovoEstabelecimento/NovoEstabelecimento';
 import NovaDescricaoExtra from '../../components/NovaDescricaoExtra/NovaDescricaoExtra';
 import NovoLancamento from '../../components/NovoLancamento';
+import Master from '../Master';
 
 interface IPurchase {
 	id: number;
@@ -108,130 +109,131 @@ export default function LancamentoUpload() {
 	}
 
 	return (
-		<div className='application-content lancamentoupload'>
-			<NovoEstabelecimento
-				show={showModalNovoEstabelecimento}
-				onClose={() => setShowModalNovoEstabelecimento(false)}
-				description={descriptionNew}
-			/>
-			<NovaDescricaoExtra show={showModalNovaDescricaoExtra} onClose={() => setShowModalNovaDescricaoExtra(false)} />
-			<NovoLancamento show={showDialogNovoLancamento} onClose={() => setShowModalNovoLancamento(false)} />
-			<LeftSideToolBar />
-			<div className='application-header'>
-				<HeaderToolBar
-					title={{ text: 'Upload de Lançamentos', url: '/lancamentoupload' }}
-					links={[
-						{
-							text: 'Descrição Extra',
-							url: '',
-							onClick: () => setShowModalNovaDescricaoExtra(true),
-							title: 'Inclui uma nova descrição extra',
-						},
-						{
-							text: 'Lançamento Manual',
-							url: '',
-							onClick: () => setShowModalNovoLancamento(true),
-							title: 'Inclui um novo lançamento',
-						},
-					]}
+		<Master title='Upload de Lançamentos'>
+			<div className='lancamentoupload'>
+				<NovoEstabelecimento
+					show={showModalNovoEstabelecimento}
+					onClose={() => setShowModalNovoEstabelecimento(false)}
+					description={descriptionNew}
 				/>
-			</div>
-			{loadingState ? (
-				<div className='loadingState'>
-					<Spinner animation='grow' variant='dark' />
+				<NovaDescricaoExtra show={showModalNovaDescricaoExtra} onClose={() => setShowModalNovaDescricaoExtra(false)} />
+				<NovoLancamento show={showDialogNovoLancamento} onClose={() => setShowModalNovoLancamento(false)} />
+				<div className='application-header'>
+					<HeaderToolBar
+						title={{ text: 'Upload de Lançamentos', url: '/lancamentoupload' }}
+						links={[
+							{
+								text: 'Descrição Extra',
+								url: '',
+								onClick: () => setShowModalNovaDescricaoExtra(true),
+								title: 'Inclui uma nova descrição extra',
+							},
+							{
+								text: 'Lançamento Manual',
+								url: '',
+								onClick: () => setShowModalNovoLancamento(true),
+								title: 'Inclui um novo lançamento',
+							},
+						]}
+					/>
 				</div>
-			) : (
-				<form className='application-body' onSubmit={uploadFiles}>
-					<div>
-						<Form.Control type='file' size='sm' onChange={(e: any) => setSheetFiles(e.target.files)} />
-						<DropdownButton
-							id='dropdown-basic-button'
-							title={format(new Date(Date.parse(`${selectedMonth}-01T00:00:00.0000`)), 'MM/yyyy')}
-							onSelect={(eventKey: any) => setSelectedMonth(eventKey)}
-						>
-							{[
-								{ id: format(new Date(), 'yyyy-MM'), value: format(new Date(), 'MM/yyyy') },
-								{ id: format(addMonths(new Date(), -1), 'yyyy-MM'), value: format(addMonths(new Date(), -1), 'MM/yyyy') },
-								{ id: format(addMonths(new Date(), -2), 'yyyy-MM'), value: format(addMonths(new Date(), -2), 'MM/yyyy') },
-								{ id: format(addMonths(new Date(), -3), 'yyyy-MM'), value: format(addMonths(new Date(), -3), 'MM/yyyy') },
-							].map(d => (
-								<Dropdown.Item eventKey={d.id} active={selectedMonth === d.id}>
-									{d.value}
-								</Dropdown.Item>
-							))}
-						</DropdownButton>
-						<Button type='submit'>Enviar</Button>
+				{loadingState ? (
+					<div className='loadingState'>
+						<Spinner animation='grow' variant='dark' />
 					</div>
-					{Distinct(
-						purchases?.map(p => {
-							const key = p.classificacaoFinal;
-							return {
-								id: key.id,
-								descricao: key.descricao,
-							};
-						})
-					).map(grupo => (
-						<fieldset key={grupo.id}>
-							<legend>{grupo.descricao}</legend>
-							<table>
-								<thead>
-									<tr>
-										<th></th>
-										<th>Ref.</th>
-										<th>Compra</th>
-										<th>Descrição</th>
-										<th>Valor</th>
-									</tr>
-								</thead>
-								<tbody>
-									{purchases
-										?.filter(i => i.classificacaoFinal.id === grupo.id)
-										.sort((a, b) => (new Date(a.dtCompra) > new Date(b.dtCompra) ? 1 : -1))
-										.map(p => (
-											<tr
-												className={`lanc-${
-													p.parcelado && p.reclassificado
-														? 'parc lanc-reclass'
-														: p.reclassificado
-														? 'reclass'
-														: p.parcelado
-														? 'parc'
-														: ''
-												}`}
-											>
-												<td>
-													{Number(p.classificacaoFinal.id) === 0 && (
-														<VscNewFile size={20} onClick={() => handlerNovaClassificacao(p.descricao)} />
-													)}
-													<IoReload size={20} />
-												</td>
-												<td>{format(new Date(p.dtReferencia), 'MM/yy')}</td>
-												<td>{format(new Date(p.dtCompra), 'dd/MM/yy')}</td>
-												<td>{p.descricao}</td>
-												<td className='valor'>
-													{new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(p.valor)}
-												</td>
-											</tr>
-										))}
-									<tr>
-										<td colSpan={5} className='total'>
-											{new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(
-												purchases
-													?.filter(i => i.classificacaoFinal.id === grupo.id)
-													.reduce((add, item) => add + item.valor, 0)
-											)}
-										</td>
-									</tr>
-								</tbody>
-							</table>
-						</fieldset>
-					))}
-					<div>
-						<Button onClick={downloadExcelFile}>Download</Button>
-						<Button>Reprocessar Dados</Button>
-					</div>
-				</form>
-			)}
-		</div>
+				) : (
+					<form className='application-body' onSubmit={uploadFiles}>
+						<div>
+							<Form.Control type='file' size='sm' onChange={(e: any) => setSheetFiles(e.target.files)} />
+							<DropdownButton
+								id='dropdown-basic-button'
+								title={format(new Date(Date.parse(`${selectedMonth}-01T00:00:00.0000`)), 'MM/yyyy')}
+								onSelect={(eventKey: any) => setSelectedMonth(eventKey)}
+							>
+								{[
+									{ id: format(new Date(), 'yyyy-MM'), value: format(new Date(), 'MM/yyyy') },
+									{ id: format(addMonths(new Date(), -1), 'yyyy-MM'), value: format(addMonths(new Date(), -1), 'MM/yyyy') },
+									{ id: format(addMonths(new Date(), -2), 'yyyy-MM'), value: format(addMonths(new Date(), -2), 'MM/yyyy') },
+									{ id: format(addMonths(new Date(), -3), 'yyyy-MM'), value: format(addMonths(new Date(), -3), 'MM/yyyy') },
+								].map(d => (
+									<Dropdown.Item eventKey={d.id} active={selectedMonth === d.id}>
+										{d.value}
+									</Dropdown.Item>
+								))}
+							</DropdownButton>
+							<Button type='submit'>Enviar</Button>
+						</div>
+						{Distinct(
+							purchases?.map(p => {
+								const key = p.classificacaoFinal;
+								return {
+									id: key.id,
+									descricao: key.descricao,
+								};
+							})
+						).map(grupo => (
+							<fieldset key={grupo.id}>
+								<legend>{grupo.descricao}</legend>
+								<table>
+									<thead>
+										<tr>
+											<th></th>
+											<th>Ref.</th>
+											<th>Compra</th>
+											<th>Descrição</th>
+											<th>Valor</th>
+										</tr>
+									</thead>
+									<tbody>
+										{purchases
+											?.filter(i => i.classificacaoFinal.id === grupo.id)
+											.sort((a, b) => (new Date(a.dtCompra) > new Date(b.dtCompra) ? 1 : -1))
+											.map(p => (
+												<tr
+													className={`lanc-${
+														p.parcelado && p.reclassificado
+															? 'parc lanc-reclass'
+															: p.reclassificado
+															? 'reclass'
+															: p.parcelado
+															? 'parc'
+															: ''
+													}`}
+												>
+													<td>
+														{Number(p.classificacaoFinal.id) === 0 && (
+															<VscNewFile size={20} onClick={() => handlerNovaClassificacao(p.descricao)} />
+														)}
+														<IoReload size={20} />
+													</td>
+													<td>{format(new Date(p.dtReferencia), 'MM/yy')}</td>
+													<td>{format(new Date(p.dtCompra), 'dd/MM/yy')}</td>
+													<td>{p.descricao}</td>
+													<td className='valor'>
+														{new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(p.valor)}
+													</td>
+												</tr>
+											))}
+										<tr>
+											<td colSpan={5} className='total'>
+												{new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(
+													purchases
+														?.filter(i => i.classificacaoFinal.id === grupo.id)
+														.reduce((add, item) => add + item.valor, 0)
+												)}
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</fieldset>
+						))}
+						<div>
+							<Button onClick={downloadExcelFile}>Download</Button>
+							<Button>Reprocessar Dados</Button>
+						</div>
+					</form>
+				)}
+			</div>
+		</Master>
 	);
 }

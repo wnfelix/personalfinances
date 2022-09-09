@@ -14,6 +14,7 @@ import IValueLabelPair from '../../interfaces/IValueLabelPair';
 import IEntidadeGenerica from '../../interfaces/IEntidadeGenerica';
 import './Lancamentos.css';
 import InputNumber from '../../components/Common/InputNumber';
+import Master from '../Master';
 
 interface IPurchase {
 	id: number;
@@ -153,95 +154,96 @@ export default function Lancamentos() {
 	}
 
 	return (
-		<div className='application-content lancamentos'>
-			<LeftSideToolBar />
-			{showModalLancamentoManual()}
-			<div className='application-header'>
-				{/* <Button onClick={() => setShowModalInsert(true)}>Novo</Button> */}
-				{/* <Button onClick={() => console.log('teste')}>Upload</Button> */}
-				<HeaderToolBar
-					title={{ text: 'Lançamentos', url: '/lancamentos' }}
-					links={[
-						{ text: 'Novo', url: '', onClick: () => setShowModalInsert(true) },
-						{ text: 'Upload', url: '/lancamentoupload' },
-					]}
-				/>
-			</div>
-			{loadingState ? (
-				<div className='loadingState'>
-					<Spinner animation='grow' variant='dark' />
+		<Master title='Lançamentos'>
+			<div className='lancamentos'>
+				{showModalLancamentoManual()}
+				<div className='application-header'>
+					{/* <Button onClick={() => setShowModalInsert(true)}>Novo</Button> */}
+					{/* <Button onClick={() => console.log('teste')}>Upload</Button> */}
+					<HeaderToolBar
+						title={{ text: 'Lançamentos', url: '/lancamentos' }}
+						links={[
+							{ text: 'Novo', url: '', onClick: () => setShowModalInsert(true) },
+							{ text: 'Upload', url: '/lancamentoupload' },
+						]}
+					/>
 				</div>
-			) : (
-				<div className='application-body'>
-					<div>
-						<DropdownButton
-							id='dropdown-basic-button'
-							title={format(new Date(Date.parse(`${selectedMonth}-01T00:00:00.0000`)), 'MM/yyyy')}
-							onSelect={(eventKey: any) => setSelectedMonth(eventKey)}
-						>
-							{[
-								{ id: format(new Date(), 'yyyy-MM'), value: format(new Date(), 'MM/yyyy') },
-								{ id: format(addMonths(new Date(), -1), 'yyyy-MM'), value: format(addMonths(new Date(), -1), 'MM/yyyy') },
-								{ id: format(addMonths(new Date(), -2), 'yyyy-MM'), value: format(addMonths(new Date(), -2), 'MM/yyyy') },
-								{ id: format(addMonths(new Date(), -3), 'yyyy-MM'), value: format(addMonths(new Date(), -3), 'MM/yyyy') },
-							].map(d => (
-								<Dropdown.Item eventKey={d.id} active={selectedMonth === d.id}>
-									{d.value}
-								</Dropdown.Item>
-							))}
-						</DropdownButton>
+				{loadingState ? (
+					<div className='loadingState'>
+						<Spinner animation='grow' variant='dark' />
 					</div>
-					{Distinct(purchases?.map(p => ({ id: p.classificacaoFinal.id, descricao: p.classificacaoFinal.descricao }))).map(grupo => (
-						<fieldset key={grupo.id}>
-							<legend>{grupo.descricao}</legend>
-							<table>
-								<thead>
-									<tr>
-										<th>Ref.</th>
-										<th>Compra</th>
-										<th>Descrição</th>
-										<th>Valor</th>
-									</tr>
-								</thead>
-								<tbody>
-									{purchases
-										?.filter(i => i.classificacaoFinal.id === grupo.id)
-										.sort((a, b) => (new Date(a.dtCompra) > new Date(b.dtCompra) ? 1 : -1))
-										.map(p => (
-											<tr
-												className={`lanc-${
-													p.parcelado && p.reclassificado
-														? 'parc lanc-reclass'
-														: p.reclassificado
-														? 'reclass'
-														: p.parcelado
-														? 'parc'
-														: ''
-												}`}
-											>
-												<td>{format(new Date(p.dtReferencia), 'MM/yy')}</td>
-												<td>{format(new Date(p.dtCompra), 'dd/MM/yy')}</td>
-												<td>{p.descricao}</td>
-												<td className='valor'>
-													{new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(p.valor)}
-												</td>
-											</tr>
-										))}
-									<tr>
-										<td colSpan={5} className='total'>
-											{new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(
-												purchases
-													?.filter(i => i.classificacaoFinal.id === grupo.id)
-													.reduce((add, item) => add + item.valor, 0)
-											)}
-										</td>
-									</tr>
-								</tbody>
-							</table>
-						</fieldset>
-					))}
-				</div>
-			)}
-		</div>
+				) : (
+					<div className='application-body'>
+						<div>
+							<DropdownButton
+								id='dropdown-basic-button'
+								title={format(new Date(Date.parse(`${selectedMonth}-01T00:00:00.0000`)), 'MM/yyyy')}
+								onSelect={(eventKey: any) => setSelectedMonth(eventKey)}
+							>
+								{[
+									{ id: format(new Date(), 'yyyy-MM'), value: format(new Date(), 'MM/yyyy') },
+									{ id: format(addMonths(new Date(), -1), 'yyyy-MM'), value: format(addMonths(new Date(), -1), 'MM/yyyy') },
+									{ id: format(addMonths(new Date(), -2), 'yyyy-MM'), value: format(addMonths(new Date(), -2), 'MM/yyyy') },
+									{ id: format(addMonths(new Date(), -3), 'yyyy-MM'), value: format(addMonths(new Date(), -3), 'MM/yyyy') },
+								].map(d => (
+									<Dropdown.Item eventKey={d.id} active={selectedMonth === d.id}>
+										{d.value}
+									</Dropdown.Item>
+								))}
+							</DropdownButton>
+						</div>
+						{Distinct(purchases?.map(p => ({ id: p.classificacaoFinal.id, descricao: p.classificacaoFinal.descricao }))).map(grupo => (
+							<fieldset key={grupo.id}>
+								<legend>{grupo.descricao}</legend>
+								<table>
+									<thead>
+										<tr>
+											<th>Ref.</th>
+											<th>Compra</th>
+											<th>Descrição</th>
+											<th>Valor</th>
+										</tr>
+									</thead>
+									<tbody>
+										{purchases
+											?.filter(i => i.classificacaoFinal.id === grupo.id)
+											.sort((a, b) => (new Date(a.dtCompra) > new Date(b.dtCompra) ? 1 : -1))
+											.map(p => (
+												<tr
+													className={`lanc-${
+														p.parcelado && p.reclassificado
+															? 'parc lanc-reclass'
+															: p.reclassificado
+															? 'reclass'
+															: p.parcelado
+															? 'parc'
+															: ''
+													}`}
+												>
+													<td>{format(new Date(p.dtReferencia), 'MM/yy')}</td>
+													<td>{format(new Date(p.dtCompra), 'dd/MM/yy')}</td>
+													<td>{p.descricao}</td>
+													<td className='valor'>
+														{new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(p.valor)}
+													</td>
+												</tr>
+											))}
+										<tr>
+											<td colSpan={5} className='total'>
+												{new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(
+													purchases
+														?.filter(i => i.classificacaoFinal.id === grupo.id)
+														.reduce((add, item) => add + item.valor, 0)
+												)}
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</fieldset>
+						))}
+					</div>
+				)}
+			</div>
+		</Master>
 	);
 }

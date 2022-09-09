@@ -6,6 +6,8 @@ import IEntidadeGenerica from '../../interfaces/IEntidadeGenerica';
 import IValueLabelPair from '../../interfaces/IValueLabelPair';
 import { Button, Modal } from 'react-bootstrap';
 import styled from 'styled-components';
+import { useQueryClient } from '@tanstack/react-query';
+import { IGrupoClassificacao } from '../../pages/Estabelecimentos';
 
 interface INovoEstabelecimentoIni {
 	show: boolean;
@@ -22,6 +24,7 @@ export default function NovoEstabelecimento(props: INovoEstabelecimentoIni) {
 	const [tipoDominio, setTipoDominio] = useState<IValueLabelPair[]>([]);
 	const [tipo, setTipo] = useState<IValueLabelPair | null>();
 
+	const queryClient = useQueryClient();
 	//const [requestData, setRequestData] = useState<IRequestDetailsModal>({} as IRequestDetailsModal)
 
 	useEffect(() => {
@@ -80,6 +83,14 @@ export default function NovoEstabelecimento(props: INovoEstabelecimentoIni) {
 			clearFields();
 
 			alert('Cadastrado com sucesso');
+
+			/*
+			queryClient.invalidateQueries(['estabelecimentos']);
+			const estabs = await queryClient.getQueryData<IGrupoClassificacao[]>(['estabelecimentos']);
+			estabs?.push()
+			queryClient.setQueriesData(['estabelecimentos'], estabs);
+			*/
+
 		} catch (error) {
 			alert('Ocorreu um problema ao cadastrar estabelecimento, tenta novamente');
 		}

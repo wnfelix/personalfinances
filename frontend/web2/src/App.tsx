@@ -1,13 +1,14 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import React from 'react';
-import Routes from './routes';
+import AppRoutes from './routes';
 
 import './global.css';
 
+
 function App() {
-  return (
-      <Routes />
-  );
+	return (
+			<AppRoutes />
+	);
 }
 
 export default App;

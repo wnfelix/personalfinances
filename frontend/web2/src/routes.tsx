@@ -1,5 +1,6 @@
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import React from 'react';
-import { BrowserRouter, Switch, Route } from 'react-router-dom';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import DescricaoExtra from './pages/DescricaoExtra';
 import EditarEstabelecimento from './pages/EditarEstabelecimento';
 import Estabelecimentos from './pages/Estabelecimentos';
@@ -9,22 +10,30 @@ import NovaDescricaoExtra from './pages/NovaDescricaoExtra';
 import NovoEstabelecimento from './pages/NovoEstabelecimento';
 import NovoTipoEstabelecimento from './pages/NovoTipoEstabelecimento';
 import TiposEstabelecimento from './pages/TiposEstabelecimento';
+import Teste from './pages/Teste';
+import ClassificacaoExtra from './pages/ClassificacaoExtra';
 
-export default function Routes() {
-    return (
-        <BrowserRouter>
-            <Switch>
-                <Route path='/' exact component={Estabelecimentos} />
-                <Route path='/estabelecimentos' component={Estabelecimentos} />
-                <Route path='/editarestabelecimento/:id' component={EditarEstabelecimento} />
-                <Route path='/novoestabelecimento' component={NovoEstabelecimento} />
-                <Route path='/tiposestabelecimento' component={TiposEstabelecimento} />
-                <Route path='/novotipoestabelecimento' component={NovoTipoEstabelecimento} />
-                <Route path='/descricaoextra' component={DescricaoExtra} />
-                <Route path='/novadescricaoextra' component={NovaDescricaoExtra} />
-                <Route path='/lancamentoupload' component={LancamentoUpload} />
-                <Route path='/lancamentos' component={Lancamentos} />
-            </Switch>
-        </BrowserRouter>
-    )
+const queryClient = new QueryClient();
+
+export default function AppRoutes() {
+	return (
+		<BrowserRouter>
+			<QueryClientProvider client={queryClient}>
+				<Routes>
+					<Route path='/' element={<Estabelecimentos />} />
+					<Route path='/estabelecimentos' element={<Estabelecimentos />} />
+					<Route path='/editarestabelecimento/:id' element={<EditarEstabelecimento />} />
+					<Route path='/novoestabelecimento' element={<NovoEstabelecimento />} />
+					<Route path='/tiposestabelecimento' element={<TiposEstabelecimento />} />
+					<Route path='/novotipoestabelecimento' element={<NovoTipoEstabelecimento />} />
+					<Route path='/descricaoextra' element={<DescricaoExtra />} />
+					<Route path='/novadescricaoextra' element={<NovaDescricaoExtra />} />
+					<Route path='/lancamentoupload' element={<LancamentoUpload />} />
+					<Route path='/lancamentos' element={<Lancamentos />} />
+					<Route path='/classificacaoextra' element={<ClassificacaoExtra />} />
+					<Route path='/teste' element={<Teste />} />
+				</Routes>
+			</QueryClientProvider>
+		</BrowserRouter>
+	);
 }

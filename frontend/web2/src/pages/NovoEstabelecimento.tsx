@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useHistory, useLocation, useParams } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import Select from 'react-select';
 
 import './NovoEstabelecimento.css';
@@ -12,7 +12,7 @@ import HeaderToolBar from '../components/HeaderToolBar';
 import { Button } from 'react-bootstrap';
 
 export default function NovoEstabelecimento() {
-    const history = useHistory();
+    const history = useNavigate();
     const params = new URLSearchParams(useLocation().search);
 
     const [description, setDescription] = useState('');
@@ -39,7 +39,7 @@ export default function NovoEstabelecimento() {
 
     function handleBackButton(e: React.MouseEvent<HTMLElement, MouseEvent>) {
         e.preventDefault();
-        history.goBack();
+        history(-1);
     }
 
     async function salvarEstabelecimento(e: React.FormEvent<HTMLFormElement>) {

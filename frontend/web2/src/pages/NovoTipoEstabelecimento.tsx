@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Button from 'react-bootstrap/esm/Button';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import Select from 'react-select';
 import HeaderToolBar from '../components/HeaderToolBar';
 import LeftSideToolBar from '../components/LeftSideToolBar';
@@ -15,7 +15,7 @@ export default function NovoTipoEstabelecimento() {
     const [description, setDescription] = useState('');
     const [domainType, setDomainType] = useState<IValueLabelPair>();
     const [typeList, setTypeList] = useState<IValueLabelPair[]>([]);
-    const history = useHistory();
+    const history = useNavigate();
 
     useEffect(() => {
         api.get<IEntidadeGenerica[]>('dominio')
@@ -47,7 +47,7 @@ export default function NovoTipoEstabelecimento() {
         try {
             await api.post('tipodominio', data);
 
-            history.push('/tiposestabelecimento');
+            history('/tiposestabelecimento');
         } catch (error) {
             alert('Ocorreu um eror ao tentar cadastrar');
         }
@@ -55,7 +55,7 @@ export default function NovoTipoEstabelecimento() {
 
     function handleBackButton(e: React.MouseEvent<HTMLElement, MouseEvent>) {
         e.preventDefault();
-        history.goBack();
+        history(-1);
     }
 
     return (
