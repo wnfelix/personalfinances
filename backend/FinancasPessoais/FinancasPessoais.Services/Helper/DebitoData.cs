@@ -24,6 +24,6 @@ namespace FinancasPessoais.Services.Helper
         public string Separador { get { return "-"; } }
 
         [ExcelColumn(ColumnIndex = 4)]
-        public string Totais { get { return string.Concat(Data.ToString("dd/MM"), " ", Local, "=", Valor); } }
+        public string Totais { get { return string.Concat(Data.ToString("dd/MM"), " ", Local, " = ", Valor); } }
     }
 }

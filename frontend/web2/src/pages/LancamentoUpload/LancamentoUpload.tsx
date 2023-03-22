@@ -15,6 +15,7 @@ import NovoEstabelecimento from '../../components/NovoEstabelecimento/NovoEstabe
 import NovaDescricaoExtra from '../../components/NovaDescricaoExtra/NovaDescricaoExtra';
 import NovoLancamento from '../../components/NovoLancamento';
 import Master from '../Master';
+import { BsClipboardCheck } from 'react-icons/bs';
 
 interface IPurchase {
 	id: number;
@@ -100,6 +101,26 @@ export default function LancamentoUpload() {
 			.finally(() => {
 				setLoadingState(false);
 			});
+	}
+
+	/**
+	 * Get texto do colate on excel
+	 * @param groupId groupid filter
+	 * @returns concatened values
+	 */
+	function getClipboardListText(groupId: string): string {
+		return purchases
+			?.filter(i => i.classificacaoFinal.id === groupId)
+			.sort((a, b) => (new Date(a.dtCompra) > new Date(b.dtCompra) ? 1 : -1))
+			.map(p =>
+				format(new Date(p.dtCompra), 'dd/MM').concat(
+					' ',
+					p.descricao,
+					' = ',
+					new Intl.NumberFormat('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2, currency: 'BRL' }).format(p.valor)
+				)
+			)
+			.join('\r\n');
 	}
 
 	function handlerNovaClassificacao(description: string) {
@@ -215,7 +236,8 @@ export default function LancamentoUpload() {
 												</tr>
 											))}
 										<tr>
-											<td colSpan={5} className='total'>
+											<td><BsClipboardCheck size={18} title='Copiar lista' onClick={() => navigator.clipboard.writeText(getClipboardListText(grupo.id))} /></td>
+											<td colSpan={4} className='total'>
 												{new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(
 													purchases
 														?.filter(i => i.classificacaoFinal.id === grupo.id)

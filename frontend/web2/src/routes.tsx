@@ -28,8 +28,7 @@ export default function AppRoutes() {
 					<Route path='/novotipoestabelecimento' element={<NovoTipoEstabelecimento />} />
 					<Route path='/descricaoextra' element={<DescricaoExtra />} />
 					<Route path='/novadescricaoextra' element={<NovaDescricaoExtra />} />
-					<Route path='/lancamentoupload' element={<LancamentoUpload />} />
-					<Route path='/lancamentos' element={<Lancamentos />} />
+					<Route path='/lancamentos' element={<LancamentoUpload />} />
 					<Route path='/classificacaoextra' element={<ClassificacaoExtra />} />
 					<Route path='/teste' element={<Teste />} />
 				</Routes>

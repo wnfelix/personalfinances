@@ -98,6 +98,7 @@ export default function NovoLancamento(props: INovoLancamentoIni) {
 			backdropClassName='modalNovoLancamento-backdrop'
 			onHide={handleClose}
 			size='sm'
+            centered
 		>
 			<Modal.Header closeButton>
                     <Modal.Title>Cadastrar Novo Lançamento</Modal.Title>

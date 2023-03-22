@@ -99,6 +99,7 @@ export default function NovaDescricaoExtra(props: INovaDescricaoExtraIni) {
 			backdropClassName='modalNovaDescricaoExtra-backdrop'
 			onHide={handleClose}
 			size='sm'
+			centered
 		>
 			<Modal.Header closeButton>
 				<Modal.Title>Nova Descrição Extra</Modal.Title>

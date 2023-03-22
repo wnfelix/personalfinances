@@ -112,6 +112,7 @@ export default function NovoEstabelecimento(props: INovoEstabelecimentoIni) {
 			dialogClassName='modalNovoEstabelecimento'
 			backdropClassName='modalNovoEstabelecimento-backdrop'
 			onHide={handleClose}
+			centered
 			size='sm'
 		>
 			<Modal.Header closeButton>

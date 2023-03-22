@@ -29,9 +29,9 @@ namespace FinancasPessoais.Services
         public string ExportExcel(DateTime dtRef)
         {
             var getDescription = new Func<TipoDominio, string>(e => string.Concat(e.Id, "-", e.Descricao));
-            var arquivos = new Dictionary<string, List<DebitoData>>();    
+            var arquivos = new Dictionary<string, List<DebitoData>>();
             var filePathTarget = Path.GetTempFileName();
-            
+
             var lancs = _dominioRepository.FindBy<Lancamento>(l => l.DtReferencia == dtRef)
                 .GroupBy(l => string.Concat(getDescription(l.GetClassificacaoFinal())));
             Array.ForEach(lancs.ToArray(), l => arquivos.Add(l.Key, l.Select(d => new DebitoData { Data = d.DtCompra, Local = d.Descricao, Valor = d.Valor }).ToList()));
@@ -44,9 +44,9 @@ namespace FinancasPessoais.Services
 
         public string ExportExcel(string[] filePathSource, DateTime dtRef)
         {
-            const int idDesconhecido = 204;
+            const int idDesconhecido = 16;
             var getDescription = new Func<TipoDominio, string>(e => string.Concat(e.Id, "-", e.Descricao));
-            var lstEstabelecimentos = _dominioRepository.List<Estabelecimento>().OrderByDescending(e => e.PalavraChave.Length);
+            var lstEstabelecimentos = _dominioRepository.FindBy<Estabelecimento>(x => x.Ativo).OrderByDescending(e => e.PalavraChave.Length);
             var tipoDesconhecido = _dominioRepository.Get<TipoDominio>(idDesconhecido);
             var arquivos = new Dictionary<string, List<DebitoData>>();
             var lancamentos = new List<Lancamento>();
@@ -55,7 +55,12 @@ namespace FinancasPessoais.Services
 
             foreach (var filePath in filePathSource)
             {
-                var dados = _excelDocumentService.OpenExcelDocument(filePath).ReadExcelDocument<DebitoData>(0, true);
+                var dados = _excelDocumentService.OpenExcelDocument(filePath).ReadExcelDocument<DebitoData>(0, true).Select(x =>
+                {
+                    if (x.Data > DateTime.Today.AddDays(1))
+                        x.Data = x.Data.AddYears(-1);
+                    return x;
+                });
                 var minDate = dados.Select(d => d.Data).Min();
                 var prefixos = _dominioRepository.FindBy<ClassificacaoExtra>(x => x.DataInicio >= minDate);
 
