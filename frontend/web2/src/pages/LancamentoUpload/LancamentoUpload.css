@@ -1,0 +1,53 @@
+.lancamentoupload .application-body {
+    flex-direction: column;
+    /* justify-content: center;
+    align-items: flex-start; */
+}
+
+.lancamentoupload .application-body legend {
+    font-size: medium;
+}
+
+.lancamentoupload .application-body fieldset {
+    margin-top: 5px;
+}
+
+.lancamentoupload .application-body>div {
+    display: flex;
+    flex-direction: row;
+}
+
+.lancamentoupload .application-body table {
+    min-width: 700px;
+}
+
+.lancamentoupload .application-body table thead {
+    border-bottom: 1px solid gray;
+}
+
+.lancamentoupload .application-body table .lanc-reclass {
+    /* text-decoration: underline; */
+    font-style: italic;
+}
+
+.lancamentoupload .application-body table .lanc-parc {
+    background: linear-gradient(0deg, rgb(0 212 255 / 23%) 0%, rgba(255, 255, 255, 0) 100%);
+}
+
+.lancamentoupload .application-body table .valor {
+    text-align: right;
+}
+
+.lancamentoupload .application-body table .total {
+    font-weight: bold;
+    text-align: right;
+    border-top: 1px solid gray;
+}
+
+.lancamentoupload input[type='file'] {
+    width: 30vw;
+}
+
+.lancamentoupload svg {
+    cursor: pointer;
+}

@@ -14,11 +14,12 @@ namespace FinancasPessoais.WebAPI.Transformers
         {
             var target = base.Transform(source);
 
-            target.Dominio = new EntidadeGenericaModel<int>
-            {
-                Id = source.Dominio.Id,
-                Descricao = source.Dominio.Descricao
-            };
+            if (target != null)
+                target.Dominio = new EntidadeGenericaModel<int>
+                {
+                    Id = source.Dominio.Id,
+                    Descricao = source.Dominio.Descricao
+                };
 
             return target;
         }
@@ -27,7 +28,8 @@ namespace FinancasPessoais.WebAPI.Transformers
         {
             var target = base.Reverse(source);
 
-            target.Dominio = new Dominio { Id = source.Dominio.Id };
+            if (target != null)
+                target.Dominio = new Dominio { Id = source.Dominio.Id };
 
             return target;
         }

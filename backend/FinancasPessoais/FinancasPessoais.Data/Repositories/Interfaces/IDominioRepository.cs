@@ -9,5 +9,6 @@ namespace FinancasPessoais.Data.Repositories
 {
     public interface IDominioRepository : IRepository<Dominio, int>
     {
+        void ApagarLancamentosPorDtRef(DateTime dtRef);
     }
 }

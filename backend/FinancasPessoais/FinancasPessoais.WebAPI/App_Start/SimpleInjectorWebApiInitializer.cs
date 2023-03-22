@@ -52,6 +52,7 @@ namespace FinancasPessoais.WebAPI.App_Start
             #region commandServices
 
             container.Register<IEstabelecimentoCommandService, EstabelecimentoCommandService>();
+            container.Register<ILancamentoCommandService, LancamentoCommandService>();
 
             #endregion
 
@@ -59,8 +60,14 @@ namespace FinancasPessoais.WebAPI.App_Start
 
             container.Register<ITransformer<Estabelecimento, EstabelecimentoModel>, EstabelecimentoTransformer>();
             container.Register<ITransformer<TipoDominio, TipoDominioModel>, TipoDominioTransformer>();
+            container.Register<ITransformer<Lancamento, LancamentoModel>, LancamentoTransformer>();
+            container.Register<ITransformer<ClassificacaoExtra, ClassificacaoExtraModel>, ClassificacaoExtraTransformer>();
+            container.Register<ITransformer<dynamic, EntidadeGenericaModel<int>>, EntidadeGenericaTransformer>();
+            container.Register<ITransformer<DescricaoExtra, DescricaoExtraModel>, DescricaoExtraTransformer>();
+            container.Register<ITransformer<DespesaFixa, DespesaFixaModel>, DespesaFixaTransformer>();
 
             #endregion
+
             // For instance:
             // container.Register<IUserRepository, SqlUserRepository>(Lifestyle.Scoped);
         }

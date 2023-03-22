@@ -46,12 +46,8 @@ namespace FinancasPessoais.Console
 
             try
             {
-                if (args.Count() == 0 || string.IsNullOrEmpty(args[0]))
-                    System.Console.WriteLine("Informe o endereço do arquivo excel");
-                else if (!File.Exists(args[0]))
-                    System.Console.WriteLine("O arquivo especificado não existe");
-                else
-                    repo.ExportExcel(args[0], @"c:\tmp\caixa.xlsx");
+                if(ValidateArgs(args))
+                    repo.ExportExcel(args[0], @"c:\temp\caixa.xlsx", DateTime.Parse(args[1]));
             }
             catch (Exception e)
             {
@@ -63,6 +59,22 @@ namespace FinancasPessoais.Console
                 System.Console.ReadLine();
             }
             //Array.ForEach(arquivos.ToArray(), a => a.Value.AppendLine($"Total;;=SOMA(C2:C{a.Value.ToString().Split(new string[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries).Count()})"));
+        }
+
+        static bool ValidateArgs(string[] args)
+        {
+            var validArgs = false;
+
+            if (args.Count() < 2 || string.IsNullOrEmpty(args[0]))
+                System.Console.WriteLine("Informe o endereço do arquivo excel e a data de referência");
+            else if(!DateTime.TryParse(args[1],out DateTime dtref))
+                System.Console.WriteLine("Informe uma data de referência válida no segundo argumento");
+            else if (!File.Exists(args[0]))
+                System.Console.WriteLine("O arquivo especificado não existe");
+            else
+                validArgs = true;
+
+            return validArgs;
         }
     }
 }

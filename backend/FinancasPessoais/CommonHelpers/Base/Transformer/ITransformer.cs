@@ -16,6 +16,10 @@ namespace CommonHelpers.Base.Transformer
 
         TSource Reverse(TTarget source);
 
-        TTarget Transform(object source);
+        TSource Reverse(TTarget target, params object[] additionalInfo);
+
+        TReturn Transform<TReturn>(TSource source, params object[] additionalInfo) where TReturn : class, new();
+
+        TReturn Transform<TEntity, TReturn>(TEntity source, params object[] additionalInfo) where TReturn : class, new();
     }
 }

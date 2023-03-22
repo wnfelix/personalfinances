@@ -1,0 +1,47 @@
+.lancamentos .application-body {
+    flex-direction: column;
+}
+
+.lancamentos .application-body legend {
+    font-size: medium;
+}
+
+.lancamentos .application-body fieldset {
+    margin-top: 5px;
+}
+
+.lancamentos .application-body>div {
+    display: flex;
+    flex-direction: row;
+}
+
+.lancamentos .application-body table {
+    min-width: 700px;
+}
+
+.lancamentos .application-body table thead {
+    border-bottom: 1px solid gray;
+}
+
+.lancamentos .application-body table .lanc-reclass {
+    /* text-decoration: underline; */
+    font-style: italic;
+}
+
+.lancamentos .application-body table .lanc-parc {
+    background: linear-gradient(0deg, rgb(0 212 255 / 23%) 0%, rgba(255, 255, 255, 0) 100%);
+}
+
+.lancamentos .application-body table .valor {
+    text-align: right;
+}
+
+.lancamentos .application-body table .total {
+    font-weight: bold;
+    text-align: right;
+    border-top: 1px solid gray;
+}
+
+.modalLancamentoManual .lancamentovalor {
+    width: 35%;
+}

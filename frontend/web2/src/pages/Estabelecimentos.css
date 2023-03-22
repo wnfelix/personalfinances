@@ -1,0 +1,33 @@
+.estabelecimentos .application-body fieldset {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	justify-content: space-around;
+}
+
+.estabelecimentos .application-body {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	justify-content: space-around;
+}
+
+.estabelecimentos .application-body .options {
+	width: 100%;
+}
+
+.estabelecimentos .application-body .total {
+	font-size: 0.7rem;
+	text-align: right;
+	color: gray;
+}
+
+.estabelecimentos .card-footer {
+	display: flex;
+	justify-content: space-around;
+	padding: 6px 6px;
+}
+
+.estabelecimentos .card-footer svg {
+	cursor: pointer;
+}

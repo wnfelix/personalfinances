@@ -46,10 +46,20 @@
   <ItemGroup>
     <Compile Include="BaseDomain.cs" />
     <Compile Include="ClassificacaoExtra.cs" />
+    <Compile Include="DescricaoExtra.cs" />
+    <Compile Include="DespesaFixa.cs" />
     <Compile Include="Estabelecimento.cs" />
     <Compile Include="Dominio.cs" />
+    <Compile Include="Lancamento.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TipoDominio.cs" />
+    <Compile Include="Usuario.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CommonHelpers\CommonHelpers.csproj">
+      <Project>{61368ECD-F3FD-4C90-8D89-56E003C718B5}</Project>
+      <Name>CommonHelpers</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
