@@ -63,6 +63,7 @@
     <Compile Include="EstabelecimentoCommandService.cs" />
     <Compile Include="ExportToCsvCommandService.cs" />
     <Compile Include="ExportToExcelCommandService.cs" />
+    <Compile Include="Extensions\DomainExtensions.cs" />
     <Compile Include="Helper\CreditCardOpenXmlApplication.cs" />
     <Compile Include="Helper\CSVFile.cs" />
     <Compile Include="Helper\DebitoData.cs" />

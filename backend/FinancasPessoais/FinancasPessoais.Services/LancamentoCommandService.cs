@@ -71,7 +71,7 @@ namespace FinancasPessoais.Services
                     DescricaoExtra descricaoExtra = null;
                     var lanc = new Lancamento { Estabelecimento = estab };
 
-                    if (estab != null && prefixoExtra == null)
+                    if (estab != null)
                     {
                         #region Mudando a classificação de uma compra específica na data
 
@@ -90,6 +90,8 @@ namespace FinancasPessoais.Services
                             item.Local = $"{descricaoExtra.Descricao}-{item.Local}";
                             estab = new Estabelecimento { Classificacao = descricaoExtra.Classificacao };
                         }
+                        else
+                            estab = new Estabelecimento { Classificacao = prefixoExtra != null ? prefixoExtra.Classificacao : tipoDesconhecido };
 
                         #endregion
                     }

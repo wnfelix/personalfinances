@@ -16,6 +16,7 @@ import NovaDescricaoExtra from '../../components/NovaDescricaoExtra/NovaDescrica
 import NovoLancamento from '../../components/NovoLancamento';
 import Master from '../Master';
 import { BsClipboardCheck } from 'react-icons/bs';
+import { Tooltip } from '@mui/material';
 
 interface IPurchase {
 	id: number;
@@ -26,6 +27,8 @@ interface IPurchase {
 	estabelecimento: {
 		id: Number;
 		classificacao: IEntidadeGenerica;
+		descricao: string;
+		palavraChave: string;
 	};
 	descricaoExtra: {
 		descricao: string;
@@ -39,7 +42,7 @@ interface IPurchase {
 		descricao: string;
 		classificacao: IEntidadeGenerica;
 	};
-	classificacaoFinal: IEntidadeGenerica;
+	classificacaoFinal: IEntidadeGenerica & { ordem: number };
 	parcelado: boolean;
 	reclassificado: boolean;
 	manual: boolean;
@@ -123,6 +126,20 @@ export default function LancamentoUpload() {
 			.join('\r\n');
 	}
 
+	function getPurchaseOrderedList() {
+		return purchases
+			?.map(p => {
+				const key = p.classificacaoFinal;
+				return {
+					id: key.id,
+					descricao: key.descricao,
+					ordem: key.ordem,
+				};
+			})
+			.filter((v, i, a) => a.findIndex(r => r.id === v.id) === i)
+			.sort((a, b) => (a.ordem > b.ordem ? 1 : -1));
+	}
+
 	function handlerNovaClassificacao(description: string) {
 		setDescriptionNew(description);
 		setShowModalNovoEstabelecimento(true);
@@ -184,15 +201,7 @@ export default function LancamentoUpload() {
 							</DropdownButton>
 							<Button type='submit'>Enviar</Button>
 						</div>
-						{Distinct(
-							purchases?.map(p => {
-								const key = p.classificacaoFinal;
-								return {
-									id: key.id,
-									descricao: key.descricao,
-								};
-							})
-						).map(grupo => (
+						{getPurchaseOrderedList().map(grupo => (
 							<fieldset key={grupo.id}>
 								<legend>{grupo.descricao}</legend>
 								<table>
@@ -210,33 +219,41 @@ export default function LancamentoUpload() {
 											?.filter(i => i.classificacaoFinal.id === grupo.id)
 											.sort((a, b) => (new Date(a.dtCompra) > new Date(b.dtCompra) ? 1 : -1))
 											.map(p => (
-												<tr
-													className={`lanc-${
-														p.parcelado && p.reclassificado
-															? 'parc lanc-reclass'
-															: p.reclassificado
-															? 'reclass'
-															: p.parcelado
-															? 'parc'
-															: ''
-													}`}
-												>
-													<td>
-														{Number(p.classificacaoFinal.id) === 0 && (
-															<VscNewFile size={20} onClick={() => handlerNovaClassificacao(p.descricao)} />
-														)}
-														<IoReload size={20} />
-													</td>
-													<td>{format(new Date(p.dtReferencia), 'MM/yy')}</td>
-													<td>{format(new Date(p.dtCompra), 'dd/MM/yy')}</td>
-													<td>{p.descricao}</td>
-													<td className='valor'>
-														{new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(p.valor)}
-													</td>
-												</tr>
+												<Tooltip title={p.estabelecimento?.descricao}>
+													<tr
+														className={`lanc-${
+															p.parcelado && p.reclassificado
+																? 'parc lanc-reclass'
+																: p.reclassificado
+																? 'reclass'
+																: p.parcelado
+																? 'parc'
+																: ''
+														}`}
+													>
+														<td>
+															{Number(p.classificacaoFinal.id) === 0 && (
+																<VscNewFile size={20} onClick={() => handlerNovaClassificacao(p.descricao)} />
+															)}
+															<IoReload size={20} />
+														</td>
+														<td>{format(new Date(p.dtReferencia), 'MM/yy')}</td>
+														<td>{format(new Date(p.dtCompra), 'dd/MM/yy')}</td>
+														<td>{p.descricao}</td>
+														<td className='valor'>
+															{new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(p.valor)}
+														</td>
+													</tr>
+												</Tooltip>
 											))}
 										<tr>
-											<td><BsClipboardCheck size={18} title='Copiar lista' onClick={() => navigator.clipboard.writeText(getClipboardListText(grupo.id))} /></td>
+											<td>
+												<BsClipboardCheck
+													size={18}
+													title='Copiar lista'
+													onClick={() => navigator.clipboard.writeText(getClipboardListText(grupo.id))}
+												/>
+											</td>
 											<td colSpan={4} className='total'>
 												{new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(
 													purchases

@@ -55,8 +55,7 @@ namespace FinancasPessoais.WebAPI.Transformers
                 target.Estabelecimento = new { Id = 0, Descricao = defaultLabel, Classificacao = new { Id = 0, Descricao = defaultLabel } };
             }
 
-            target.ClassificacaoFinal = new { source.GetClassificacaoFinal().Id, source.GetClassificacaoFinal().Descricao };
-
+            target.ClassificacaoFinal = new { source.GetClassificacaoFinal().Id, source.GetClassificacaoFinal().Descricao, source.GetClassificacaoFinal().Ordem };
 
             return target;
         }

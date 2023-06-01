@@ -40,7 +40,7 @@ namespace FinancasPessoais.Domain
             }
             else if (Estabelecimento == null)
             {
-                return new TipoDominio { Id = 0, Descricao = GeneralConstants.DEFAULT_UNKNOWITEM_LABEL };
+                return new TipoDominio { Id = 0, Descricao = GeneralConstants.DEFAULT_UNKNOWITEM_LABEL, Ordem = 0 };
             }
             else
             {

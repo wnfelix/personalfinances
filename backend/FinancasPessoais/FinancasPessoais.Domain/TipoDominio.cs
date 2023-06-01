@@ -11,5 +11,6 @@ namespace FinancasPessoais.Domain
         public virtual string Descricao { get; set; }
         public virtual Dominio Dominio { get; set; }
         public virtual bool Ativo { get; set; }
+        public virtual decimal Ordem { get; set; }
     }
 }
