@@ -23,14 +23,14 @@ namespace FinancasPessoais.WebAPI.App_Start
         {
             var container = new Container();
             container.Options.DefaultScopedLifestyle = new AsyncScopedLifestyle();
-
+            
             InitializeContainer(container);
             container.Register<IFinancasPessoaisSession, FinancasPessoaisSession>();
 
             container.RegisterWebApiControllers(GlobalConfiguration.Configuration);
-
+       
             container.Verify();
-
+            
             GlobalConfiguration.Configuration.DependencyResolver =
                 new SimpleInjectorWebApiDependencyResolver(container);
         }

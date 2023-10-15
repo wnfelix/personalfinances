@@ -29,8 +29,8 @@ namespace FinancasPessoais.WebAPI.Controllers
         [HttpPost]
         public void Upload(DateTime mesref)
         {
-            try
-            {
+            //try
+            //{
                 var request = this.Request;
 
                 if (!request.Content.IsMimeMultipartContent())
@@ -60,11 +60,11 @@ namespace FinancasPessoais.WebAPI.Controllers
                         var targetPath = _lancamentoCommandService.ExportExcel(filePaths.ToArray(), mesref);
                     }
                 }
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
+            //}
+            //catch (Exception ex)
+            //{
+            //    throw ex;
+            //}
         }
 
         [HttpPost]
