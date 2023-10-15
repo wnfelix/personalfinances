@@ -55,8 +55,7 @@ namespace FinancasPessoais.WebAPI.Transformers
                 target.Estabelecimento = new { Id = 0, Descricao = defaultLabel, Classificacao = new { Id = 0, Descricao = defaultLabel } };
             }
 
-            target.ClassificacaoFinal = new { source.GetClassificacaoFinal().Id, source.GetClassificacaoFinal().Descricao };
-
+            target.ClassificacaoFinal = new { source.GetClassificacaoFinal().Id, source.GetClassificacaoFinal().Descricao, source.GetClassificacaoFinal().Ordem };
 
             return target;
         }
@@ -65,6 +64,7 @@ namespace FinancasPessoais.WebAPI.Transformers
         {
             var target = base.Reverse(source);
 
+            target.Valor = decimal.Round(source.Valor, 2);
             target.ClassificacaoExtra = _classificacaoExtraTransformer.Reverse(source.ClassificacaoExtra);
             target.DescricaoExtra = _descricaoExtraTransformer.Reverse(source.DescricaoExtra);
             if (source.Estabelecimento != null)

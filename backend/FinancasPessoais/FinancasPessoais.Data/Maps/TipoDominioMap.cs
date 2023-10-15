@@ -16,6 +16,7 @@ namespace FinancasPessoais.Data.Maps
             Id(x => x.Id).GeneratedBy.GetGeneratorMapping();
             Map(x => x.Descricao);
             Map(x => x.Ativo);
+            Map(x => x.Ordem);
             References(x => x.Dominio, "IdDominio");
         }
     }

@@ -4,17 +4,14 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{08B69367-1D24-4F0D-951B-A78889ADAF85}</ProjectGuid>
+    <ProjectGuid>{D68C6448-03E2-43A0-BC75-92A99E4805CE}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>FinancasPessoais.Domain</RootNamespace>
     <AssemblyName>FinancasPessoais.Domain</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <SccProjectName>SAK</SccProjectName>
-    <SccLocalPath>SAK</SccLocalPath>
-    <SccAuxPath>SAK</SccAuxPath>
-    <SccProvider>SAK</SccProvider>
+    <Deterministic>true</Deterministic>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -48,8 +45,8 @@
     <Compile Include="ClassificacaoExtra.cs" />
     <Compile Include="DescricaoExtra.cs" />
     <Compile Include="DespesaFixa.cs" />
-    <Compile Include="Estabelecimento.cs" />
     <Compile Include="Dominio.cs" />
+    <Compile Include="Estabelecimento.cs" />
     <Compile Include="Lancamento.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TipoDominio.cs" />
@@ -57,7 +54,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CommonHelpers\CommonHelpers.csproj">
-      <Project>{61368ECD-F3FD-4C90-8D89-56E003C718B5}</Project>
+      <Project>{9256409a-3af8-4601-aa57-58e45ca23cbb}</Project>
       <Name>CommonHelpers</Name>
     </ProjectReference>
   </ItemGroup>
