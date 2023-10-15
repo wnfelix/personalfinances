@@ -1,2 +1,2 @@
 # personalfinances
-Projeto de controle básico de finanças pessoais
+Basic control to your personal finances
