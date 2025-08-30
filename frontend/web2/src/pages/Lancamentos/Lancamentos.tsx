@@ -9,34 +9,34 @@ import LeftSideToolBar from '../../components/LeftSideToolBar';
 import HeaderToolBar from '../../components/HeaderToolBar';
 import api from '../../services/api';
 
+import Master from '../Master';
 import { Distinct } from '../../Helper/helper';
 import IValueLabelPair from '../../interfaces/IValueLabelPair';
 import IEntidadeGenerica from '../../interfaces/IEntidadeGenerica';
-import './Lancamentos.css';
 import InputNumber from '../../components/Common/InputNumber';
-import Master from '../Master';
+import './Lancamentos.css';
 
-interface IPurchase {
+interface IExpense {
 	id: number;
-	dtReferencia: Date;
-	dtCompra: Date;
-	descricao: string;
-	valor: number;
-	estabelecimento: { classificacao: { descricao: string } };
-	descricaoExtra: {
-		descricao: string;
-		classificacao: {
-			descricao: string;
+	referenceDate: Date;
+	transactionDate: Date;
+	memo: string;
+	amount: number;
+	category: { group: { name: string } };
+	memoRule: {
+		memoText: string;
+		category: {
+			name: string;
 		};
 	};
-	parcelado: boolean;
-	reclassificado: boolean;
-	classificacaoFinal: IEntidadeGenerica;
+	installments: boolean;
+	reclassified: boolean;
+	finalCategory: IEntidadeGenerica;
 }
 
 export default function Lancamentos() {
 	const [selectedMonth, setSelectedMonth] = useState(format(addMonths(Date.now(), -1), 'yyyy-MM'));
-	const [purchases, setPurchases] = useState<IPurchase[]>([]);
+	const [purchases, setPurchases] = useState<IExpense[]>([]);
 	const [tipoDominio, setTipoDominio] = useState<IValueLabelPair[]>([]);
 
 	const [loadingState, setLoadingState] = useState(true);
@@ -50,10 +50,10 @@ export default function Lancamentos() {
 
 	useEffect(() => {
 		setLoadingState(true);
-		api.get<IPurchase[]>(`lancamento?mesref=${selectedMonth}-01`)
+		api.get<IExpense[]>(`expense?referenceDate=${selectedMonth}-01`)
 			.then(result => {
 				setPurchases(result.data);
-				console.log(result.data.filter(x => x.classificacaoFinal === undefined));
+				console.log(result.data.filter(x => x.finalCategory === undefined));
 			})
 			.catch(e => {
 				console.log(e);
@@ -62,8 +62,8 @@ export default function Lancamentos() {
 				setLoadingState(false);
 			});
 
-		api.get<IEntidadeGenerica[]>('tipodominio?iddominio=1').then(response => {
-			const options = response.data.map(t => ({ value: t.id, label: t.descricao })).sort((a, b) => ('' + a.label).localeCompare(b.label));
+		api.get<IEntidadeGenerica[]>('merchant/category').then(response => {
+			const options = response.data.map(t => ({ value: t.id, label: t.name })).sort((a, b) => ('' + a.label).localeCompare(b.label));
 
 			setTipoDominio(options);
 			setLoadingDominio(false);
@@ -192,9 +192,9 @@ export default function Lancamentos() {
 								))}
 							</DropdownButton>
 						</div>
-						{Distinct(purchases?.map(p => ({ id: p.classificacaoFinal.id, descricao: p.classificacaoFinal.descricao }))).map(grupo => (
+						{Distinct(purchases?.map(p => ({ id: p.finalCategory.id, name: p.finalCategory.name }))).map(grupo => (
 							<fieldset key={grupo.id}>
-								<legend>{grupo.descricao}</legend>
+								<legend>{grupo.name}</legend>
 								<table>
 									<thead>
 										<tr>
@@ -206,25 +206,25 @@ export default function Lancamentos() {
 									</thead>
 									<tbody>
 										{purchases
-											?.filter(i => i.classificacaoFinal.id === grupo.id)
-											.sort((a, b) => (new Date(a.dtCompra) > new Date(b.dtCompra) ? 1 : -1))
+											?.filter(i => i.finalCategory.id === grupo.id)
+											.sort((a, b) => (new Date(a.transactionDate) > new Date(b.transactionDate) ? 1 : -1))
 											.map(p => (
 												<tr
 													className={`lanc-${
-														p.parcelado && p.reclassificado
+														p.installments && p.reclassified
 															? 'parc lanc-reclass'
-															: p.reclassificado
+															: p.reclassified
 															? 'reclass'
-															: p.parcelado
+															: p.installments
 															? 'parc'
 															: ''
 													}`}
 												>
-													<td>{format(new Date(p.dtReferencia), 'MM/yy')}</td>
-													<td>{format(new Date(p.dtCompra), 'dd/MM/yy')}</td>
-													<td>{p.descricao}</td>
+													<td>{format(new Date(p.referenceDate), 'MM/yy')}</td>
+													<td>{format(new Date(p.transactionDate), 'dd/MM/yy')}</td>
+													<td>{p.memo}</td>
 													<td className='valor'>
-														{new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(p.valor)}
+														{new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(p.amount)}
 													</td>
 												</tr>
 											))}
@@ -232,8 +232,8 @@ export default function Lancamentos() {
 											<td colSpan={5} className='total'>
 												{new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(
 													purchases
-														?.filter(i => i.classificacaoFinal.id === grupo.id)
-														.reduce((add, item) => add + item.valor, 0)
+														?.filter(i => i.finalCategory.id === grupo.id)
+														.reduce((add, item) => add + item.amount, 0)
 												)}
 											</td>
 										</tr>

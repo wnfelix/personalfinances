@@ -33,15 +33,15 @@ export default function NovaDescricaoExtra(props: INovaDescricaoExtraIni) {
 	const [loadingEstab, setLoadingEstab] = useState(true);
 
 	useEffect(() => {
-		api.get<IEntidadeGenerica[]>('tipodominio?iddominio=1').then(response => {
-			const options = response.data.map(t => ({ value: t.id, label: t.descricao })).sort((a, b) => ('' + a.label).localeCompare(b.label));
+		api.get<IEntidadeGenerica[]>('merchant/category').then(response => {
+			const options = response.data.map(t => ({ value: t.id, label: t.name })).sort((a, b) => ('' + a.label).localeCompare(b.label));
 
 			setTipoDominio(options);
 			setLoadingDominio(false);
 		});
 
-		api.get<IEstabelecimento[]>('estabelecimento').then(response => {
-			setEstabelecimentos(response.data.map(e => ({ value: e.id, label: e.palavraChave })));
+		api.get<IEstabelecimento[]>('merchant').then(response => {
+			setEstabelecimentos(response.data.map(e => ({ value: e.id, label: e.pattern })));
 			setLoadingEstab(false);
 		});
 	}, []);
@@ -91,7 +91,7 @@ export default function NovaDescricaoExtra(props: INovaDescricaoExtraIni) {
 	}
 
 	//#endregion
-	
+
 	return (
 		<Modal
 			show={props.show}

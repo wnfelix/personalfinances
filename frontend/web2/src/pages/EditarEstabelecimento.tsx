@@ -26,7 +26,7 @@ export default function EditarEstabelecimento() {
 		api.get<IEntidadeGenerica[]>('tipodominio?iddominio=1').then(response => {
 			let options = response.data
 				.map(t => {
-					return { value: t.id, label: t.descricao };
+					return { value: t.id, label: t.name };
 				})
 				.sort((a, b) => {
 					return ('' + a.label).localeCompare(b.label);
@@ -37,11 +37,11 @@ export default function EditarEstabelecimento() {
 
 	useEffect(() => {
 		api.get<IEstabelecimento>(`estabelecimento/${id}`).then(response => {
-			setDescription(response.data.descricao);
-			setChave(response.data.palavraChave);
+			setDescription(response.data.name);
+			setChave(response.data.pattern);
 			setTipo({
-				value: response.data.classificacao.id,
-				label: response.data.classificacao.descricao,
+				value: response.data.category.id,
+				label: response.data.category.name,
 			});
 		});
 	}, []);

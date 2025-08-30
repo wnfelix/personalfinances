@@ -1,4 +1,4 @@
-import IEntidadeGenerica from "../interfaces/IEntidadeGenerica";
+import IEntidadeGenerica from '../interfaces/IEntidadeGenerica';
 
 /**
  * Recupera um valor tipado do localStorage
@@ -6,12 +6,11 @@ import IEntidadeGenerica from "../interfaces/IEntidadeGenerica";
  * @param defaultValue valor padrão de retorno quando o item não existir
  */
 export function GetLocalStorageValue<T>(key: string, defaultValue: T): T {
-    let value = defaultValue;
+	let value = defaultValue;
 
-    if (localStorage.getItem(key) !== null)
-        value = JSON.parse(localStorage.getItem(key) ?? "") as T;
+	if (localStorage.getItem(key) !== null) value = JSON.parse(localStorage.getItem(key) ?? '') as T;
 
-    return value;
+	return value;
 }
 
 /**
@@ -19,11 +18,11 @@ export function GetLocalStorageValue<T>(key: string, defaultValue: T): T {
  * @param items lista de items para distinção
  * @param orderByProperty especifica qual propriedade será utilizada para a ordenação
  */
-export function Distinct(items: IEntidadeGenerica[], orderByProperty: 'descricao' | 'id' = 'descricao'): IEntidadeGenerica[] {
-    const list = items
-        .filter(v => v.id !== undefined)
-        .filter((v, i, a) => a.findIndex(r => r.id === v.id) === i)
-        .sort((a, b) => a[orderByProperty] > b[orderByProperty] ? 1 : -1);
+export function Distinct(items: IEntidadeGenerica[], orderByProperty: 'name' | 'id' = 'name'): IEntidadeGenerica[] {
+	const list = items
+		.filter(v => v.id !== undefined)
+		.filter((v, i, a) => a.findIndex(r => r.id === v.id) === i)
+		.sort((a, b) => (a[orderByProperty] > b[orderByProperty] ? 1 : -1));
 
-    return list;
+	return list;
 }

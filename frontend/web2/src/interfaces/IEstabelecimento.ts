@@ -1,10 +1,10 @@
-import IEntidadeGenerica from "./IEntidadeGenerica";
+import IEntidadeGenerica from './IEntidadeGenerica';
 
 export default interface IEstabelecimento {
-    id: string,
-    descricao: string,
-    palavraChave: string,
-    classificacao: IEntidadeGenerica,
-    lancamentosTotal: number,
-    descricoesExtrasTotal: number,
+	id: string;
+	name: string;
+	pattern: string;
+	category: IEntidadeGenerica;
+	totalExpense: number;
+	totalMemoRule: number;
 }

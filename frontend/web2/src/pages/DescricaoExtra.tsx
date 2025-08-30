@@ -15,7 +15,7 @@ export default function DescricaoExtra() {
 	const [loadingState, setLoadingState] = useState(true);
 
 	useEffect(() => {
-		api.get<IDescricaoExtra[]>('descricaoextra').then(response => {
+		api.get<IDescricaoExtra[]>('memorule').then(response => {
 			setDescricaoExtra(response.data);
 			setLoadingState(false);
 		});
@@ -50,16 +50,16 @@ export default function DescricaoExtra() {
 							</thead>
 							<tbody>
 								{descricaoExtra
-									.sort((a, b) => (a.dataCompra > b.dataCompra ? -1 : 1))
+									.sort((a, b) => (a.matchDate > b.matchDate ? -1 : 1))
 									.map(d => {
 										return (
 											<tr>
-												<td>{d.estabelecimento.palavraChave}</td>
-												<td>{d.classificacao.descricao}</td>
-												<td>{d.descricao}</td>
-												<td>{format(new Date(d.dataCompra), 'dd/MM/yyyy')}</td>
-												<td>{d.indiceCompraDe}</td>
-												<td>{d.indiceCompraAte}</td>
+												<td>{d.merchant.pattern}</td>
+												<td>{d.category.name}</td>
+												<td>{d.memoText}</td>
+												<td>{format(new Date(d.matchDate), 'dd/MM/yyyy')}</td>
+												<td>{d.matchIndexFrom}</td>
+												<td>{d.matchIndexTo}</td>
 											</tr>
 										);
 									})}

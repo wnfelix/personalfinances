@@ -1,4 +1,4 @@
 export default interface IEntidadeGenerica {
-    id: string
-    descricao: string
+	id: string;
+	name: string;
 }

@@ -19,30 +19,30 @@ import { BsClipboardCheck } from 'react-icons/bs';
 
 interface IPurchase {
 	id: number;
-	dtReferencia: Date;
-	dtCompra: Date;
-	descricao: string;
-	valor: number;
-	estabelecimento: {
+	referenceDate: Date;
+	transactionDate: Date;
+	rawDescription: string;
+	amount: number;
+	merchant: {
 		id: Number;
-		classificacao: IEntidadeGenerica;
+		group: IEntidadeGenerica;
 	};
-	descricaoExtra: {
-		descricao: string;
-		classificacao: IEntidadeGenerica;
+	memoRule: {
+		memoText: string;
+		category: IEntidadeGenerica;
 	};
-	classificacaoExtra: {
-		prefixo: string;
-		classificacao: IEntidadeGenerica;
+	category: {
+		//prefixo: string;
+		group: IEntidadeGenerica;
 	};
-	classificacao: {
-		descricao: string;
-		classificacao: IEntidadeGenerica;
-	};
-	classificacaoFinal: IEntidadeGenerica;
-	parcelado: boolean;
-	reclassificado: boolean;
-	manual: boolean;
+	// classificacao: {
+	// 	descricao: string;
+	// 	classificacao: IEntidadeGenerica;
+	// };
+	finalCategory: IEntidadeGenerica;
+	installments: boolean;
+	reclassified: boolean;
+	isManual: boolean;
 }
 
 export default function LancamentoUpload() {
@@ -60,7 +60,7 @@ export default function LancamentoUpload() {
 
 	useEffect(() => {
 		setLoadingState(true);
-		api.get<IPurchase[]>(`lancamento?mesref=${selectedMonth}-01`)
+		api.get<IPurchase[]>(`expense?referenceDate=${selectedMonth}-01`)
 			.then(result => {
 				setPurchases(result.data);
 			})
@@ -110,14 +110,14 @@ export default function LancamentoUpload() {
 	 */
 	function getClipboardListText(groupId: string): string {
 		return purchases
-			?.filter(i => i.classificacaoFinal.id === groupId)
-			.sort((a, b) => (new Date(a.dtCompra) > new Date(b.dtCompra) ? 1 : -1))
+			?.filter(i => i.finalCategory.id === groupId)
+			.sort((a, b) => (new Date(a.transactionDate) > new Date(b.transactionDate) ? 1 : -1))
 			.map(p =>
-				format(new Date(p.dtCompra), 'dd/MM').concat(
+				format(new Date(p.transactionDate), 'dd/MM').concat(
 					' ',
-					p.descricao,
+					p.rawDescription,
 					' = ',
-					new Intl.NumberFormat('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2, currency: 'BRL' }).format(p.valor)
+					new Intl.NumberFormat('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2, currency: 'BRL' }).format(p.amount)
 				)
 			)
 			.join('\r\n');
@@ -186,15 +186,15 @@ export default function LancamentoUpload() {
 						</div>
 						{Distinct(
 							purchases?.map(p => {
-								const key = p.classificacaoFinal;
+								const key = p.finalCategory;
 								return {
 									id: key.id,
-									descricao: key.descricao,
+									name: key.name,
 								};
 							})
 						).map(grupo => (
 							<fieldset key={grupo.id}>
-								<legend>{grupo.descricao}</legend>
+								<legend>{grupo.name}</legend>
 								<table>
 									<thead>
 										<tr>
@@ -207,41 +207,47 @@ export default function LancamentoUpload() {
 									</thead>
 									<tbody>
 										{purchases
-											?.filter(i => i.classificacaoFinal.id === grupo.id)
-											.sort((a, b) => (new Date(a.dtCompra) > new Date(b.dtCompra) ? 1 : -1))
+											?.filter(i => i.finalCategory.id === grupo.id)
+											.sort((a, b) => (new Date(a.transactionDate) > new Date(b.transactionDate) ? 1 : -1))
 											.map(p => (
 												<tr
 													className={`lanc-${
-														p.parcelado && p.reclassificado
+														p.installments && p.reclassified
 															? 'parc lanc-reclass'
-															: p.reclassificado
+															: p.reclassified
 															? 'reclass'
-															: p.parcelado
+															: p.installments
 															? 'parc'
 															: ''
 													}`}
 												>
 													<td>
-														{Number(p.classificacaoFinal.id) === 0 && (
-															<VscNewFile size={20} onClick={() => handlerNovaClassificacao(p.descricao)} />
+														{Number(p.finalCategory.id) === 0 && (
+															<VscNewFile size={20} onClick={() => handlerNovaClassificacao(p.rawDescription)} />
 														)}
 														<IoReload size={20} />
 													</td>
-													<td>{format(new Date(p.dtReferencia), 'MM/yy')}</td>
-													<td>{format(new Date(p.dtCompra), 'dd/MM/yy')}</td>
-													<td>{p.descricao}</td>
+													<td>{format(new Date(p.referenceDate), 'MM/yy')}</td>
+													<td>{format(new Date(p.transactionDate), 'dd/MM/yy')}</td>
+													<td>{p.rawDescription}</td>
 													<td className='valor'>
-														{new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(p.valor)}
+														{new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(p.amount)}
 													</td>
 												</tr>
 											))}
 										<tr>
-											<td><BsClipboardCheck size={18} title='Copiar lista' onClick={() => navigator.clipboard.writeText(getClipboardListText(grupo.id))} /></td>
+											<td>
+												<BsClipboardCheck
+													size={18}
+													title='Copiar lista'
+													onClick={() => navigator.clipboard.writeText(getClipboardListText(grupo.id))}
+												/>
+											</td>
 											<td colSpan={4} className='total'>
 												{new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(
 													purchases
-														?.filter(i => i.classificacaoFinal.id === grupo.id)
-														.reduce((add, item) => add + item.valor, 0)
+														?.filter(i => i.finalCategory.id === grupo.id)
+														.reduce((add, item) => add + item.amount, 0)
 												)}
 											</td>
 										</tr>

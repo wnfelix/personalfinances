@@ -1,12 +1,12 @@
-import IEntidadeGenerica from "./IEntidadeGenerica";
-import IEstabelecimento from "./IEstabelecimento";
+import IEntidadeGenerica from './IEntidadeGenerica';
+import IEstabelecimento from './IEstabelecimento';
 
-export default interface IDescricaoExtra{
-    id: string,
-    estabelecimento: IEstabelecimento,
-    classificacao: IEntidadeGenerica,
-    descricao: string,
-    dataCompra: Date,
-    indiceCompraDe: number,
-    indiceCompraAte: number,
+export default interface IDescricaoExtra {
+	id: string;
+	merchant: IEstabelecimento;
+	category: IEntidadeGenerica;
+	memoText: string;
+	matchDate: Date;
+	matchIndexFrom: number;
+	matchIndexTo: number;
 }

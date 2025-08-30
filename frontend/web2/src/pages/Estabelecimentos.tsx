@@ -29,18 +29,18 @@ export default function Estabelecimentos() {
 	const { data: estabs, isFetching: loadingState } = useQuery(
 		['estabelecimentos'],
 		async () => {
-			const { data } = await api.get<IEstabelecimento[]>(`estabelecimento?exibicao=${exibicao}`);
+			const { data } = await api.get<IEstabelecimento[]>(`merchant?exibicao=${exibicao}`);
 
-			const groups = Distinct(data.map(x => x.classificacao));
+			const groups = Distinct(data.map(x => x.category));
 			const estabs: IGrupoClassificacao[] = [];
 
 			groups.forEach(gr => {
 				estabs.push({
 					id: gr.id,
-					descricao: gr.descricao,
+					name: gr.name,
 					estabelecimentos: data
-						.filter(({ classificacao }) => classificacao.id === gr.id)
-						.sort((a, b) => (a.lancamentosTotal > b.lancamentosTotal ? -1 : 1)),
+						.filter(({ category: classificacao }) => classificacao.id === gr.id)
+						.sort((a, b) => (a.totalExpense > b.totalExpense ? -1 : 1)),
 				});
 			});
 
@@ -177,20 +177,20 @@ export default function Estabelecimentos() {
 						{estabs?.map(gr => {
 							return (
 								<fieldset>
-									<legend>{gr.descricao}</legend>
+									<legend>{gr.name}</legend>
 									{gr.estabelecimentos.map(e => (
 										<Card key={e.id}>
 											<Card.Body>
-												<Card.Title as='h6'>{e.palavraChave}</Card.Title>
-												{e.descricao?.length > 0 && <Card.Text>{e.descricao}</Card.Text>}
-												{e.lancamentosTotal > 0 && (
+												<Card.Title as='h6'>{e.pattern}</Card.Title>
+												{e.name?.length > 0 && <Card.Text>{e.name}</Card.Text>}
+												{e.totalExpense > 0 && (
 													<div className='total' title='Total de Lançamentos'>
-														{e.lancamentosTotal} lançamento(s)
+														{e.totalExpense} lançamento(s)
 													</div>
 												)}
-												{e.descricoesExtrasTotal > 0 && (
+												{e.totalMemoRule > 0 && (
 													<div className='total' title='Descrição Extra'>
-														{e.descricoesExtrasTotal} reclassificado(s)
+														{e.totalMemoRule} reclassificado(s)
 													</div>
 												)}
 											</Card.Body>

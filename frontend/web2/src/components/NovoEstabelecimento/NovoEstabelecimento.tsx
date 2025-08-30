@@ -32,12 +32,12 @@ export default function NovoEstabelecimento(props: INovoEstabelecimentoIni) {
 	}, [props.description]);
 
 	useEffect(() => {
-		api.get<IEntidadeGenerica[]>('tipodominio?iddominio=1').then(response => {
+		api.get<IEntidadeGenerica[]>('merchant/category').then(response => {
 			let options = response.data
 				.map(t => {
 					return {
 						value: t.id,
-						label: t.descricao,
+						label: t.name,
 					};
 				})
 				.sort((a, b) => {
@@ -90,7 +90,6 @@ export default function NovoEstabelecimento(props: INovoEstabelecimentoIni) {
 			estabs?.push()
 			queryClient.setQueriesData(['estabelecimentos'], estabs);
 			*/
-
 		} catch (error) {
 			alert('Ocorreu um problema ao cadastrar estabelecimento, tenta novamente');
 		}
