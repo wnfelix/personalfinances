@@ -11,6 +11,7 @@ import api from '../../services/api';
 
 import 'react-datepicker/dist/react-datepicker.css';
 import { Form, Modal, Spinner } from 'react-bootstrap';
+import { formatDateAndFirstDay } from '../../Helper/helper';
 
 interface INovaDescricaoExtraIni {
 	show: boolean;
@@ -67,20 +68,17 @@ export default function NovaDescricaoExtra(props: INovaDescricaoExtraIni) {
 	function handleNovaDescricaoExtra(e: React.FormEvent<HTMLFormElement>) {
 		e.preventDefault();
 
+		const [formattedDate] = formatDateAndFirstDay(dataCompra);
 		const data = {
-			estabelecimento: {
-				id: estab?.value,
-			},
-			classificacao: {
-				id: tipo?.value,
-			},
-			dataCompra: dataCompra,
-			indiceCompraDe: indiceDe,
-			indiceCompraAte: indiceAte,
-			descricao: descricao,
+			merchantId: estab?.value,
+			categoryId: tipo?.value,
+			memoText: descricao,
+			matchDate: formattedDate,
+			matchIndexFrom: indiceDe,
+			matchIndexTo: indiceAte,
 		};
 
-		api.post('descricaoextra', data).then(result => {
+		api.post('memorule', data).then(result => {
 			alert('Cadastrado com sucesso');
 			clearFields();
 		});

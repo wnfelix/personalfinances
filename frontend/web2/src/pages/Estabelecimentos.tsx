@@ -86,7 +86,7 @@ export default function Estabelecimentos() {
 	function handleDelete() {
 		const { id, idGr } = showDeleteDialog.item;
 
-		api.delete(`estabelecimento/${id}`).then(result => {
+		api.delete(`merchant/${id}`).then(result => {
 			//alert('deu certo');
 		});
 

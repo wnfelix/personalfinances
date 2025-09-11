@@ -133,18 +133,17 @@ export default function Lancamentos() {
 		e.preventDefault();
 
 		const data = {
-			classificacao: {
-				id: tipo?.value,
-			},
-			dtCompra: dataCompra,
-			descricao: descricao,
+			categoryId: tipo?.value,
+			transactionDate: dataCompra,
+			referenceDate: dataCompra,
+			rawDescription: descricao,
+			memo: descricao,
 			manual: true,
-			valor: valor,
+			amount: valor,
 		};
 
-		if (data.descricao.length > 0 && data.classificacao?.id !== undefined && data.valor > 0) {
-			console.log(data);
-			api.post('lancamento', data).then(() => {
+		if (data.rawDescription.length > 0 && data.categoryId !== undefined && data.amount > 0) {
+			api.post('expense', data).then(() => {
 				alert('Cadastrado com sucesso');
 				setClassificacao(null);
 				setDescricao('');

@@ -1,21 +1,20 @@
 import React, { useEffect } from 'react';
 import { Button, Dropdown, DropdownButton, Form, Spinner } from 'react-bootstrap';
-import LeftSideToolBar from '../../components/LeftSideToolBar';
-import api from '../../services/api';
 import { format, addMonths } from 'date-fns';
 import { useState } from 'react';
 import { VscNewFile } from 'react-icons/vsc';
 import { IoReload } from 'react-icons/io5';
+import { BsClipboardCheck } from 'react-icons/bs';
 
-import './LancamentoUpload.css';
+import api from '../../services/api';
 import HeaderToolBar from '../../components/HeaderToolBar';
-import { Distinct } from '../../Helper/helper';
+import { DistinctBy } from '../../Helper/helper';
 import IEntidadeGenerica from '../../interfaces/IEntidadeGenerica';
 import NovoEstabelecimento from '../../components/NovoEstabelecimento/NovoEstabelecimento';
 import NovaDescricaoExtra from '../../components/NovaDescricaoExtra/NovaDescricaoExtra';
 import NovoLancamento from '../../components/NovoLancamento';
 import Master from '../Master';
-import { BsClipboardCheck } from 'react-icons/bs';
+import './LancamentoUpload.css';
 
 interface IPurchase {
 	id: number;
@@ -39,7 +38,7 @@ interface IPurchase {
 	// 	descricao: string;
 	// 	classificacao: IEntidadeGenerica;
 	// };
-	finalCategory: IEntidadeGenerica;
+	finalCategory: IEntidadeGenerica & { order: number };
 	installments: boolean;
 	reclassified: boolean;
 	isManual: boolean;
@@ -79,9 +78,9 @@ export default function LancamentoUpload() {
 		if (sheetFiles) {
 			setLoadingState(true);
 			const data = new FormData();
-			data.append('Plan', sheetFiles[0]);
+			data.append('file', sheetFiles[0]);
 
-			api.post(`lancamento?mesref=${selectedMonth}-01`, data, { responseType: 'blob' }).finally(() => {
+			api.post(`expense/upload?referenceDate=${selectedMonth}-01`, data, { responseType: 'blob' }).finally(() => {
 				setReload(true);
 			});
 		}
@@ -184,14 +183,10 @@ export default function LancamentoUpload() {
 							</DropdownButton>
 							<Button type='submit'>Enviar</Button>
 						</div>
-						{Distinct(
-							purchases?.map(p => {
-								const key = p.finalCategory;
-								return {
-									id: key.id,
-									name: key.name,
-								};
-							})
+						{DistinctBy(
+							purchases?.map(p => p.finalCategory),
+							'id',
+							'order'
 						).map(grupo => (
 							<fieldset key={grupo.id}>
 								<legend>{grupo.name}</legend>

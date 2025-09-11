@@ -11,6 +11,7 @@ import api from '../services/api';
 import 'react-datepicker/dist/react-datepicker.css';
 import { Form, Modal, Spinner } from 'react-bootstrap';
 import InputNumber from './Common/InputNumber';
+import { formatDateAndFirstDay } from '../Helper/helper';
 
 interface INovoLancamentoIni {
 	show: boolean;
@@ -58,19 +59,20 @@ export default function NovoLancamento(props: INovoLancamentoIni) {
 
 	function handleNovoLancamento(e: React.FormEvent<HTMLFormElement>) {
 		e.preventDefault();
+		const [formattedDate, referenceDate] = formatDateAndFirstDay(dataCompra);
 
 		const data = {
-			classificacao: {
-				id: tipo?.value,
-			},
-			dtCompra: dataCompra,
-			descricao: descricao,
-			manual: true,
-			valor: valor,
+			categoryId: tipo?.value,
+			transactionDate: formattedDate,
+			referenceDate: referenceDate,
+			rawDescription: descricao,
+			memo: descricao,
+			isManual: true,
+			amount: valor,
 		};
 
-		if (data.descricao.length > 0 && data.classificacao?.id !== undefined && data.valor !== 0) {
-			api.post('lancamento', data).then(() => {
+		if (data.rawDescription.length > 0 && data.categoryId !== undefined && data.amount > 0) {
+			api.post('expense', data).then(() => {
 				alert('Cadastrado com sucesso');
 				setClassificacao(null);
 				setDescricao('');
