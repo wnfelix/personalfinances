@@ -1,5 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { Dropdown, DropdownButton, Form, Modal, Spinner } from 'react-bootstrap';
+import {
+	Dropdown,
+	DropdownButton,
+	Form,
+	Modal,
+	Spinner,
+} from 'react-bootstrap';
 import Select from 'react-select';
 import DatePicker from 'react-datepicker';
 import ptBr from 'date-fns/locale/pt-BR';
@@ -13,8 +19,8 @@ import Master from '../Master';
 import { Distinct } from '../../Helper/helper';
 import IValueLabelPair from '../../interfaces/IValueLabelPair';
 import IEntidadeGenerica from '../../interfaces/IEntidadeGenerica';
-import InputNumber from '../../components/Common/InputNumber';
-import './Lancamentos.css';
+import InputNumber from '../../components/InputNumber';
+import './styles.css';
 
 interface IExpense {
 	id: number;
@@ -35,7 +41,9 @@ interface IExpense {
 }
 
 export default function Lancamentos() {
-	const [selectedMonth, setSelectedMonth] = useState(format(addMonths(Date.now(), -1), 'yyyy-MM'));
+	const [selectedMonth, setSelectedMonth] = useState(
+		format(addMonths(Date.now(), -1), 'yyyy-MM')
+	);
 	const [purchases, setPurchases] = useState<IExpense[]>([]);
 	const [tipoDominio, setTipoDominio] = useState<IValueLabelPair[]>([]);
 
@@ -53,7 +61,9 @@ export default function Lancamentos() {
 		api.get<IExpense[]>(`expense?referenceDate=${selectedMonth}-01`)
 			.then(result => {
 				setPurchases(result.data);
-				console.log(result.data.filter(x => x.finalCategory === undefined));
+				console.log(
+					result.data.filter(x => x.finalCategory === undefined)
+				);
 			})
 			.catch(e => {
 				console.log(e);
@@ -63,7 +73,9 @@ export default function Lancamentos() {
 			});
 
 		api.get<IEntidadeGenerica[]>('merchant/category').then(response => {
-			const options = response.data.map(t => ({ value: t.id, label: t.name })).sort((a, b) => ('' + a.label).localeCompare(b.label));
+			const options = response.data
+				.map(t => ({ value: t.id, label: t.name }))
+				.sort((a, b) => ('' + a.label).localeCompare(b.label));
 
 			setTipoDominio(options);
 			setLoadingDominio(false);
@@ -72,7 +84,12 @@ export default function Lancamentos() {
 
 	function showModalLancamentoManual() {
 		return (
-			<Modal show={showModalInsert} onHide={() => setShowModalInsert(false)} dialogClassName='modalLancamentoManual' size='sm'>
+			<Modal
+				show={showModalInsert}
+				onHide={() => setShowModalInsert(false)}
+				dialogClassName='modalLancamentoManual'
+				size='sm'
+			>
 				<Modal.Header closeButton>
 					<Modal.Title>Cadastrar Novo Lançamento</Modal.Title>
 				</Modal.Header>
@@ -94,7 +111,10 @@ export default function Lancamentos() {
 								value={tipo}
 								options={tipoDominio}
 								onChange={e => setClassificacao(e)}
-								defaultValue={{ value: '0', label: 'Selecione...' }}
+								defaultValue={{
+									value: '0',
+									label: 'Selecione...',
+								}}
 								className='select-control'
 							/>
 						)}
@@ -142,7 +162,11 @@ export default function Lancamentos() {
 			amount: valor,
 		};
 
-		if (data.rawDescription.length > 0 && data.categoryId !== undefined && data.amount > 0) {
+		if (
+			data.rawDescription.length > 0 &&
+			data.categoryId !== undefined &&
+			data.amount > 0
+		) {
 			api.post('expense', data).then(() => {
 				alert('Cadastrado com sucesso');
 				setClassificacao(null);
@@ -162,7 +186,11 @@ export default function Lancamentos() {
 					<HeaderToolBar
 						title={{ text: 'Lançamentos', url: '/lancamentos' }}
 						links={[
-							{ text: 'Novo', url: '', onClick: () => setShowModalInsert(true) },
+							{
+								text: 'Novo',
+								url: '',
+								onClick: () => setShowModalInsert(true),
+							},
 							{ text: 'Upload', url: '/lancamentoupload' },
 						]}
 					/>
@@ -176,22 +204,69 @@ export default function Lancamentos() {
 						<div>
 							<DropdownButton
 								id='dropdown-basic-button'
-								title={format(new Date(Date.parse(`${selectedMonth}-01T00:00:00.0000`)), 'MM/yyyy')}
-								onSelect={(eventKey: any) => setSelectedMonth(eventKey)}
+								title={format(
+									new Date(
+										Date.parse(
+											`${selectedMonth}-01T00:00:00.0000`
+										)
+									),
+									'MM/yyyy'
+								)}
+								onSelect={(eventKey: any) =>
+									setSelectedMonth(eventKey)
+								}
 							>
 								{[
-									{ id: format(new Date(), 'yyyy-MM'), value: format(new Date(), 'MM/yyyy') },
-									{ id: format(addMonths(new Date(), -1), 'yyyy-MM'), value: format(addMonths(new Date(), -1), 'MM/yyyy') },
-									{ id: format(addMonths(new Date(), -2), 'yyyy-MM'), value: format(addMonths(new Date(), -2), 'MM/yyyy') },
-									{ id: format(addMonths(new Date(), -3), 'yyyy-MM'), value: format(addMonths(new Date(), -3), 'MM/yyyy') },
+									{
+										id: format(new Date(), 'yyyy-MM'),
+										value: format(new Date(), 'MM/yyyy'),
+									},
+									{
+										id: format(
+											addMonths(new Date(), -1),
+											'yyyy-MM'
+										),
+										value: format(
+											addMonths(new Date(), -1),
+											'MM/yyyy'
+										),
+									},
+									{
+										id: format(
+											addMonths(new Date(), -2),
+											'yyyy-MM'
+										),
+										value: format(
+											addMonths(new Date(), -2),
+											'MM/yyyy'
+										),
+									},
+									{
+										id: format(
+											addMonths(new Date(), -3),
+											'yyyy-MM'
+										),
+										value: format(
+											addMonths(new Date(), -3),
+											'MM/yyyy'
+										),
+									},
 								].map(d => (
-									<Dropdown.Item eventKey={d.id} active={selectedMonth === d.id}>
+									<Dropdown.Item
+										eventKey={d.id}
+										active={selectedMonth === d.id}
+									>
 										{d.value}
 									</Dropdown.Item>
 								))}
 							</DropdownButton>
 						</div>
-						{Distinct(purchases?.map(p => ({ id: p.finalCategory.id, name: p.finalCategory.name }))).map(grupo => (
+						{Distinct(
+							purchases?.map(p => ({
+								id: p.finalCategory.id,
+								name: p.finalCategory.name,
+							}))
+						).map(grupo => (
 							<fieldset key={grupo.id}>
 								<legend>{grupo.name}</legend>
 								<table>
@@ -205,12 +280,22 @@ export default function Lancamentos() {
 									</thead>
 									<tbody>
 										{purchases
-											?.filter(i => i.finalCategory.id === grupo.id)
-											.sort((a, b) => (new Date(a.transactionDate) > new Date(b.transactionDate) ? 1 : -1))
+											?.filter(
+												i =>
+													i.finalCategory.id ===
+													grupo.id
+											)
+											.sort((a, b) =>
+												new Date(a.transactionDate) >
+												new Date(b.transactionDate)
+													? 1
+													: -1
+											)
 											.map(p => (
 												<tr
 													className={`lanc-${
-														p.installments && p.reclassified
+														p.installments &&
+														p.reclassified
 															? 'parc lanc-reclass'
 															: p.reclassified
 															? 'reclass'
@@ -219,20 +304,56 @@ export default function Lancamentos() {
 															: ''
 													}`}
 												>
-													<td>{format(new Date(p.referenceDate), 'MM/yy')}</td>
-													<td>{format(new Date(p.transactionDate), 'dd/MM/yy')}</td>
+													<td>
+														{format(
+															new Date(
+																p.referenceDate
+															),
+															'MM/yy'
+														)}
+													</td>
+													<td>
+														{format(
+															new Date(
+																p.transactionDate
+															),
+															'dd/MM/yy'
+														)}
+													</td>
 													<td>{p.memo}</td>
 													<td className='valor'>
-														{new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(p.amount)}
+														{new Intl.NumberFormat(
+															'pt-BR',
+															{
+																style: 'currency',
+																currency: 'BRL',
+															}
+														).format(p.amount)}
 													</td>
 												</tr>
 											))}
 										<tr>
 											<td colSpan={5} className='total'>
-												{new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(
+												{new Intl.NumberFormat(
+													'pt-BR',
+													{
+														style: 'currency',
+														currency: 'BRL',
+													}
+												).format(
 													purchases
-														?.filter(i => i.finalCategory.id === grupo.id)
-														.reduce((add, item) => add + item.amount, 0)
+														?.filter(
+															i =>
+																i.finalCategory
+																	.id ===
+																grupo.id
+														)
+														.reduce(
+															(add, item) =>
+																add +
+																item.amount,
+															0
+														)
 												)}
 											</td>
 										</tr>

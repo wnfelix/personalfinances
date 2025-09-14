@@ -3,15 +3,15 @@ import Select from 'react-select';
 import DatePicker from 'react-datepicker';
 
 import ptBr from 'date-fns/locale/pt-BR';
-import IEntidadeGenerica from '../interfaces/IEntidadeGenerica';
-import IValueLabelPair from '../interfaces/IValueLabelPair';
+import IEntidadeGenerica from '../../interfaces/IEntidadeGenerica';
+import IValueLabelPair from '../../interfaces/IValueLabelPair';
 
-import api from '../services/api';
+import api from '../../services/api';
 
 import 'react-datepicker/dist/react-datepicker.css';
 import { Form, Modal, Spinner } from 'react-bootstrap';
-import InputNumber from './Common/InputNumber';
-import { formatDateAndFirstDay } from '../Helper/helper';
+import InputNumber from '../InputNumber';
+import { formatDateAndFirstDay } from '../../Helper/helper';
 
 interface INovoLancamentoIni {
 	show: boolean;
@@ -33,7 +33,9 @@ export default function NovoLancamento(props: INovoLancamentoIni) {
 
 	useEffect(() => {
 		api.get<IEntidadeGenerica[]>('merchant/category').then(response => {
-			const options = response.data.map(t => ({ value: t.id, label: t.name })).sort((a, b) => ('' + a.label).localeCompare(b.label));
+			const options = response.data
+				.map(t => ({ value: t.id, label: t.name }))
+				.sort((a, b) => ('' + a.label).localeCompare(b.label));
 
 			setTipoDominio(options);
 			setLoadingDominio(false);
@@ -59,7 +61,8 @@ export default function NovoLancamento(props: INovoLancamentoIni) {
 
 	function handleNovoLancamento(e: React.FormEvent<HTMLFormElement>) {
 		e.preventDefault();
-		const [formattedDate, referenceDate] = formatDateAndFirstDay(dataCompra);
+		const [formattedDate, referenceDate] =
+			formatDateAndFirstDay(dataCompra);
 
 		const data = {
 			categoryId: tipo?.value,
@@ -71,7 +74,11 @@ export default function NovoLancamento(props: INovoLancamentoIni) {
 			amount: valor,
 		};
 
-		if (data.rawDescription.length > 0 && data.categoryId !== undefined && data.amount > 0) {
+		if (
+			data.rawDescription.length > 0 &&
+			data.categoryId !== undefined &&
+			data.amount > 0
+		) {
 			api.post('expense', data).then(() => {
 				alert('Cadastrado com sucesso');
 				setClassificacao(null);
@@ -121,7 +128,13 @@ export default function NovoLancamento(props: INovoLancamentoIni) {
 							className='select-control'
 						/>
 					)}
-					<DatePicker selected={dataCompra} onChange={handleDataCompra} locale={ptBr} dateFormat='dd/MM/yyyy' className='form-control' />
+					<DatePicker
+						selected={dataCompra}
+						onChange={handleDataCompra}
+						locale={ptBr}
+						dateFormat='dd/MM/yyyy'
+						className='form-control'
+					/>
 					<label>Valor</label>
 					<InputNumber
 						name='valor'

@@ -1,15 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import Select from 'react-select';
-
-import './NovoEstabelecimento.css';
-
-import api from '../services/api';
-import IEntidadeGenerica from '../interfaces/IEntidadeGenerica';
-import IValueLabelPair from '../interfaces/IValueLabelPair';
-import LeftSideToolBar from '../components/LeftSideToolBar';
-import HeaderToolBar from '../components/HeaderToolBar';
 import { Button } from 'react-bootstrap';
+
+import api from '../../services/api';
+import IEntidadeGenerica from '../../interfaces/IEntidadeGenerica';
+import IValueLabelPair from '../../interfaces/IValueLabelPair';
+import LeftSideToolBar from '../../components/LeftSideToolBar';
+import HeaderToolBar from '../../components/HeaderToolBar';
+import './styles.css';
 
 export default function NovoEstabelecimento() {
 	const history = useNavigate();
@@ -21,16 +20,18 @@ export default function NovoEstabelecimento() {
 	const [tipo, setTipo] = useState<IValueLabelPair | null>();
 
 	useEffect(() => {
-		api.get<IEntidadeGenerica[]>('tipodominio?iddominio=1').then(response => {
-			let options = response.data
-				.map(t => {
-					return { value: t.id, label: t.name };
-				})
-				.sort((a, b) => {
-					return ('' + a.label).localeCompare(b.label);
-				});
-			setTipoDominio(options);
-		});
+		api.get<IEntidadeGenerica[]>('tipodominio?iddominio=1').then(
+			response => {
+				let options = response.data
+					.map(t => {
+						return { value: t.id, label: t.name };
+					})
+					.sort((a, b) => {
+						return ('' + a.label).localeCompare(b.label);
+					});
+				setTipoDominio(options);
+			}
+		);
 	}, []);
 
 	function handleOnChangeDomainType(e: IValueLabelPair | null) {
@@ -60,7 +61,9 @@ export default function NovoEstabelecimento() {
 
 			alert('Cadastrado com sucesso');
 		} catch (error) {
-			alert('Ocorreu um problema ao cadastrar estabelecimento, tenta novamente');
+			alert(
+				'Ocorreu um problema ao cadastrar estabelecimento, tenta novamente'
+			);
 		}
 	}
 
@@ -69,7 +72,10 @@ export default function NovoEstabelecimento() {
 			<LeftSideToolBar />
 			<div className='application-header'>
 				<HeaderToolBar
-					title={{ text: 'Estabelecimentos', url: '/estabelecimentos' }}
+					title={{
+						text: 'Estabelecimentos',
+						url: '/estabelecimentos',
+					}}
 					links={[
 						{
 							text: 'Novo',
@@ -89,7 +95,12 @@ export default function NovoEstabelecimento() {
 						onChange={e => setDescription(e.target.value)}
 						className='form-control'
 					/>
-					<input placeholder='Informe a palavra chave' value={chave} onChange={e => setChave(e.target.value)} className='form-control' />
+					<input
+						placeholder='Informe a palavra chave'
+						value={chave}
+						onChange={e => setChave(e.target.value)}
+						className='form-control'
+					/>
 					<Select
 						defaultValue={{ value: '0', label: 'Selecione...' }}
 						value={tipo}

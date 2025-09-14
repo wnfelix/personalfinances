@@ -1,14 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { Spinner, Table } from 'react-bootstrap';
 import { format } from 'date-fns';
-import HeaderToolBar from '../components/HeaderToolBar';
-import LeftSideToolBar from '../components/LeftSideToolBar';
-import IDescricaoExtra from '../interfaces/IDescricaoExtra';
-import Master from './Master';
+import HeaderToolBar from '../../components/HeaderToolBar';
+import LeftSideToolBar from '../../components/LeftSideToolBar';
+import IDescricaoExtra from '../../interfaces/IDescricaoExtra';
+import Master from '../Master';
 
-import api from '../services/api';
-
-import './DescricaoExtra.css';
+import api from '../../services/api';
 
 export default function DescricaoExtra() {
 	const [descricaoExtra, setDescricaoExtra] = useState<IDescricaoExtra[]>([]);
@@ -26,7 +24,10 @@ export default function DescricaoExtra() {
 			<div className='descricaoextra'>
 				<div className='application-header'>
 					<HeaderToolBar
-						title={{ text: 'Descrição extra', url: '/descricaoextra' }}
+						title={{
+							text: 'Descrição extra',
+							url: '/descricaoextra',
+						}}
 						links={[{ text: 'Nova', url: '/novadescricaoextra' }]}
 					/>
 				</div>
@@ -50,14 +51,21 @@ export default function DescricaoExtra() {
 							</thead>
 							<tbody>
 								{descricaoExtra
-									.sort((a, b) => (a.matchDate > b.matchDate ? -1 : 1))
+									.sort((a, b) =>
+										a.matchDate > b.matchDate ? -1 : 1
+									)
 									.map(d => {
 										return (
 											<tr>
 												<td>{d.merchant.pattern}</td>
 												<td>{d.category.name}</td>
 												<td>{d.memoText}</td>
-												<td>{format(new Date(d.matchDate), 'dd/MM/yyyy')}</td>
+												<td>
+													{format(
+														new Date(d.matchDate),
+														'dd/MM/yyyy'
+													)}
+												</td>
 												<td>{d.matchIndexFrom}</td>
 												<td>{d.matchIndexTo}</td>
 											</tr>

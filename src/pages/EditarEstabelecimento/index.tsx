@@ -2,16 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { Button } from 'react-bootstrap';
 import { useParams, useNavigate } from 'react-router-dom';
 import Select from 'react-select';
-import HeaderToolBar from '../components/HeaderToolBar';
+import HeaderToolBar from '../../components/HeaderToolBar';
 
-import LeftSideToolBar from '../components/LeftSideToolBar';
-import IEntidadeGenerica from '../interfaces/IEntidadeGenerica';
-import IEstabelecimento from '../interfaces/IEstabelecimento';
-import IValueLabelPair from '../interfaces/IValueLabelPair';
+import LeftSideToolBar from '../../components/LeftSideToolBar';
+import IEntidadeGenerica from '../../interfaces/IEntidadeGenerica';
+import IEstabelecimento from '../../interfaces/IEstabelecimento';
+import IValueLabelPair from '../../interfaces/IValueLabelPair';
 
-import api from '../services/api';
-
-import './EditarEstabelecimento.css';
+import api from '../../services/api';
 
 export default function EditarEstabelecimento() {
 	const { id } = useParams<{ id: string }>();
@@ -23,16 +21,18 @@ export default function EditarEstabelecimento() {
 	const history = useNavigate();
 
 	useEffect(() => {
-		api.get<IEntidadeGenerica[]>('tipodominio?iddominio=1').then(response => {
-			let options = response.data
-				.map(t => {
-					return { value: t.id, label: t.name };
-				})
-				.sort((a, b) => {
-					return ('' + a.label).localeCompare(b.label);
-				});
-			setTipoDominio(options);
-		});
+		api.get<IEntidadeGenerica[]>('tipodominio?iddominio=1').then(
+			response => {
+				let options = response.data
+					.map(t => {
+						return { value: t.id, label: t.name };
+					})
+					.sort((a, b) => {
+						return ('' + a.label).localeCompare(b.label);
+					});
+				setTipoDominio(options);
+			}
+		);
 	}, []);
 
 	useEffect(() => {
@@ -46,7 +46,9 @@ export default function EditarEstabelecimento() {
 		});
 	}, []);
 
-	async function handleEditarEstabelecimento(e: React.FormEvent<HTMLFormElement>) {
+	async function handleEditarEstabelecimento(
+		e: React.FormEvent<HTMLFormElement>
+	) {
 		e.preventDefault();
 
 		const data = {
@@ -79,7 +81,10 @@ export default function EditarEstabelecimento() {
 			<LeftSideToolBar />
 			<div className='application-header'>
 				<HeaderToolBar
-					title={{ text: 'Estabelecimentos', url: '/estabelecimentos' }}
+					title={{
+						text: 'Estabelecimentos',
+						url: '/estabelecimentos',
+					}}
 					links={[
 						{
 							text: 'Novo',
@@ -99,7 +104,12 @@ export default function EditarEstabelecimento() {
 						onChange={e => setDescription(e.target.value)}
 						className='form-control'
 					/>
-					<input placeholder='Informe a palavra chave' value={chave} onChange={e => setChave(e.target.value)} className='form-control' />
+					<input
+						placeholder='Informe a palavra chave'
+						value={chave}
+						onChange={e => setChave(e.target.value)}
+						className='form-control'
+					/>
 					<label className='filter-label' htmlFor='drpTipoDominio'>
 						Classificação
 					</label>
@@ -112,7 +122,10 @@ export default function EditarEstabelecimento() {
 						className='select-control'
 					/>
 					<div>
-						<Button variant='secondary' onClick={e => handleBackButton(e)}>
+						<Button
+							variant='secondary'
+							onClick={e => handleBackButton(e)}
+						>
 							Voltar
 						</Button>
 						<button className='btn btn-primary' type='submit'>

@@ -2,14 +2,12 @@ import React, { useEffect, useState } from 'react';
 import Button from 'react-bootstrap/esm/Button';
 import { useNavigate } from 'react-router-dom';
 import Select from 'react-select';
-import HeaderToolBar from '../components/HeaderToolBar';
-import LeftSideToolBar from '../components/LeftSideToolBar';
-import IEntidadeGenerica from '../interfaces/IEntidadeGenerica';
-import IValueLabelPair from '../interfaces/IValueLabelPair';
+import HeaderToolBar from '../../components/HeaderToolBar';
+import LeftSideToolBar from '../../components/LeftSideToolBar';
+import IEntidadeGenerica from '../../interfaces/IEntidadeGenerica';
+import IValueLabelPair from '../../interfaces/IValueLabelPair';
 
-import api from '../services/api';
-
-import './NovoTipoEstabelecimento.css';
+import api from '../../services/api';
 
 export default function NovoTipoEstabelecimento() {
 	const [description, setDescription] = useState('');
@@ -63,7 +61,10 @@ export default function NovoTipoEstabelecimento() {
 			<LeftSideToolBar />
 			<div className='application-header'>
 				<HeaderToolBar
-					title={{ text: 'Tipos de Estabelecimento', url: '/tiposestabelecimento' }}
+					title={{
+						text: 'Tipos de Estabelecimento',
+						url: '/tiposestabelecimento',
+					}}
 					links={[{ text: 'Novo', url: '/novotipoestabelecimento' }]}
 				/>
 			</div>
@@ -73,7 +74,11 @@ export default function NovoTipoEstabelecimento() {
 				</section>
 				<section>
 					<form onSubmit={handleCadastrar}>
-						<input placeholder='Informe a descrição' onChange={e => setDescription(e.target.value)} className='form-control' />
+						<input
+							placeholder='Informe a descrição'
+							onChange={e => setDescription(e.target.value)}
+							className='form-control'
+						/>
 						<Select
 							defaultValue={{ value: '0', label: 'Selecione...' }}
 							options={typeList}
@@ -81,7 +86,10 @@ export default function NovoTipoEstabelecimento() {
 							className='select-control'
 						/>
 						<div>
-							<Button variant='secondary' onClick={e => handleBackButton(e)}>
+							<Button
+								variant='secondary'
+								onClick={e => handleBackButton(e)}
+							>
 								Voltar
 							</Button>
 							<button className='btn btn-primary' type='submit'>

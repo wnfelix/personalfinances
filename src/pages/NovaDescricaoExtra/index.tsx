@@ -3,20 +3,22 @@ import Select from 'react-select';
 import DatePicker from 'react-datepicker';
 
 import ptBr from 'date-fns/locale/pt-BR';
-import HeaderToolBar from '../components/HeaderToolBar';
-import LeftSideToolBar from '../components/LeftSideToolBar';
-import IEntidadeGenerica from '../interfaces/IEntidadeGenerica';
-import IEstabelecimento from '../interfaces/IEstabelecimento';
-import IValueLabelPair from '../interfaces/IValueLabelPair';
+import HeaderToolBar from '../../components/HeaderToolBar';
+import LeftSideToolBar from '../../components/LeftSideToolBar';
+import IEntidadeGenerica from '../../interfaces/IEntidadeGenerica';
+import IEstabelecimento from '../../interfaces/IEstabelecimento';
+import IValueLabelPair from '../../interfaces/IValueLabelPair';
 
-import api from '../services/api';
+import api from '../../services/api';
 
 import 'react-datepicker/dist/react-datepicker.css';
 import { Form, Spinner } from 'react-bootstrap';
+import './styles.css';
 
 export default function NovaDescricaoExtra() {
 	const [tipoDominio, setTipoDominio] = useState<IValueLabelPair[]>([]);
-	const [estabelecimentos, setEstabelecimentos] = useState<IValueLabelPair[]>();
+	const [estabelecimentos, setEstabelecimentos] =
+		useState<IValueLabelPair[]>();
 	const [descricao, setDescricao] = useState('');
 	const [tipo, setClassificacao] = useState<IValueLabelPair | null>();
 	const [estab, setEstab] = useState<IValueLabelPair | null>();
@@ -28,14 +30,18 @@ export default function NovaDescricaoExtra() {
 
 	useEffect(() => {
 		api.get<IEntidadeGenerica[]>('merchant/category').then(response => {
-			const options = response.data.map(t => ({ value: t.id, label: t.name })).sort((a, b) => ('' + a.label).localeCompare(b.label));
+			const options = response.data
+				.map(t => ({ value: t.id, label: t.name }))
+				.sort((a, b) => ('' + a.label).localeCompare(b.label));
 
 			setTipoDominio(options);
 			setLoadingDominio(false);
 		});
 
 		api.get<IEstabelecimento[]>('merchant').then(response => {
-			setEstabelecimentos(response.data.map(e => ({ value: e.id, label: e.pattern })));
+			setEstabelecimentos(
+				response.data.map(e => ({ value: e.id, label: e.pattern }))
+			);
 			setLoadingEstab(false);
 		});
 	}, []);
@@ -73,7 +79,10 @@ export default function NovaDescricaoExtra() {
 		<div className='application-content novadescricaoextra'>
 			<LeftSideToolBar />
 			<div className='application-header'>
-				<HeaderToolBar title={{ text: 'Descrição extra', url: '/descricaoextra' }} links={[{ text: 'Nova', url: '/novadescricaoextra' }]} />
+				<HeaderToolBar
+					title={{ text: 'Descrição extra', url: '/descricaoextra' }}
+					links={[{ text: 'Nova', url: '/novadescricaoextra' }]}
+				/>
 			</div>
 			<div className='application-body'>
 				<section>Incluir nova descrição extra</section>
@@ -110,7 +119,13 @@ export default function NovaDescricaoExtra() {
 							className='select-control'
 						/>
 					)}
-					<DatePicker selected={dataCompra} onChange={handleDataCompra} locale={ptBr} dateFormat='dd/MM/yyyy' className='form-control' />
+					<DatePicker
+						selected={dataCompra}
+						onChange={handleDataCompra}
+						locale={ptBr}
+						dateFormat='dd/MM/yyyy'
+						className='form-control'
+					/>
 					<fieldset className='indice'>
 						<legend>Índice da compra no dia</legend>
 						<label>De</label>

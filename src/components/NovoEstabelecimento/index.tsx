@@ -7,7 +7,7 @@ import IValueLabelPair from '../../interfaces/IValueLabelPair';
 import { Button, Modal } from 'react-bootstrap';
 import styled from 'styled-components';
 import { useQueryClient } from '@tanstack/react-query';
-import { IGrupoClassificacao } from '../../pages/Estabelecimentos';
+import { IGrupoClassificacao } from '../../pages/Estabelecimento';
 
 interface INovoEstabelecimentoIni {
 	show: boolean;
@@ -91,7 +91,9 @@ export default function NovoEstabelecimento(props: INovoEstabelecimentoIni) {
 			queryClient.setQueriesData(['estabelecimentos'], estabs);
 			*/
 		} catch (error) {
-			alert('Ocorreu um problema ao cadastrar estabelecimento, tenta novamente');
+			alert(
+				'Ocorreu um problema ao cadastrar estabelecimento, tenta novamente'
+			);
 		}
 	}
 
@@ -128,7 +130,12 @@ export default function NovoEstabelecimento(props: INovoEstabelecimentoIni) {
 						onChange={e => setDescription(e.target.value)}
 						className='form-control'
 					/>
-					<input placeholder='Informe a palavra chave' value={chave} onChange={e => setChave(e.target.value)} className='form-control' />
+					<input
+						placeholder='Informe a palavra chave'
+						value={chave}
+						onChange={e => setChave(e.target.value)}
+						className='form-control'
+					/>
 					<Select
 						defaultValue={{
 							value: '0',

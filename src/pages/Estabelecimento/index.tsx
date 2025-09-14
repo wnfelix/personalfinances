@@ -5,18 +5,18 @@ import { BsPencilSquare } from 'react-icons/bs';
 import { Link } from 'react-router-dom';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 
-import HeaderToolBar from '../components/HeaderToolBar';
-import LeftSideToolBar from '../components/LeftSideToolBar';
-import IEstabelecimento from '../interfaces/IEstabelecimento';
-import api from '../services/api';
+import HeaderToolBar from '../../components/HeaderToolBar';
+import LeftSideToolBar from '../../components/LeftSideToolBar';
+import IEstabelecimento from '../../interfaces/IEstabelecimento';
+import api from '../../services/api';
 
-import './Estabelecimentos.css';
 import { TiTrash } from 'react-icons/ti';
 import { Modal } from 'react-bootstrap';
-import { Distinct } from '../Helper/helper';
-import IEntidadeGenerica from '../interfaces/IEntidadeGenerica';
-import NovoEstabelecimento from '../components/NovoEstabelecimento/NovoEstabelecimento';
-import Master from './Master';
+import { Distinct } from '../../Helper/helper';
+import IEntidadeGenerica from '../../interfaces/IEntidadeGenerica';
+import NovoEstabelecimento from '../../components/NovoEstabelecimento';
+import Master from '../Master';
+import './styles.css';
 
 export interface IGrupoClassificacao extends IEntidadeGenerica {
 	estabelecimentos: IEstabelecimento[];
@@ -29,7 +29,9 @@ export default function Estabelecimentos() {
 	const { data: estabs, isFetching: loadingState } = useQuery(
 		['estabelecimentos'],
 		async () => {
-			const { data } = await api.get<IEstabelecimento[]>(`merchant?exibicao=${exibicao}`);
+			const { data } = await api.get<IEstabelecimento[]>(
+				`merchant?exibicao=${exibicao}`
+			);
 
 			const groups = Distinct(data.map(x => x.category));
 			const estabs: IGrupoClassificacao[] = [];
@@ -39,8 +41,13 @@ export default function Estabelecimentos() {
 					id: gr.id,
 					name: gr.name,
 					estabelecimentos: data
-						.filter(({ category: classificacao }) => classificacao.id === gr.id)
-						.sort((a, b) => (a.totalExpense > b.totalExpense ? -1 : 1)),
+						.filter(
+							({ category: classificacao }) =>
+								classificacao.id === gr.id
+						)
+						.sort((a, b) =>
+							a.totalExpense > b.totalExpense ? -1 : 1
+						),
 				});
 			});
 
@@ -92,7 +99,9 @@ export default function Estabelecimentos() {
 
 		if (estabs) {
 			const indexGr = estabs.findIndex(x => Number(x.id) === idGr);
-			estabs[indexGr].estabelecimentos = estabs[indexGr].estabelecimentos.filter(x => Number(x.id) !== id);
+			estabs[indexGr].estabelecimentos = estabs[
+				indexGr
+			].estabelecimentos.filter(x => Number(x.id) !== id);
 		}
 		//setEstabs([...estabs]);
 
@@ -120,7 +129,10 @@ export default function Estabelecimentos() {
 					<Modal.Title>Excluir Estabelecimento</Modal.Title>
 				</Modal.Header>
 				<Modal.Body>
-					<p>Confirma exclusão do registro {showDeleteDialog.item.id}?</p>
+					<p>
+						Confirma exclusão do registro {showDeleteDialog.item.id}
+						?
+					</p>
 				</Modal.Body>
 				<Modal.Footer>
 					<Button
@@ -146,14 +158,23 @@ export default function Estabelecimentos() {
 		<Master title='Estabelecimentos'>
 			<div className='estabelecimentos'>
 				{modalDelete()}
-				<NovoEstabelecimento show={showNewDialog} onClose={() => setShowNewDialog(false)} />
+				<NovoEstabelecimento
+					show={showNewDialog}
+					onClose={() => setShowNewDialog(false)}
+				/>
 				<div className='application-header'>
 					<HeaderToolBar
 						title={{
 							text: 'Estabelecimentos',
 							url: '/estabelecimentos',
 						}}
-						links={[{ text: 'Novo', url: '', onClick: () => setShowNewDialog(true) }]}
+						links={[
+							{
+								text: 'Novo',
+								url: '',
+								onClick: () => setShowNewDialog(true),
+							},
+						]}
 					/>
 				</div>
 				{loadingState ? (
@@ -164,7 +185,14 @@ export default function Estabelecimentos() {
 					<div className='application-body'>
 						<div className='options'>
 							<label>Exibir:</label>
-							<Form.Check inline label='Todos' name='exibir' type='radio' checked={exibicao === 0} onChange={handleVisualization} />
+							<Form.Check
+								inline
+								label='Todos'
+								name='exibir'
+								type='radio'
+								checked={exibicao === 0}
+								onChange={handleVisualization}
+							/>
 							<Form.Check
 								inline
 								label='Com lançamentos'
@@ -181,22 +209,41 @@ export default function Estabelecimentos() {
 									{gr.estabelecimentos.map(e => (
 										<Card key={e.id}>
 											<Card.Body>
-												<Card.Title as='h6'>{e.pattern}</Card.Title>
-												{e.name?.length > 0 && <Card.Text>{e.name}</Card.Text>}
+												<Card.Title as='h6'>
+													{e.pattern}
+												</Card.Title>
+												{e.name?.length > 0 && (
+													<Card.Text>
+														{e.name}
+													</Card.Text>
+												)}
 												{e.totalExpense > 0 && (
-													<div className='total' title='Total de Lançamentos'>
-														{e.totalExpense} lançamento(s)
+													<div
+														className='total'
+														title='Total de Lançamentos'
+													>
+														{e.totalExpense}{' '}
+														lançamento(s)
 													</div>
 												)}
 												{e.totalMemoRule > 0 && (
-													<div className='total' title='Descrição Extra'>
-														{e.totalMemoRule} reclassificado(s)
+													<div
+														className='total'
+														title='Descrição Extra'
+													>
+														{e.totalMemoRule}{' '}
+														reclassificado(s)
 													</div>
 												)}
 											</Card.Body>
 											<Card.Footer>
-												<Link to={`/editarestabelecimento/${e.id}`}>
-													<BsPencilSquare size={20} color='rgb(54, 96, 146)' />
+												<Link
+													to={`/editarestabelecimento/${e.id}`}
+												>
+													<BsPencilSquare
+														size={20}
+														color='rgb(54, 96, 146)'
+													/>
 												</Link>
 												<TiTrash
 													size={25}
@@ -204,8 +251,12 @@ export default function Estabelecimentos() {
 														setShowDeleteDialog({
 															show: true,
 															item: {
-																id: Number(e.id),
-																idGr: Number(gr.id),
+																id: Number(
+																	e.id
+																),
+																idGr: Number(
+																	gr.id
+																),
 															},
 														})
 													}

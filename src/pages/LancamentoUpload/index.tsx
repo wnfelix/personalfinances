@@ -1,5 +1,11 @@
 import React, { useEffect } from 'react';
-import { Button, Dropdown, DropdownButton, Form, Spinner } from 'react-bootstrap';
+import {
+	Button,
+	Dropdown,
+	DropdownButton,
+	Form,
+	Spinner,
+} from 'react-bootstrap';
 import { format, addMonths } from 'date-fns';
 import { useState } from 'react';
 import { VscNewFile } from 'react-icons/vsc';
@@ -10,11 +16,11 @@ import api from '../../services/api';
 import HeaderToolBar from '../../components/HeaderToolBar';
 import { DistinctBy } from '../../Helper/helper';
 import IEntidadeGenerica from '../../interfaces/IEntidadeGenerica';
-import NovoEstabelecimento from '../../components/NovoEstabelecimento/NovoEstabelecimento';
-import NovaDescricaoExtra from '../../components/NovaDescricaoExtra/NovaDescricaoExtra';
+import NovoEstabelecimento from '../../components/NovoEstabelecimento';
+import NovaDescricaoExtra from '../../components/NovaDescricaoExtra';
 import NovoLancamento from '../../components/NovoLancamento';
 import Master from '../Master';
-import './LancamentoUpload.css';
+import './styles.css';
 
 interface IPurchase {
 	id: number;
@@ -45,7 +51,9 @@ interface IPurchase {
 }
 
 export default function LancamentoUpload() {
-	const [selectedMonth, setSelectedMonth] = useState(format(addMonths(Date.now(), -1), 'yyyy-MM'));
+	const [selectedMonth, setSelectedMonth] = useState(
+		format(addMonths(Date.now(), -1), 'yyyy-MM')
+	);
 	const [sheetFiles, setSheetFiles] = useState<FileList>();
 	const [purchases, setPurchases] = useState<IPurchase[]>([]);
 	const [loadingState, setLoadingState] = useState(true);
@@ -53,9 +61,12 @@ export default function LancamentoUpload() {
 
 	const [descriptionNew, setDescriptionNew] = useState('');
 
-	const [showModalNovoEstabelecimento, setShowModalNovoEstabelecimento] = useState(false);
-	const [showModalNovaDescricaoExtra, setShowModalNovaDescricaoExtra] = useState(false);
-	const [showDialogNovoLancamento, setShowModalNovoLancamento] = useState(false);
+	const [showModalNovoEstabelecimento, setShowModalNovoEstabelecimento] =
+		useState(false);
+	const [showModalNovaDescricaoExtra, setShowModalNovaDescricaoExtra] =
+		useState(false);
+	const [showDialogNovoLancamento, setShowModalNovoLancamento] =
+		useState(false);
 
 	useEffect(() => {
 		setLoadingState(true);
@@ -80,7 +91,9 @@ export default function LancamentoUpload() {
 			const data = new FormData();
 			data.append('file', sheetFiles[0]);
 
-			api.post(`expense/upload?referenceDate=${selectedMonth}-01`, data, { responseType: 'blob' }).finally(() => {
+			api.post(`expense/upload?referenceDate=${selectedMonth}-01`, data, {
+				responseType: 'blob',
+			}).finally(() => {
 				setReload(true);
 			});
 		}
@@ -88,7 +101,9 @@ export default function LancamentoUpload() {
 
 	function downloadExcelFile() {
 		setLoadingState(true);
-		api.get(`lancamento?mesref=${selectedMonth}-01&download=true`, { responseType: 'blob' })
+		api.get(`lancamento?mesref=${selectedMonth}-01&download=true`, {
+			responseType: 'blob',
+		})
 			.then(result => {
 				const blob = new Blob([result.data], {
 					type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
@@ -110,13 +125,21 @@ export default function LancamentoUpload() {
 	function getClipboardListText(groupId: string): string {
 		return purchases
 			?.filter(i => i.finalCategory.id === groupId)
-			.sort((a, b) => (new Date(a.transactionDate) > new Date(b.transactionDate) ? 1 : -1))
+			.sort((a, b) =>
+				new Date(a.transactionDate) > new Date(b.transactionDate)
+					? 1
+					: -1
+			)
 			.map(p =>
 				format(new Date(p.transactionDate), 'dd/MM').concat(
 					' ',
 					p.rawDescription,
 					' = ',
-					new Intl.NumberFormat('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2, currency: 'BRL' }).format(p.amount)
+					new Intl.NumberFormat('pt-BR', {
+						minimumFractionDigits: 2,
+						maximumFractionDigits: 2,
+						currency: 'BRL',
+					}).format(p.amount)
 				)
 			)
 			.join('\r\n');
@@ -136,16 +159,26 @@ export default function LancamentoUpload() {
 					onClose={() => setShowModalNovoEstabelecimento(false)}
 					description={descriptionNew}
 				/>
-				<NovaDescricaoExtra show={showModalNovaDescricaoExtra} onClose={() => setShowModalNovaDescricaoExtra(false)} />
-				<NovoLancamento show={showDialogNovoLancamento} onClose={() => setShowModalNovoLancamento(false)} />
+				<NovaDescricaoExtra
+					show={showModalNovaDescricaoExtra}
+					onClose={() => setShowModalNovaDescricaoExtra(false)}
+				/>
+				<NovoLancamento
+					show={showDialogNovoLancamento}
+					onClose={() => setShowModalNovoLancamento(false)}
+				/>
 				<div className='application-header'>
 					<HeaderToolBar
-						title={{ text: 'Upload de Lançamentos', url: '/lancamentoupload' }}
+						title={{
+							text: 'Upload de Lançamentos',
+							url: '/lancamentoupload',
+						}}
 						links={[
 							{
 								text: 'Descrição Extra',
 								url: '',
-								onClick: () => setShowModalNovaDescricaoExtra(true),
+								onClick: () =>
+									setShowModalNovaDescricaoExtra(true),
 								title: 'Inclui uma nova descrição extra',
 							},
 							{
@@ -164,19 +197,67 @@ export default function LancamentoUpload() {
 				) : (
 					<form className='application-body' onSubmit={uploadFiles}>
 						<div>
-							<Form.Control type='file' size='sm' onChange={(e: any) => setSheetFiles(e.target.files)} />
+							<Form.Control
+								type='file'
+								size='sm'
+								onChange={(e: any) =>
+									setSheetFiles(e.target.files)
+								}
+							/>
 							<DropdownButton
 								id='dropdown-basic-button'
-								title={format(new Date(Date.parse(`${selectedMonth}-01T00:00:00.0000`)), 'MM/yyyy')}
-								onSelect={(eventKey: any) => setSelectedMonth(eventKey)}
+								title={format(
+									new Date(
+										Date.parse(
+											`${selectedMonth}-01T00:00:00.0000`
+										)
+									),
+									'MM/yyyy'
+								)}
+								onSelect={(eventKey: any) =>
+									setSelectedMonth(eventKey)
+								}
 							>
 								{[
-									{ id: format(new Date(), 'yyyy-MM'), value: format(new Date(), 'MM/yyyy') },
-									{ id: format(addMonths(new Date(), -1), 'yyyy-MM'), value: format(addMonths(new Date(), -1), 'MM/yyyy') },
-									{ id: format(addMonths(new Date(), -2), 'yyyy-MM'), value: format(addMonths(new Date(), -2), 'MM/yyyy') },
-									{ id: format(addMonths(new Date(), -3), 'yyyy-MM'), value: format(addMonths(new Date(), -3), 'MM/yyyy') },
+									{
+										id: format(new Date(), 'yyyy-MM'),
+										value: format(new Date(), 'MM/yyyy'),
+									},
+									{
+										id: format(
+											addMonths(new Date(), -1),
+											'yyyy-MM'
+										),
+										value: format(
+											addMonths(new Date(), -1),
+											'MM/yyyy'
+										),
+									},
+									{
+										id: format(
+											addMonths(new Date(), -2),
+											'yyyy-MM'
+										),
+										value: format(
+											addMonths(new Date(), -2),
+											'MM/yyyy'
+										),
+									},
+									{
+										id: format(
+											addMonths(new Date(), -3),
+											'yyyy-MM'
+										),
+										value: format(
+											addMonths(new Date(), -3),
+											'MM/yyyy'
+										),
+									},
 								].map(d => (
-									<Dropdown.Item eventKey={d.id} active={selectedMonth === d.id}>
+									<Dropdown.Item
+										eventKey={d.id}
+										active={selectedMonth === d.id}
+									>
 										{d.value}
 									</Dropdown.Item>
 								))}
@@ -202,12 +283,22 @@ export default function LancamentoUpload() {
 									</thead>
 									<tbody>
 										{purchases
-											?.filter(i => i.finalCategory.id === grupo.id)
-											.sort((a, b) => (new Date(a.transactionDate) > new Date(b.transactionDate) ? 1 : -1))
+											?.filter(
+												i =>
+													i.finalCategory.id ===
+													grupo.id
+											)
+											.sort((a, b) =>
+												new Date(a.transactionDate) >
+												new Date(b.transactionDate)
+													? 1
+													: -1
+											)
 											.map(p => (
 												<tr
 													className={`lanc-${
-														p.installments && p.reclassified
+														p.installments &&
+														p.reclassified
 															? 'parc lanc-reclass'
 															: p.reclassified
 															? 'reclass'
@@ -217,16 +308,45 @@ export default function LancamentoUpload() {
 													}`}
 												>
 													<td>
-														{Number(p.finalCategory.id) === 0 && (
-															<VscNewFile size={20} onClick={() => handlerNovaClassificacao(p.rawDescription)} />
+														{Number(
+															p.finalCategory.id
+														) === 0 && (
+															<VscNewFile
+																size={20}
+																onClick={() =>
+																	handlerNovaClassificacao(
+																		p.rawDescription
+																	)
+																}
+															/>
 														)}
 														<IoReload size={20} />
 													</td>
-													<td>{format(new Date(p.referenceDate), 'MM/yy')}</td>
-													<td>{format(new Date(p.transactionDate), 'dd/MM/yy')}</td>
+													<td>
+														{format(
+															new Date(
+																p.referenceDate
+															),
+															'MM/yy'
+														)}
+													</td>
+													<td>
+														{format(
+															new Date(
+																p.transactionDate
+															),
+															'dd/MM/yy'
+														)}
+													</td>
 													<td>{p.rawDescription}</td>
 													<td className='valor'>
-														{new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(p.amount)}
+														{new Intl.NumberFormat(
+															'pt-BR',
+															{
+																style: 'currency',
+																currency: 'BRL',
+															}
+														).format(p.amount)}
 													</td>
 												</tr>
 											))}
@@ -235,14 +355,36 @@ export default function LancamentoUpload() {
 												<BsClipboardCheck
 													size={18}
 													title='Copiar lista'
-													onClick={() => navigator.clipboard.writeText(getClipboardListText(grupo.id))}
+													onClick={() =>
+														navigator.clipboard.writeText(
+															getClipboardListText(
+																grupo.id
+															)
+														)
+													}
 												/>
 											</td>
 											<td colSpan={4} className='total'>
-												{new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(
+												{new Intl.NumberFormat(
+													'pt-BR',
+													{
+														style: 'currency',
+														currency: 'BRL',
+													}
+												).format(
 													purchases
-														?.filter(i => i.finalCategory.id === grupo.id)
-														.reduce((add, item) => add + item.amount, 0)
+														?.filter(
+															i =>
+																i.finalCategory
+																	.id ===
+																grupo.id
+														)
+														.reduce(
+															(add, item) =>
+																add +
+																item.amount,
+															0
+														)
 												)}
 											</td>
 										</tr>
@@ -251,7 +393,9 @@ export default function LancamentoUpload() {
 							</fieldset>
 						))}
 						<div>
-							<Button onClick={downloadExcelFile}>Download</Button>
+							<Button onClick={downloadExcelFile}>
+								Download
+							</Button>
 							<Button>Reprocessar Dados</Button>
 						</div>
 					</form>
