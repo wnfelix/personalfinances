@@ -10,6 +10,9 @@ import NovoEstabelecimento from './pages/NovoEstabelecimento';
 import NovoTipoEstabelecimento from './pages/NovoTipoEstabelecimento';
 import TiposEstabelecimento from './pages/TiposEstabelecimento';
 import ClassificacaoExtra from './pages/ClassificacaoExtra';
+import Login from './pages/Login';
+import ProtectedRoute from './components/ProtectedRoute';
+import { AuthProvider } from './contexts/AuthContext';
 
 const queryClient = new QueryClient();
 
@@ -17,42 +20,94 @@ export default function AppRoutes() {
 	return (
 		<BrowserRouter>
 			<QueryClientProvider client={queryClient}>
-				<Routes>
-					<Route path='/' element={<Estabelecimentos />} />
-					<Route
-						path='/estabelecimentos'
-						element={<Estabelecimentos />}
-					/>
-					<Route
-						path='/editarestabelecimento/:id'
-						element={<EditarEstabelecimento />}
-					/>
-					<Route
-						path='/novoestabelecimento'
-						element={<NovoEstabelecimento />}
-					/>
-					<Route
-						path='/tiposestabelecimento'
-						element={<TiposEstabelecimento />}
-					/>
-					<Route
-						path='/novotipoestabelecimento'
-						element={<NovoTipoEstabelecimento />}
-					/>
-					<Route
-						path='/descricaoextra'
-						element={<DescricaoExtra />}
-					/>
-					<Route
-						path='/novadescricaoextra'
-						element={<NovaDescricaoExtra />}
-					/>
-					<Route path='/lancamentos' element={<LancamentoUpload />} />
-					<Route
-						path='/classificacaoextra'
-						element={<ClassificacaoExtra />}
-					/>
-				</Routes>
+				<AuthProvider>
+					<Routes>
+						{/* Public route */}
+						<Route path='/' element={<Login />} />
+
+						{/* Protected routes */}
+						<Route
+							path='/lancamentos'
+							element={
+								<ProtectedRoute>
+									<LancamentoUpload />
+								</ProtectedRoute>
+							}
+						/>
+						<Route
+							path='/estabelecimentos'
+							element={
+								<ProtectedRoute>
+									<Estabelecimentos />
+								</ProtectedRoute>
+							}
+						/>
+						<Route
+							path='/editarestabelecimento/:id'
+							element={
+								<ProtectedRoute>
+									<EditarEstabelecimento />
+								</ProtectedRoute>
+							}
+						/>
+						<Route
+							path='/novoestabelecimento'
+							element={
+								<ProtectedRoute>
+									<NovoEstabelecimento />
+								</ProtectedRoute>
+							}
+						/>
+						<Route
+							path='/tiposestabelecimento'
+							element={
+								<ProtectedRoute>
+									<TiposEstabelecimento />
+								</ProtectedRoute>
+							}
+						/>
+						<Route
+							path='/novotipoestabelecimento'
+							element={
+								<ProtectedRoute>
+									<NovoTipoEstabelecimento />
+								</ProtectedRoute>
+							}
+						/>
+						<Route
+							path='/descricaoextra'
+							element={
+								<ProtectedRoute>
+									<DescricaoExtra />
+								</ProtectedRoute>
+							}
+						/>
+						<Route
+							path='/novadescricaoextra'
+							element={
+								<ProtectedRoute>
+									<NovaDescricaoExtra />
+								</ProtectedRoute>
+							}
+						/>
+						<Route
+							path='/lancamentos'
+							element={
+								<ProtectedRoute>
+									<LancamentoUpload />
+								</ProtectedRoute>
+							}
+						/>
+						<Route
+							path='/classificacaoextra'
+							element={
+								<ProtectedRoute>
+									<ClassificacaoExtra />
+								</ProtectedRoute>
+							}
+						/>
+					</Routes>
+				</AuthProvider>
 			</QueryClientProvider>
 		</BrowserRouter>
 	);

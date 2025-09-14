@@ -1,6 +1,7 @@
 import React from 'react';
 import { Nav, Navbar, Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
+import { useAuth } from '../../contexts/AuthContext';
 
 interface IHeaderToolBarProps {
 	title: {
@@ -11,6 +12,8 @@ interface IHeaderToolBarProps {
 }
 
 export default function HeaderToolBar(props: IHeaderToolBarProps) {
+	const { user, logout } = useAuth();
+
 	return (
 		<Navbar bg='primary' variant='dark'>
 			<Nav className='mr-auto'>
@@ -24,6 +27,18 @@ export default function HeaderToolBar(props: IHeaderToolBarProps) {
 							{l.text}
 						</Nav.Link>
 					)
+				)}
+			</Nav>
+			<Nav className='ml-auto'>
+				{user && (
+					<>
+						<Navbar.Text className='mr-3'>
+							Olá, {user.firstName}
+						</Navbar.Text>
+						<Button variant='outline-light' size='sm' onClick={logout}>
+							Sair
+						</Button>
+					</>
 				)}
 			</Nav>
 		</Navbar>
