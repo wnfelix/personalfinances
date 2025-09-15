@@ -2,7 +2,7 @@
 	"rewrites": [
 		{
 			"source": "/api/(.*)",
-			"destination": "https://mypersonalfinances-server.onrender.com"
+			"destination": "https://mypersonalfinances-server.onrender.com/$1"
 		}
 	]
 }
