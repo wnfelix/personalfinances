@@ -1,0 +1,104 @@
+import React, { useEffect, useState } from 'react';
+import Button from 'react-bootstrap/esm/Button';
+import { useNavigate } from 'react-router-dom';
+import Select from 'react-select';
+import HeaderToolBar from '../../components/HeaderToolBar';
+import LeftSideToolBar from '../../components/LeftSideToolBar';
+import IEntidadeGenerica from '../../interfaces/IEntidadeGenerica';
+import IValueLabelPair from '../../interfaces/IValueLabelPair';
+
+import api from '../../services/api';
+
+export default function NovoTipoEstabelecimento() {
+	const [description, setDescription] = useState('');
+	const [domainType, setDomainType] = useState<IValueLabelPair>();
+	const [typeList, setTypeList] = useState<IValueLabelPair[]>([]);
+	const history = useNavigate();
+
+	useEffect(() => {
+		api.get<IEntidadeGenerica[]>('categorygroup').then(response => {
+			let options = response.data
+				.map(item => {
+					return { value: item.id, label: item.name };
+				})
+				.sort((a, b) => {
+					return ('' + a.label).localeCompare(b.label);
+				});
+			setTypeList(options);
+		});
+	}, []);
+
+	function handleOnChangeDomainType(e: IValueLabelPair | null) {
+		if (e) setDomainType(e);
+	}
+
+	async function handleCadastrar(e: React.FormEvent<HTMLFormElement>) {
+		e.preventDefault();
+
+		if (!domainType) return;
+
+		const data = {
+			descricao: description,
+			dominio: { id: domainType.value },
+		};
+
+		try {
+			await api.post('tipodominio', data);
+
+			history('/tiposestabelecimento');
+		} catch (error) {
+			alert('Ocorreu um eror ao tentar cadastrar');
+		}
+	}
+
+	function handleBackButton(e: React.MouseEvent<HTMLElement, MouseEvent>) {
+		e.preventDefault();
+		history(-1);
+	}
+
+	return (
+		<div className='application-content'>
+			<LeftSideToolBar />
+			<div className='application-header'>
+				<HeaderToolBar
+					title={{
+						text: 'Tipos de Estabelecimento',
+						url: '/tiposestabelecimento',
+					}}
+					links={[{ text: 'Novo', url: '/novotipoestabelecimento' }]}
+				/>
+			</div>
+			<div className='application-body'>
+				<section>
+					<p>Incluir Novo Tipo</p>
+				</section>
+				<section>
+					<form onSubmit={handleCadastrar}>
+						<input
+							placeholder='Informe a descrição'
+							onChange={e => setDescription(e.target.value)}
+							className='form-control'
+						/>
+						<Select
+							defaultValue={{ value: '0', label: 'Selecione...' }}
+							options={typeList}
+							onChange={e => handleOnChangeDomainType(e)}
+							className='select-control'
+						/>
+						<div>
+							<Button
+								variant='secondary'
+								onClick={e => handleBackButton(e)}
+							>
+								Voltar
+							</Button>
+							<button className='btn btn-primary' type='submit'>
+								Cadastrar
+							</button>
+						</div>
+					</form>
+				</section>
+			</div>
+		</div>
+	);
+}
