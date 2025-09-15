@@ -1,0 +1,8 @@
+{
+	"rewrites": [
+		{
+			"source": "/api/(.*)",
+			"destination": "https://mypersonalfinances-server.onrender.com"
+		}
+	]
+}
