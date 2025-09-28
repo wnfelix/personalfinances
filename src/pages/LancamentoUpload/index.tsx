@@ -27,6 +27,7 @@ interface IPurchase {
 	referenceDate: Date;
 	transactionDate: Date;
 	rawDescription: string;
+	memo: string;
 	amount: number;
 	merchant: {
 		id: Number;
@@ -338,7 +339,7 @@ export default function LancamentoUpload() {
 															'dd/MM/yy'
 														)}
 													</td>
-													<td>{p.rawDescription}</td>
+													<td>{p.memo}</td>
 													<td className='valor'>
 														{new Intl.NumberFormat(
 															'pt-BR',
