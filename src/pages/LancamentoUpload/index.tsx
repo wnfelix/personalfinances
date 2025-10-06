@@ -6,7 +6,8 @@ import {
 	Form,
 	Spinner,
 } from 'react-bootstrap';
-import { format, addMonths } from 'date-fns';
+import { toZonedTime } from 'date-fns-tz';
+import { format, addMonths, parseISO } from 'date-fns';
 import { useState } from 'react';
 import { VscNewFile } from 'react-icons/vsc';
 import { IoReload } from 'react-icons/io5';
@@ -325,16 +326,18 @@ export default function LancamentoUpload() {
 													</td>
 													<td>
 														{format(
-															new Date(
-																p.referenceDate
+															toZonedTime(
+																p.referenceDate,
+																'UTC'
 															),
 															'MM/yy'
 														)}
 													</td>
 													<td>
 														{format(
-															new Date(
-																p.transactionDate
+															toZonedTime(
+																p.transactionDate,
+																'UTC'
 															),
 															'dd/MM/yy'
 														)}
