@@ -72,13 +72,13 @@ export default function NovoEstabelecimento(props: INovoEstabelecimentoIni) {
 		e.preventDefault();
 
 		const data = {
-			descricao: description,
-			palavrachave: chave,
-			classificacao: { id: tipo?.value },
+			name: description,
+			pattern: chave,
+			categoryId: tipo?.value,
 		};
 
 		try {
-			await api.post('estabelecimento/cadastrar', data);
+			await api.post('merchant', data);
 
 			clearFields();
 
