@@ -135,7 +135,7 @@ export default function LancamentoUpload() {
 			.map(p =>
 				format(new Date(p.transactionDate), 'dd/MM').concat(
 					' ',
-					p.rawDescription,
+					p.memo,
 					' = ',
 					new Intl.NumberFormat('pt-BR', {
 						minimumFractionDigits: 2,
