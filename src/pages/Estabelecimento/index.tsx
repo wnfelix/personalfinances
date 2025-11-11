@@ -24,6 +24,12 @@ export interface IGrupoClassificacao extends IEntidadeGenerica {
 
 export default function Estabelecimentos() {
 	const queryClient = useQueryClient();
+	const [showDeleteDialog, setShowDeleteDialog] = useState({
+		show: false,
+		item: { id: 0, idGr: 0 },
+	});
+	const [exibicao, setExibicao] = useState(1);
+	const [showNewDialog, setShowNewDialog] = useState(false);
 
 	// Queries
 	const { data: estabs, isFetching: loadingState } = useQuery(
@@ -58,37 +64,6 @@ export default function Estabelecimentos() {
 			staleTime: 1000 * 60,
 		}
 	);
-
-	//const [estabs, setEstabs] = useState<IGrupoClassificacao[]>([]);
-	const [showDeleteDialog, setShowDeleteDialog] = useState({
-		show: false,
-		item: { id: 0, idGr: 0 },
-	});
-	const [exibicao, setExibicao] = useState(1);
-	//const [loadingState, setLoadingState] = useState(true);
-	const [showNewDialog, setShowNewDialog] = useState(false);
-
-	// useEffect(() => {
-	// 	setLoadingState(true);
-
-	// 	api.get<IEstabelecimento[]>(`estabelecimento?exibicao=${exibicao}`).then(({ data }) => {
-	// 		const groups = Distinct(data.map(x => x.classificacao));
-	// 		const estabs: IGrupoClassificacao[] = [];
-
-	// 		groups.forEach(gr => {
-	// 			estabs.push({
-	// 				id: gr.id,
-	// 				descricao: gr.descricao,
-	// 				estabelecimentos: data
-	// 					.filter(({ classificacao }) => classificacao.id === gr.id)
-	// 					.sort((a, b) => (a.lancamentosTotal > b.lancamentosTotal ? -1 : 1)),
-	// 			});
-	// 		});
-
-	// 		setEstabs(estabs);
-	// 		setLoadingState(false);
-	// 	});
-	// }, [exibicao]);
 
 	function handleDelete() {
 		const { id, idGr } = showDeleteDialog.item;
