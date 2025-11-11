@@ -3,7 +3,6 @@ import { Button } from 'react-bootstrap';
 import { useParams, useNavigate } from 'react-router-dom';
 import Select from 'react-select';
 import HeaderToolBar from '../../components/HeaderToolBar';
-
 import LeftSideToolBar from '../../components/LeftSideToolBar';
 import IEntidadeGenerica from '../../interfaces/IEntidadeGenerica';
 import IEstabelecimento from '../../interfaces/IEstabelecimento';
@@ -21,27 +20,25 @@ export default function EditarEstabelecimento() {
 	const history = useNavigate();
 
 	useEffect(() => {
-		api.get<IEntidadeGenerica[]>('tipodominio?iddominio=1').then(
-			response => {
-				let options = response.data
-					.map(t => {
-						return { value: t.id, label: t.name };
-					})
-					.sort((a, b) => {
-						return ('' + a.label).localeCompare(b.label);
-					});
-				setTipoDominio(options);
-			}
-		);
+		api.get<IEntidadeGenerica[]>('merchant/category').then(response => {
+			let options = response.data
+				.map(t => {
+					return { value: t.id, label: t.name };
+				})
+				.sort((a, b) => {
+					return ('' + a.label).localeCompare(b.label);
+				});
+			setTipoDominio(options);
+		});
 	}, []);
 
 	useEffect(() => {
-		api.get<IEstabelecimento>(`estabelecimento/${id}`).then(response => {
-			setDescription(response.data.name);
-			setChave(response.data.pattern);
+		api.get<IEstabelecimento>(`merchant/${id}`).then(({ data }) => {
+			setDescription(data.name);
+			setChave(data.pattern);
 			setTipo({
-				value: response.data.category.id,
-				label: response.data.category.name,
+				value: data.category.id,
+				label: data.category.name,
 			});
 		});
 	}, []);
@@ -52,16 +49,15 @@ export default function EditarEstabelecimento() {
 		e.preventDefault();
 
 		const data = {
-			id: id,
-			descricao: description,
-			palavrachave: chave,
-			classificacao: { id: tipo?.value },
+			name: description ?? null,
+			pattern: chave,
+			categoryId: tipo?.value,
 		};
 
 		try {
-			await api.put('estabelecimento', data);
+			await api.put(`merchant/${id}`, data);
 
-			history('/');
+			history(-1);
 		} catch (error) {
 			console.log(error);
 		}
