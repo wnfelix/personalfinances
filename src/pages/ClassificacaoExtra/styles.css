@@ -1,0 +1,13 @@
+.classificacaoextra .application-body {
+	width: 100%;
+}
+
+.classificacaoextra .application-body td svg {
+	cursor: pointer;
+	margin: 0 4px;
+}
+
+.classificacaoextra .application-body table th,
+.classificacaoextra .application-body table td {
+	vertical-align: middle;
+}

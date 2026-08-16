@@ -77,7 +77,7 @@ export default function NovoLancamento(props: INovoLancamentoIni) {
 		if (
 			data.rawDescription.length > 0 &&
 			data.categoryId !== undefined &&
-			data.amount > 0
+			(data.amount > 0 || data.amount < 0)
 		) {
 			api.post('expense', data).then(() => {
 				alert('Cadastrado com sucesso');
