@@ -22,6 +22,7 @@ import NovaDescricaoExtra from '../../components/NovaDescricaoExtra';
 import NovoLancamento from '../../components/NovoLancamento';
 import Master from '../Master';
 import './styles.css';
+import { Tooltip } from '@mui/material';
 
 interface IPurchase {
 	id: number;
@@ -32,6 +33,7 @@ interface IPurchase {
 	amount: number;
 	merchant: {
 		id: Number;
+		name: string;
 		group: IEntidadeGenerica;
 	};
 	memoRule: {
@@ -54,7 +56,7 @@ interface IPurchase {
 
 export default function LancamentoUpload() {
 	const [selectedMonth, setSelectedMonth] = useState(
-		format(addMonths(Date.now(), -1), 'yyyy-MM')
+		format(addMonths(Date.now(), -1), 'yyyy-MM'),
 	);
 	const [sheetFiles, setSheetFiles] = useState<FileList>();
 	const [purchases, setPurchases] = useState<IPurchase[]>([]);
@@ -130,7 +132,7 @@ export default function LancamentoUpload() {
 			.sort((a, b) =>
 				new Date(a.transactionDate) > new Date(b.transactionDate)
 					? 1
-					: -1
+					: -1,
 			)
 			.map(p =>
 				format(new Date(p.transactionDate), 'dd/MM').concat(
@@ -141,8 +143,8 @@ export default function LancamentoUpload() {
 						minimumFractionDigits: 2,
 						maximumFractionDigits: 2,
 						currency: 'BRL',
-					}).format(p.amount)
-				)
+					}).format(p.amount),
+				),
 			)
 			.join('\r\n');
 	}
@@ -211,10 +213,10 @@ export default function LancamentoUpload() {
 								title={format(
 									new Date(
 										Date.parse(
-											`${selectedMonth}-01T00:00:00.0000`
-										)
+											`${selectedMonth}-01T00:00:00.0000`,
+										),
 									),
-									'MM/yyyy'
+									'MM/yyyy',
 								)}
 								onSelect={(eventKey: any) =>
 									setSelectedMonth(eventKey)
@@ -228,31 +230,31 @@ export default function LancamentoUpload() {
 									{
 										id: format(
 											addMonths(new Date(), -1),
-											'yyyy-MM'
+											'yyyy-MM',
 										),
 										value: format(
 											addMonths(new Date(), -1),
-											'MM/yyyy'
+											'MM/yyyy',
 										),
 									},
 									{
 										id: format(
 											addMonths(new Date(), -2),
-											'yyyy-MM'
+											'yyyy-MM',
 										),
 										value: format(
 											addMonths(new Date(), -2),
-											'MM/yyyy'
+											'MM/yyyy',
 										),
 									},
 									{
 										id: format(
 											addMonths(new Date(), -3),
-											'yyyy-MM'
+											'yyyy-MM',
 										),
 										value: format(
 											addMonths(new Date(), -3),
-											'MM/yyyy'
+											'MM/yyyy',
 										),
 									},
 								].map(d => (
@@ -269,7 +271,7 @@ export default function LancamentoUpload() {
 						{DistinctBy(
 							purchases?.map(p => p.finalCategory),
 							'id',
-							'order'
+							'order',
 						).map(grupo => (
 							<fieldset key={grupo.id}>
 								<legend>{grupo.name}</legend>
@@ -288,13 +290,13 @@ export default function LancamentoUpload() {
 											?.filter(
 												i =>
 													i.finalCategory.id ===
-													grupo.id
+													grupo.id,
 											)
 											.sort((a, b) =>
 												new Date(a.transactionDate) >
 												new Date(b.transactionDate)
 													? 1
-													: -1
+													: -1,
 											)
 											.map(p => (
 												<tr
@@ -303,21 +305,21 @@ export default function LancamentoUpload() {
 														p.reclassified
 															? 'parc lanc-reclass'
 															: p.reclassified
-															? 'reclass'
-															: p.installments
-															? 'parc'
-															: ''
+																? 'reclass'
+																: p.installments
+																	? 'parc'
+																	: ''
 													}`}
 												>
 													<td>
 														{Number(
-															p.finalCategory.id
+															p.finalCategory.id,
 														) === 0 && (
 															<VscNewFile
 																size={20}
 																onClick={() =>
 																	handlerNovaClassificacao(
-																		p.rawDescription
+																		p.rawDescription,
 																	)
 																}
 															/>
@@ -328,28 +330,40 @@ export default function LancamentoUpload() {
 														{format(
 															toZonedTime(
 																p.referenceDate,
-																'UTC'
+																'UTC',
 															),
-															'MM/yy'
+															'MM/yy',
 														)}
 													</td>
 													<td>
 														{format(
 															toZonedTime(
 																p.transactionDate,
-																'UTC'
+																'UTC',
 															),
-															'dd/MM/yy'
+															'dd/MM/yy',
 														)}
 													</td>
-													<td>{p.memo}</td>
+													<td>
+														<Tooltip
+															title={
+																p.merchant
+																	?.name ?? ''
+															}
+														>
+															<span>
+																{p.memo}
+															</span>
+														</Tooltip>
+													</td>
+
 													<td className='valor'>
 														{new Intl.NumberFormat(
 															'pt-BR',
 															{
 																style: 'currency',
 																currency: 'BRL',
-															}
+															},
 														).format(p.amount)}
 													</td>
 												</tr>
@@ -362,8 +376,8 @@ export default function LancamentoUpload() {
 													onClick={() =>
 														navigator.clipboard.writeText(
 															getClipboardListText(
-																grupo.id
-															)
+																grupo.id,
+															),
 														)
 													}
 												/>
@@ -374,21 +388,21 @@ export default function LancamentoUpload() {
 													{
 														style: 'currency',
 														currency: 'BRL',
-													}
+													},
 												).format(
 													purchases
 														?.filter(
 															i =>
 																i.finalCategory
 																	.id ===
-																grupo.id
+																grupo.id,
 														)
 														.reduce(
 															(add, item) =>
 																add +
 																item.amount,
-															0
-														)
+															0,
+														),
 												)}
 											</td>
 										</tr>
