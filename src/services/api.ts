@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-	baseURL: '/',
+	baseURL: '/api',
 });
 
 // Set up request interceptor to add auth token
@@ -24,7 +24,7 @@ api.interceptors.response.use(
 			window.location.href = '/';
 		}
 		return Promise.reject(error);
-	}
+	},
 );
 
 export default api;
